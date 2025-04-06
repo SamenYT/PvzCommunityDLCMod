@@ -733,6 +733,7 @@ void Coin::UpdateCollected()
             {
                 if (mType == CoinType::COIN_PRESENT_MINIGAMES)
                 {
+                    //e
                     // 注：此处的 theMessageStyle 参数，原版中为 MESSAGE_STYLE_HINT_TALL_UNLOCKMESSAGE，内测版中为 MESSAGE_STYLE_HINT_TALL_8SECONDS
                     mBoard->DisplayAdvice(_S("[UNLOCKED_MINIGAMES]"), MessageStyle::MESSAGE_STYLE_HINT_TALL_UNLOCKMESSAGE, AdviceType::ADVICE_UNLOCKED_MODE);
                 }
