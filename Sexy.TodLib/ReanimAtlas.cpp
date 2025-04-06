@@ -217,12 +217,12 @@ void ReanimAtlas::ReanimAtlasCreate(ReanimatorDefinition* theReanimDef)
 	PerfTimer aTimer;
 	aTimer.Start();
 
-	for (int aTrackIndex = 0; aTrackIndex < theReanimDef->mTrackCount; aTrackIndex++)
+	for (int aTrackIndex = 0; aTrackIndex < theReanimDef->mTracks.count; aTrackIndex++)
 	{
-		ReanimatorTrack* aTrack = &theReanimDef->mTracks[aTrackIndex];
-		for (int aKeyIndex = 0; aKeyIndex < aTrack->mTransformCount; aKeyIndex++)  // 遍历每一帧上的贴图
+		ReanimatorTrack* aTrack = &theReanimDef->mTracks.tracks[aTrackIndex];
+		for (int aKeyIndex = 0; aKeyIndex < aTrack->mTransforms.count; aKeyIndex++)  // 遍历每一帧上的贴图
 		{
-			Image* aImage = aTrack->mTransforms[aKeyIndex].mImage;
+			Image* aImage = aTrack->mTransforms.mTransforms[aKeyIndex].mImage;
 			// 如果存在贴图，且贴图的宽、高均不大于 254 像素，且相同的贴图未加入至图集图片数组中
 			if (aImage != nullptr && aImage->mWidth <= 254 && aImage->mHeight <= 254 && FindImage(aImage) < 0)
 				AddImage(aImage);  // 先将其加入数组中，后续再确定其位于图集中的位置
@@ -232,12 +232,12 @@ void ReanimAtlas::ReanimAtlasCreate(ReanimatorDefinition* theReanimDef)
 	int aAtlasWidth, aAtlasHeight;
 	ArrangeImages(aAtlasWidth, aAtlasHeight);
 
-	for (int aTrackIndex = 0; aTrackIndex < theReanimDef->mTrackCount; aTrackIndex++)
+	for (int aTrackIndex = 0; aTrackIndex < theReanimDef->mTracks.count; aTrackIndex++)
 	{
-		ReanimatorTrack* aTrack = &theReanimDef->mTracks[aTrackIndex];
-		for (int aKeyIndex = 0; aKeyIndex < aTrack->mTransformCount; aKeyIndex++)  // 遍历每一帧上的贴图
+		ReanimatorTrack* aTrack = &theReanimDef->mTracks.tracks[aTrackIndex];
+		for (int aKeyIndex = 0; aKeyIndex < aTrack->mTransforms.count; aKeyIndex++)  // 遍历每一帧上的贴图
 		{
-			Image*& aImage = aTrack->mTransforms[aKeyIndex].mImage;
+			Image*& aImage = aTrack->mTransforms.mTransforms[aKeyIndex].mImage;
 			if (aImage != nullptr && aImage->mWidth <= 254 && aImage->mHeight <= 254)
 			{
 				int aImageIndex = FindImage(aImage);
@@ -254,5 +254,6 @@ void ReanimAtlas::ReanimAtlasCreate(ReanimatorDefinition* theReanimDef)
 		ReanimAtlasImage* aImage = &mImageArray[aImageIndex];
 		aMemoryGraphis.DrawImage(aImage->mOriginalImage, aImage->mX, aImage->mY);  // 将原贴图绘制在图集上
 	}
+
 	FixPixelsOnAlphaEdgeForBlending(mMemoryImage);  // 将所有透明像素的颜色修正为其周围像素颜色的平均值
 }

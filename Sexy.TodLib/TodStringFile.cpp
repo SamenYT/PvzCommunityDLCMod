@@ -9,34 +9,41 @@ TodStringListFormat* gTodStringFormats;  //[0x69DA34]
 
 int gLawnStringFormatCount = 12;
 TodStringListFormat gLawnStringFormats[14] = {    //0x6A5010
-	{ "NORMAL",           nullptr,    Color(40,   50,     90,     255),       0,      0U },
-	{ "FLAVOR",           nullptr,    Color(143,  67,     27,     255),       0,      1U },
-	{ "KEYWORD",          nullptr,    Color(143,  67,     27,     255),       0,      0U },
-	{ "NOCTURNAL",        nullptr,    Color(136,  50,     170,    255),       0,      0U },
-	{ "AQUATIC",          nullptr,    Color(11,   161,    219,    255),       0,      0U },
-	{ "STAT",             nullptr,    Color(204,  36,     29,     255),       0,      0U },
-	{ "METAL",            nullptr,    Color(204,  36,     29,     255),       0,      2U },
-	{ "KEYMETAL",         nullptr,    Color(143,  67,     27,     255),       0,      2U },
-	{ "SHORTLINE",        nullptr,    Color(0,    0,      0,      0),         -9,     0U },
-	{ "EXTRASHORTLINE",   nullptr,    Color(0,    0,      0,      0),         -14,    0U },
-	{ "CREDITS1",         nullptr,    Color(0,    0,      0,      0),         3,      0U },
-	{ "CREDITS2",         nullptr,    Color(0,    0,      0,      0),         2,      0U },
-	{ "NORMAL",           nullptr,    Color(40,   50,     90,     255),       0,      0U },
-	{ "KEYWORD",          nullptr,    Color(143,  67,     27,     255),       0,      0U }
+	{ _S("NORMAL"),           nullptr,    Color(40,   50,     90,     255),       0,      0U },
+	{ _S("FLAVOR"),           nullptr,    Color(143,  67,     27,     255),       0,      1U },
+	{ _S("KEYWORD"),          nullptr,    Color(143,  67,     27,     255),       0,      0U },
+	{ _S("NOCTURNAL"),        nullptr,    Color(136,  50,     170,    255),       0,      0U },
+	{ _S("AQUATIC"),          nullptr,    Color(11,   161,    219,    255),       0,      0U },
+	{ _S("STAT"),             nullptr,    Color(204,  36,     29,     255),       0,      0U },
+	{ _S("METAL"),            nullptr,    Color(204,  36,     29,     255),       0,      2U },
+	{ _S("KEYMETAL"),         nullptr,    Color(143,  67,     27,     255),       0,      2U },
+	{ _S("SHORTLINE"),        nullptr,    Color(0,    0,      0,      0),         -9,     0U },
+	{ _S("EXTRASHORTLINE"),   nullptr,    Color(0,    0,      0,      0),         -14,    0U },
+	{ _S("CREDITS1"),         nullptr,    Color(0,    0,      0,      0),         3,      0U },
+	{ _S("CREDITS2"),         nullptr,    Color(0,    0,      0,      0),         2,      0U },
+	{ _S("NORMAL"),           nullptr,    Color(40,   50,     90,     255),       0,      0U },
+	{ _S("KEYWORD"),          nullptr,    Color(143,  67,     27,     255),       0,      0U }
 };
 
 TodStringListFormat::TodStringListFormat()
 {
-	mFormatName = "";
+	mFormatName = _S("");
 	mNewFont = nullptr;
 	mLineSpacingOffset = 0;
 	mFormatFlags = 0U;
 }
 
-TodStringListFormat::TodStringListFormat(const char* theFormatName, Font** theFont, const Color& theColor, int theLineSpacingOffset, unsigned int theFormatFlags) : 
+#ifdef _USE_WIDE_STRING
+TodStringListFormat::TodStringListFormat(const wchar_t* theFormatName, Font** theFont, const Color& theColor, int theLineSpacingOffset, unsigned int theFormatFlags) : 
 	mFormatName(theFormatName), mNewFont(theFont), mNewColor(theColor), mLineSpacingOffset(theLineSpacingOffset), mFormatFlags(theFormatFlags)
 { 
 }
+#else
+TodStringListFormat::TodStringListFormat(const char* theFormatName, Font** theFont, const Color& theColor, int theLineSpacingOffset, unsigned int theFormatFlags) :
+	mFormatName(theFormatName), mNewFont(theFont), mNewColor(theColor), mLineSpacingOffset(theLineSpacingOffset), mFormatFlags(theFormatFlags)
+{
+}
+#endif
 
 void TodStringListSetColors(TodStringListFormat* theFormats, int theCount)
 {
@@ -47,7 +54,7 @@ void TodStringListSetColors(TodStringListFormat* theFormats, int theCount)
 //0x518E40
 bool TodStringListReadName(const char*& thePtr, std::string& theName)
 {
-	const char* aNameStart = strchr(thePtr, '[');
+	const char* aNameStart = strchr(thePtr, L'[');
 	if (aNameStart == nullptr)  // 如果文本中不存在“[”
 	{
 		if (strspn(thePtr, " \n\r\t") != strlen(thePtr))  // 如果文本不全是空白字符
@@ -61,7 +68,7 @@ bool TodStringListReadName(const char*& thePtr, std::string& theName)
 	}
 	else
 	{
-		const char* aNameEnd = strchr(aNameStart + 1, ']');
+		const char* aNameEnd = strchr(aNameStart + 1, L']');
 		if (aNameEnd == nullptr)  // 如果“[”后不存在“]”
 		{
 			TodTrace("Failed to find ']'");
@@ -120,6 +127,7 @@ bool TodStringListReadItems(const char* theFileText)
 		if (!TodStringListReadValue(aPtr, aValue))  // 读取对应的内容
 			return false;
 
+		
 		std::string aNameUpper = Sexy::StringToUpper(aName);
 		gSexyAppBase->SetString(aNameUpper, Sexy::StringToWString(aValue));
 	}
@@ -164,9 +172,11 @@ void TodStringListLoad(const char* theFileName)
 }
 
 //0x519410
-SexyString TodStringListFind(const SexyString& theName)
+SexyString TodStringListFind(const std::string& theName)
 {
-	std::string aNameString = Sexy::SexyStringToString(theName);
+	std::string aNameString;
+	aNameString = Sexy::SexyStringToString(theName);
+
 	StringWStringMap::iterator anItr = gSexyAppBase->mStringProperties.find(aNameString);
 	if (anItr != gSexyAppBase->mStringProperties.end())
 	{
@@ -190,35 +200,60 @@ SexyString TodStringTranslate(const SexyString& theString)
 }
 
 //0x5195D0
-SexyString TodStringTranslate(const SexyChar* theString)
+SexyString TodStringTranslate(const char* theString)
 {
 	if (theString != nullptr)
 	{
 		int aLen = strlen(theString);
 		if (aLen >= 3 && theString[0] == '[')
 		{
-			SexyString aName(theString, 1, aLen - 2);  // 取“[”与“]”中间的部分
+			std::string aName(theString, 1, aLen - 2);  // 取“[”与“]”中间的部分
 			return TodStringListFind(aName);
 		}
 		else
+		{
+#ifdef _USE_WIDE_STRING
+			return StringToSexyString(theString);
+#else
 			return theString;
+#endif
+		}
 	}
 	else
-		return "";
+		return _S("");
 }
 
 //0x5196C0
-bool TodStringListExists(const SexyString& theString)
+bool TodStringListExists(const std::string& theString)
 {
 	if (theString.size() >= 3 && theString[0] == '[')
 	{
-		SexyString aName = theString.substr(1, theString.size() - 2);  // 取“[”与“]”中间的部分
+		std::string aName = theString.substr(1, theString.size() - 2);  // 取“[”与“]”中间的部分
 		return gSexyAppBase->mStringProperties.find(aName) != gSexyAppBase->mStringProperties.end();
 	}
 	return false;
 }
 
 //0x5197B0
+#ifdef _USE_WIDE_STRING
+void TodWriteStringSetFormat(const wchar_t* theFormat, TodStringListFormat& theCurrentFormat)
+{
+	for (int i = 0; i < gTodStringFormatCount; i++)
+	{
+		const TodStringListFormat& aFormat = gTodStringFormats[i];
+		if (wcsncmp(theFormat, aFormat.mFormatName, wcslen(aFormat.mFormatName)) == 0)
+		{
+			if (aFormat.mNewFont != nullptr)
+				theCurrentFormat.mNewFont = aFormat.mNewFont;
+			if (aFormat.mNewColor != Color(0, 0, 0, 0))
+				theCurrentFormat.mNewColor = aFormat.mNewColor;
+			theCurrentFormat.mLineSpacingOffset = aFormat.mLineSpacingOffset;
+			theCurrentFormat.mFormatFlags = aFormat.mFormatFlags;
+			return;
+		}
+	}
+}
+#else
 void TodWriteStringSetFormat(const char* theFormat, TodStringListFormat& theCurrentFormat)
 {
 	for (int i = 0; i < gTodStringFormatCount; i++)
@@ -236,6 +271,7 @@ void TodWriteStringSetFormat(const char* theFormat, TodStringListFormat& theCurr
 		}
 	}
 }
+#endif
 
 bool CharIsSpaceInFormat(char theChar, const TodStringListFormat& theCurrentFormat)
 {
@@ -274,8 +310,13 @@ int TodWriteString(Graphics* g, const SexyString& theString, int theX, int theY,
 	{
 		if (theString[i] == '{')
 		{
+#ifdef _USE_WIDE_STRING
+			const wchar_t* aFormatStart = theString.c_str() + i;
+			const wchar_t* aFormatEnd = wcschr(aFormatStart + 1, '}');
+#else
 			const char* aFormatStart = theString.c_str() + i;
 			const char* aFormatEnd = strchr(aFormatStart + 1, '}');
+#endif
 			if (aFormatEnd != nullptr)  // 如果存在完整的“{FORMAT}”控制字符
 			{
 				i += aFormatEnd - aFormatStart;  // i 移动至 "}" 处
@@ -283,8 +324,9 @@ int TodWriteString(Graphics* g, const SexyString& theString, int theX, int theY,
 					aFont->DrawString(g, theX + aXOffset, theY, aString, theCurrentFormat.mNewColor, g->mClipRect);  // 将已经积攒的字符进行绘制
 				
 				aXOffset += aFont->StringWidth(aString);  // 横向偏移值加上绘制的字符串的宽度
-				aString.assign("");  // 清空字符串
-				TodWriteStringSetFormat(aFormatStart + 1, theCurrentFormat);  // 根据当前控制字符调整格式
+				aString.assign(_S(""));  // 清空字符串
+				if (drawString)
+					TodWriteStringSetFormat(aFormatStart + 1, theCurrentFormat);  // 根据当前控制字符调整格式
 				Font* aFont = *theCurrentFormat.mNewFont;
 			}
 		}
@@ -305,7 +347,6 @@ int TodWriteString(Graphics* g, const SexyString& theString, int theX, int theY,
 			aString.append(1, theString[i]);
 		}
 	}
-
 	if (drawString)  // 如果需要实际绘制
 		aFont->DrawString(g, theX + aXOffset, theY, aString, theCurrentFormat.mNewColor, g->mClipRect);  // 将已经积攒的字符进行绘制
 	return aXOffset + aFont->StringWidth(aString);
@@ -323,13 +364,13 @@ int TodWriteWordWrappedHelper(Graphics* g, const SexyString& theString, int theX
 }
 
 //0x519B50
-int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool drawString)
+int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool drawString, bool reuseFormat)
 {
 	int theMaxChars = theText.size();
 	TodStringListFormat aCurrentFormat;
 	aCurrentFormat.mNewFont = &theFont;
 	aCurrentFormat.mNewColor = theColor;
-	aCurrentFormat.mFormatName = "";
+	aCurrentFormat.mFormatName = _S("");
 	aCurrentFormat.mLineSpacingOffset = 0;
 	aCurrentFormat.mFormatFlags = 0U;
 
@@ -348,9 +389,16 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 		aCurChar = theText[aCurPos];
 		if (aCurChar == '{')  // 如果当前字符是特殊格式控制字符的起始标志（即“{”）
 		{
+#ifdef _USE_WIDE_STRING
+			const wchar_t* aFmtStart = theText.c_str() + aCurPos;
+			const wchar_t* aFormat = aFmtStart + 1;
+			const wchar_t* aFmtEnd = wcschr(aFormat, '}');
+#else
 			const char* aFmtStart = theText.c_str() + aCurPos;
 			const char* aFormat = aFmtStart + 1;
 			const char* aFmtEnd = strchr(aFormat, '}');
+#endif
+			
 			if (aFmtEnd != nullptr)  // 如果存在与“{”对应的“}”，即存在完整的控制字符
 			{
 				aCurPos += aFmtEnd - aFmtStart + 1;  // aCurPos 移至“}”的下一个字符处
@@ -384,7 +432,7 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 			if (aSpacePos != -1)  // 如果本行前面的字符中存在空格字符
 			{
 				int aCurY = (int)g->mTransY + theRect.mY + aYOffset;
-				if (aCurY >= g->mClipRect.mY && aCurY <= g->mClipRect.mY + g->mClipRect.mHeight + aLineSpacing)  // 确保当前绘制位置纵坐标在裁剪范围内
+				if (aCurY >= g->mClipRect.mY && aCurY <= g->mClipRect.mY + g->mClipRect.mHeight + aLineSpacing || reuseFormat)  // 确保当前绘制位置纵坐标在裁剪范围内
 				{
 					TodWriteWordWrappedHelper(
 						g, 
@@ -471,7 +519,7 @@ int TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rec
 }
 
 //0x51A040
-void TodDrawStringWrapped(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification)
+void TodDrawStringWrapped(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool reuseFormat)
 {
 	SexyString aTextFinal = TodStringTranslate(theText);
 	Rect aRectTodUse = theRect;
@@ -479,7 +527,7 @@ void TodDrawStringWrapped(Graphics* g, const SexyString& theText, const Rect& th
 		theJustification == DrawStringJustification::DS_ALIGN_RIGHT_VERTICAL_MIDDLE ||
 		theJustification == DrawStringJustification::DS_ALIGN_CENTER_VERTICAL_MIDDLE)  // 如果纵向需要居中
 	{
-		aRectTodUse.mY += (aRectTodUse.mHeight - TodDrawStringWrappedHelper(g, aTextFinal, aRectTodUse, theFont, theColor, theJustification, false)) / 2;
+		aRectTodUse.mY += (aRectTodUse.mHeight - TodDrawStringWrappedHelper(g, aTextFinal, aRectTodUse, theFont, theColor, theJustification, false, reuseFormat)) / 2;
 	}
-	TodDrawStringWrappedHelper(g, aTextFinal, aRectTodUse, theFont, theColor, theJustification, true);
+	TodDrawStringWrappedHelper(g, aTextFinal, aRectTodUse, theFont, theColor, theJustification, true, reuseFormat);
 }

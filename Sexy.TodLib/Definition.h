@@ -36,7 +36,7 @@ class DefSymbol
 {
 public:
     int                 mSymbolValue;                   //+0x0：标志位上的值或枚举项对应的数值，若为 -1 则表示不存在该项
-    const char*         mSymbolName;                    //+0x4：标志位或枚举项的名称，为空指针时表示不存在该项，故被作为读取结束的标志
+    const SexyChar*         mSymbolName;                    //+0x4：标志位或枚举项的名称，为空指针时表示不存在该项，故被作为读取结束的标志
 };
 //extern DefSymbol gParticleFlagSymbols[];  //0x69E290
 //extern DefSymbol gEmitterTypeSymbols[];  //0x69E260
@@ -50,7 +50,7 @@ public:
 class DefField
 {
 public:
-    const char*         mFieldName;                     //+0x0：指向 _MemVar 的名称。指向空字符数组时表示无此变量，故被作为读取结束的标志
+    const SexyChar*         mFieldName;                     //+0x0：指向 _MemVar 的名称。指向空字符数组时表示无此变量，故被作为读取结束的标志
     int                 mFieldOffset;                   //+0x4：_MemVar 在所处类中的偏移量（结合汇编理解）
     DefFieldType        mFieldType;                     //+0x8：*_MemVar 的数据存储类型，不同类型的数据的读取方式也有所不同
     void*               mExtraData;                     //+0xC：额外数据。用于对 *_MemVar 中包含的指针变量进行深拷贝。
@@ -137,8 +137,8 @@ public:
 class DefLoadResPath
 {
 public:
-    const char*         mPrefix;                        //+0x0：贴图的前缀，如“IMAGE_"
-    const char*         mDirectory;                     //+0x4：前缀对应的贴图所在文件夹，如“images\”
+    const SexyChar*         mPrefix;                        //+0x0：贴图的前缀，如“IMAGE_"
+    const SexyChar*         mDirectory;                     //+0x4：前缀对应的贴图所在文件夹，如“images\”
 };
 
 SexyString /*__cdecl*/  DefinitionGetCompiledFilePathFromXMLFilePath(const SexyString& theXMLFilePath);
