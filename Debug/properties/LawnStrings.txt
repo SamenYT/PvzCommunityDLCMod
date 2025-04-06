@@ -138,7 +138,7 @@ Bravery-shroom
 Shoots faster when zombies get close and is scared when left alone (requires scaredy-shroom)
 
 [KING_CACTUS]
-King Cactus
+Orbitus
 
 [KING_CACTUS_TOOLTIP]
 Shoots 8 spikes that orbit around itself in an oscillating pattern (requires cactus)
