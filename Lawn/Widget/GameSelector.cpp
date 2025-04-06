@@ -135,8 +135,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mZenGardenButton->Resize(0, 0, 130, 130);
 	mZenGardenButton->mMouseVisible = false;
 	mZenGardenButton->mClip = false;
-	mZenGardenButton->mTranslateX = 0;
-	mZenGardenButton->mTranslateY = 0;
 
 	/*mVersusModeButton = MakeNewButton(
 		GameSelector::GameSelector_Versus,
@@ -164,8 +162,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mOptionsButton->mBtnNoDraw = true;
 	mOptionsButton->mMouseVisible = false;
 	mOptionsButton->mButtonOffsetY = 15;
-	mOptionsButton->mTranslateX = 0;
-	mOptionsButton->mTranslateY = 0;
 
 	mHelpButton = MakeNewButton(
 		GameSelector::GameSelector_Help, 
@@ -180,8 +176,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mHelpButton->mBtnNoDraw = true;
 	mHelpButton->mMouseVisible = false;
 	mHelpButton->mButtonOffsetY = 30;
-	mHelpButton->mTranslateX = 0;
-	mHelpButton->mTranslateY = 0;
 
 	mQuitButton = MakeNewButton(
 		GameSelector::GameSelector_Quit, 
@@ -197,8 +191,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mQuitButton->mMouseVisible = false;
 	mQuitButton->mButtonOffsetX = 5;
 	mQuitButton->mButtonOffsetY = 5;
-	mQuitButton->mTranslateX = 0;
-	mQuitButton->mTranslateY = 0;
 
 	mChangeUserButton = MakeNewButton(
 		GameSelector::GameSelector_ChangeUser, 
@@ -212,8 +204,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mChangeUserButton->Resize(0, 0, 250, 30);
 	mChangeUserButton->mBtnNoDraw = true;
 	mChangeUserButton->mMouseVisible = false;
-	mChangeUserButton->mTranslateX = 0;
-	mChangeUserButton->mTranslateY = 0;
 
 	mOverlayWidget = new GameSelectorOverlay(this);
 	mOverlayWidget->Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
@@ -223,16 +213,13 @@ GameSelector::GameSelector(LawnApp* theApp)
 		this,
 		"",
 		nullptr,
-		Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3,
-		Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS,
-		Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS
+		Sexy::IMAGE_BLANK,
+		Sexy::IMAGE_BLANK,
+		Sexy::IMAGE_BLANK
 	);
-	mVersusModeButton->Resize(0, 0, IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3->mWidth, IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3->mHeight);
+	mVersusModeButton->Resize(0, 0, 250, 30);
 	mVersusModeButton->mBtnNoDraw = true;
 	mVersusModeButton->mMouseVisible = false;
-	mVersusModeButton->mClip = false;
-	mVersusModeButton->mTranslateX = 0;
-	mVersusModeButton->mTranslateY = 0;
 
 	mOverlayWidget = new GameSelectorOverlay(this);
 	mOverlayWidget->Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
@@ -248,8 +235,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	);
 	mStoreButton->Resize(405, 484, Sexy::IMAGE_SELECTORSCREEN_STORE->mWidth, Sexy::IMAGE_SELECTORSCREEN_STORE->mHeight);
 	mStoreButton->mMouseVisible = false;
-	mStoreButton->mTranslateX = 0;
-	mStoreButton->mTranslateY = 0;
 	
 	mAlmanacButton = MakeNewButton(
 		GameSelector::GameSelector_Almanac, 
@@ -262,8 +247,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	);
 	mAlmanacButton->Resize(327, 428, Sexy::IMAGE_SELECTORSCREEN_ALMANAC->mWidth, Sexy::IMAGE_SELECTORSCREEN_ALMANAC->mHeight);
 	mAlmanacButton->mMouseVisible = false;
-	mAlmanacButton->mTranslateX = 0;
-	mAlmanacButton->mTranslateY = 0;
 
 	mModCreditsButton = MakeNewButton(
 		GameSelector::GameSelector_Modcredits,
@@ -276,8 +259,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	);
 	mModCreditsButton->Resize(670, 550, Sexy::IMAGE_CREDITS_BTN2->mWidth, Sexy::IMAGE_CREDITS_BTN2->mHeight);
 	mModCreditsButton->mMouseVisible = false;
-	mModCreditsButton->mTranslateX = 0;
-	mModCreditsButton->mTranslateY = 0;
 
 	mChangeLogsButton = MakeNewButton(
 		GameSelector::GameSelector_Changelogs,
@@ -290,8 +271,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	);
 	mChangeLogsButton->Resize(680, 7, Sexy::IMAGE_CROW2->mWidth, Sexy::IMAGE_CROW2->mHeight);
 	mChangeLogsButton->mMouseVisible = false;
-	mChangeLogsButton->mTranslateX = 0;
-	mChangeLogsButton->mTranslateY = 0;
 
 	mDisclaimerButton = MakeNewButton(
 		GameSelector::GameSelector_Disclaimer,
@@ -322,7 +301,6 @@ GameSelector::GameSelector(LawnApp* theApp)
 	aSelectorReanim->AssignRenderGroupToPrefix("flower", RENDER_GROUP_HIDDEN);
 	aSelectorReanim->AssignRenderGroupToPrefix("leaf", RENDER_GROUP_HIDDEN);
 	aSelectorReanim->AssignRenderGroupToTrack("SelectorScreen_BG", 1);
-	aSelectorReanim->SetImageOverride("woodsign3", IMAGE_BLANK);
 	mSelectorReanimID = mApp->ReanimationGetID(aSelectorReanim);
 	mSelectorState = SelectorAnimState::SELECTOR_OPEN;
 	int aFrameStart, aFrameCount;
@@ -450,8 +428,8 @@ void GameSelector::SyncButtons()
 	mZenGardenButton->mDisabled = !aZenGardenOpen;
 	mZenGardenButton->mVisible = aZenGardenOpen;
 
-	//mVersusModeButton->mDisabled = !aVersusModeOpen;
-	//mVersusModeButton->mVisible = aVersusModeOpen;
+	mVersusModeButton->mDisabled = !aVersusModeOpen;
+	mVersusModeButton->mVisible = aVersusModeOpen;
 
 	if (mMinigamesLocked)
 	{
@@ -490,23 +468,12 @@ void GameSelector::SyncButtons()
 		mSurvivalButton->SetColor(ButtonWidget::COLOR_BKG, Color::White);
 	}
 
-	if (mMultiplayerLocked)
-	{
-		mVersusModeButton->SetColor(ButtonWidget::COLOR_BKG, Color(128, 128, 128));
-	}
-	else
-	{
-		mVersusModeButton->SetColor(ButtonWidget::COLOR_BKG, Color::White);
-	}
-
 	ReanimatorTrackInstance* aMinigameTrack = aSelectorReanim->GetTrackInstanceByName("SelectorScreen_Survival_button");
 	ReanimatorTrackInstance* aPuzzleTrack = aSelectorReanim->GetTrackInstanceByName("SelectorScreen_Challenges_button");
 	ReanimatorTrackInstance* aSurvivalTrack = aSelectorReanim->GetTrackInstanceByName("SelectorScreen_ZenGarden_button");
-	ReanimatorTrackInstance* aMultiplayerTrack = aSelectorReanim->GetTrackInstanceByName("woodsign3");
 	aMinigameTrack->mTrackColor = mMinigameButton->GetColor(ButtonWidget::COLOR_BKG);
 	aPuzzleTrack->mTrackColor = mPuzzleButton->GetColor(ButtonWidget::COLOR_BKG);
 	aSurvivalTrack->mTrackColor = mSurvivalButton->GetColor(ButtonWidget::COLOR_BKG);
-	aMultiplayerTrack->mTrackColor = mVersusModeButton->GetColor(ButtonWidget::COLOR_BKG);
 
 	if (mShowStartButton)
 	{
@@ -1022,8 +989,8 @@ void GameSelector::Update()
 	TrackButton(mStoreButton, "SelectorScreen_BG_Right", 334.0f, 441.0f);
 	TrackButton(mChangeUserButton, "woodsign2", 24.0f, 10.0f);
 	aSelectorReanim->SetImageOverride("woodsign2", (mChangeUserButton->mIsOver || mChangeUserButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN2_PRESS : nullptr);
-	TrackButton(mVersusModeButton, "woodsign3", 0, 0);
-	//aSelectorReanim->SetImageOverride("woodsign3", (mVersusModeButton->mIsOver || mVersusModeButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS : nullptr);
+	TrackButton(mVersusModeButton, "woodsign3", 24.0f, 10.0f);
+	aSelectorReanim->SetImageOverride("woodsign3", (mVersusModeButton->mIsOver || mVersusModeButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS : nullptr);
 	//if (mApp && mApp->mPlayerInfo && mApp->mPlayerInfo->GetLevel() < 65 && !mApp->HasFinishedAdventure()) aSelectorReanim->SetImageOverride("woodsign3", IMAGE_BLANK);
 }
 
