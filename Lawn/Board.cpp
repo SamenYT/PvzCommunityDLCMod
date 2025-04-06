@@ -8283,7 +8283,7 @@ void Board::DrawGameObjects(Graphics* g)
 	}
 	if (StageHasDarkness())
 	{
-		AddUIRenderItem(aRenderList, aRenderItemCount, RenderObjectType::RENDER_ITEM_DARKNESS, MakeRenderOrder(RenderLayer::RENDER_LAYER_FOG, 0, 4));
+		//AddUIRenderItem(aRenderList, aRenderItemCount, RenderObjectType::RENDER_ITEM_DARKNESS, MakeRenderOrder(RenderLayer::RENDER_LAYER_FOG, 0, 4));
 	}
 
 	AddGameObjectRenderItemCursorPreview(aRenderList, aRenderItemCount, RenderObjectType::RENDER_ITEM_CURSOR_PREVIEW, mCursorPreview);
@@ -11792,7 +11792,7 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_PUZZLE_MODE, CoinMotion::COIN_MOTION_COIN);
 			return;
 		}
-		if (mLevel == 65 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMultiplayer && CountCoinByType(CoinType::COIN_PRESENT_MULTIPLAYER_MODE) == 0)
+		if (mLevel == 74 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMultiplayer && CountCoinByType(CoinType::COIN_PRESENT_MULTIPLAYER_MODE) == 0)
 		{
 			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
 			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MULTIPLAYER_MODE, CoinMotion::COIN_MOTION_COIN);
