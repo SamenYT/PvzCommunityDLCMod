@@ -37,6 +37,10 @@ typedef std::wstring		SexyString;
 #define sexysscanf			swscanf
 #define sexyatoi			_wtoi
 #define sexystrcpy			wcscpy
+#define sexystrstr			wcsstr
+#define sexystrnicmp		wcsnicmp
+#define sexystrlen			wcslen
+#define sexyvsnprintf		vswprintf
 
 #define SexyStringToStringFast(x)	WStringToString(x)
 #define SexyStringToWStringFast(x)	(x)
@@ -79,6 +83,10 @@ typedef std::string			SexyString;
 #define sexysscanf			sscanf
 #define sexyatoi			atoi
 #define sexystrcpy			strcpy
+#define sexystrstr			strstr
+#define sexystrnicmp		strnicmp
+#define sexystrlen			strlen
+#define sexyvsnprintf		_vsnprintf
 
 #define SexyStringToStringFast(x)	(x)
 #define SexyStringToWStringFast(x)	StringToWString(x)

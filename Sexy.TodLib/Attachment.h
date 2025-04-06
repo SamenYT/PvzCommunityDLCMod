@@ -30,8 +30,8 @@ public:
 class AttacherInfo
 {
 public:
-    std::string             mReanimName;
-    std::string             mTrackName;
+    SexyString              mReanimName;
+    SexyString              mTrackName;
     float                   mAnimRate;
     ReanimLoopType          mLoopType;
 

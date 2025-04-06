@@ -3,7 +3,7 @@
 
 #include "Image.h"
 
-#define OPTIMIZE_SOFTWARE_DRAWING
+//#define OPTIMIZE_SOFTWARE_DRAWING
 #ifdef OPTIMIZE_SOFTWARE_DRAWING
 extern bool gOptimizeSoftwareDrawing;
 #endif
@@ -61,7 +61,6 @@ public:
 
 	void					NormalBlt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor);
 	void					AdditiveBlt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor);
-	void					EraseBlt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor);
 
 	void					NormalDrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor);
 	void					AdditiveDrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor);
@@ -78,7 +77,6 @@ public:
 	void					BltTrianglesTexHelper(Image *theTexture, const TriVertex theVertices[][3], int theNumTriangles, const Rect &theClipRect, const Color &theColor, int theDrawMode, void *theSurface, int theBytePitch, int thePixelFormat, float tx, float ty, bool blend);
 
 	void					FillScanLinesWithCoverage(Span* theSpans, int theSpanCount, const Color& theColor, int theDrawMode, const BYTE* theCoverage, int theCoverX, int theCoverY, int theCoverWidth, int theCoverHeight);
-
 
 public:
 	MemoryImage();

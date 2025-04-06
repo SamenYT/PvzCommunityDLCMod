@@ -57,7 +57,7 @@ NewOptionsDialog::NewOptionsDialog(LawnApp* theApp, bool theFromGameSelector) :
     mSfxVolumeSlider->SetValue(theApp->GetSfxVolume() / 0.65);
 
     mFullscreenCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_Fullscreen, this, !theApp->mIsWindowed);
-    mHardwareAccelerationCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_HardwareAcceleration, this, theApp->IsFake3D());
+    mHardwareAccelerationCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_HardwareAcceleration, this, theApp->Is3DAccelerated());
     mHardModeCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_MainMenu, this, !theApp->mPlayerInfo->mHardmodeIsOff);
     mCoopCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_MainMenu, this, !theApp->mPlayerInfo->mIsNotCoop);
 
@@ -258,61 +258,34 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
         }
         break;
 
-        /*case NewOptionsDialog::NewOptionsDialog_HardwareAcceleration:
-            if (checked)
-            {
-                if (!mApp->Is3DAccelerationSupported())
-                {
-                    mHardwareAccelerationCheckbox->SetChecked(false, false);
-                    mApp->DoDialog(
-                        Dialogs::DIALOG_INFO,
-                        true,
-                        _S("Not Supported"),
-                        _S( "Hardware Acceleration cannot be enabled on this computer.\n\n"
-                            "Your video card does not\n"
-                            "meet the minimum requirements\n"
-                            "for this game."),
-                        _S("OK"),
-                        Dialog::BUTTONS_FOOTER
-                    );
-                }
-                else if (!mApp->Is3DAccelerationRecommended())
-                {
-                    mApp->DoDialog(
-                        Dialogs::DIALOG_INFO,
-                        true,
-                        _S("Warning"),
-                        _S( "Your video card may not fully support this feature.\n\n"
-                            "If you experience slower performance, please disable Hardware Acceleration.\n"),
-                        _S("OK"),
-                        Dialog::BUTTONS_FOOTER
-                    );
-                }
-            }
-            break;*/
     case NewOptionsDialog::NewOptionsDialog_HardwareAcceleration:
-    {
         if (checked)
         {
             if (!mApp->Is3DAccelerationSupported())
             {
+                mHardwareAccelerationCheckbox->SetChecked(false, false);
                 mApp->DoDialog(
                     Dialogs::DIALOG_INFO,
                     true,
-                    _S("Warning"),
-                    _S("Hardware Acceleration was forced to be enabled on this computer.\n\n"
-                        "Your video card does not\n"
-                        "meet the minimum requirements\n"
-                        "for this game."),
-                    _S("OK"),
+                    _S("[NOT_SUPPORTED_HEADER]"),
+                    _S("[NOT_SUPPORTED_LINES]"),
+                    _S("[OK_LABEL]"),
                     Dialog::BUTTONS_FOOTER
                 );
             }
-            mHardwareAccelerationCheckbox->SetChecked(true, false);
-            break;
+            else if (!mApp->Is3DAccelerationRecommended())
+            {
+                mApp->DoDialog(
+                    Dialogs::DIALOG_INFO,
+                    true,
+                    _S("[WARNING_HEADER]"),
+                    _S("[WARNING_LINES]"),
+                    _S("[OK_LABEL]"),
+                    Dialog::BUTTONS_FOOTER
+                );
+            }
         }
-
-    }
+        break;
     }
 }
 

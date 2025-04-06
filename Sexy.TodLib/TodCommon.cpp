@@ -201,7 +201,7 @@ int TodPickFromSmoothArray(TodSmoothArray* theArray, int theCount)
 	{
 		aTotalWeight += theArray[i].mWeight;
 	}
-	TOD_ASSERT(aTotalWeight > 0.0f); //teleport pool party fix
+	TOD_ASSERT(aTotalWeight > 0.0f);
 
 	float aNormalizeFactor = 1.0f / aTotalWeight;
 	float aTotalAdjustedWeight = 0.0f;
@@ -455,8 +455,11 @@ void TodDrawImageCelScaled(Graphics* g, Image* theImageStrip, int thePosX, int t
 	int aCelWidth = theImageStrip->GetCelWidth();
 	int aCelHeight = theImageStrip->GetCelHeight();
 	Rect aSrcRect(aCelWidth * theCelCol, aCelHeight * theCelRow, aCelWidth, aCelHeight);
-	Rect aDestRect(thePosX, thePosY, FloatRoundToInt(aCelWidth * theScaleX), FloatRoundToInt(aCelHeight * theScaleY));
-	g->DrawImage(theImageStrip, aDestRect,aSrcRect);
+	Rect aDestRect(thePosX, thePosY, int(aCelWidth * abs(theScaleX)), int(aCelHeight * theScaleY));
+	if (theScaleX < 0)
+		g->DrawImageMirror(theImageStrip, aDestRect, aSrcRect);
+	else
+		g->DrawImage(theImageStrip, aDestRect,aSrcRect);
 }
 
 static const int POOL_SIZE = 4096;
@@ -728,8 +731,7 @@ void TodBltMatrix(Graphics* g, Image* theImage, const SexyMatrix3& theTransform,
 	}
 	else
 	{
-		Rect aBufFixClipRect(0, 0, BOARD_WIDTH + 1, BOARD_HEIGHT + 1);
-		g->mDestImage->BltMatrix(theImage, aOffsetX, aOffsetY, theTransform, aBufFixClipRect, theColor, theDrawMode, theSrcRect, g->mLinearBlend);
+		g->mDestImage->BltMatrix(theImage, aOffsetX, aOffsetY, theTransform, Rect(0, 0, BOARD_WIDTH, BOARD_HEIGHT), theColor, theDrawMode, theSrcRect, g->mLinearBlend);
 	}
 
 	gTodTriangleDrawAdditive = false;
@@ -852,7 +854,9 @@ void TodDrawImageCenterScaledF(Graphics* g, Image* theImage, float thePosX, floa
 	aTransform.m22 = 1.0f;
 
 	const Color& aColor = g->mColorizeImages ? g->mColor : Color::White;
+
 	TodBltMatrix(g, theImage, aTransform, g->mClipRect, aColor, g->mDrawMode, aSrcRect);
+
 }
 
 //0x512AC0
@@ -1241,7 +1245,7 @@ SexyString TodReplaceString(const SexyString& theText, const SexyChar* theString
 	if (aPos != SexyString::npos)
 	{
 		SexyString aFinalStringToSubstitute = TodStringTranslate(theStringToSubstitute);
-		aFinalString.replace(aPos, strlen(theStringToFind), aFinalStringToSubstitute);
+		aFinalString.replace(aPos, sexystrlen(theStringToFind), aFinalStringToSubstitute);
 	}
 
 	return aFinalString;
@@ -1255,7 +1259,7 @@ SexyString TodReplaceNumberString(const SexyString& theText, const SexyChar* the
 	if (aPos != SexyString::npos)
 	{
 		SexyString aNumberString = StrFormat(_S("%d"), theNumber);
-		aFinalString.replace(aPos, strlen(theStringToFind), aNumberString);
+		aFinalString.replace(aPos, sexystrlen(theStringToFind), aNumberString);
 	}
 
 	return aFinalString;
@@ -1279,26 +1283,26 @@ bool TodIsPointInPolygon(const SexyVector2* thePolygonPoint, int theNumberPolygo
 	return true;
 }
 
-int TodVsnprintf(char* theBuffer, int theSize, const char* theFormat, va_list theArgList)
+int TodVsnprintf(SexyChar* theBuffer, int theSize, const SexyChar* theFormat, va_list theArgList)
 {
 	try
 	{
-		int aCount = _vsnprintf(theBuffer, theSize, theFormat, theArgList);
+		int aCount = sexyvsnprintf(theBuffer, theSize, theFormat, theArgList);
 		if (aCount == -1)
 		{
-			theBuffer[theSize - 1] = '\0';
+			theBuffer[theSize - 1] = _S('\0');
 			aCount = theSize - 1;
 		}
 		return aCount;
 	}
 	catch (std::exception&)
 	{
-		TOD_ASSERT(, "bad format string");
+		TOD_ASSERT(, _S("bad format string"));
 		return 1;
 	}
 }
 
-int TodSnprintf(char* theBuffer, int theSize, const char* theFormat, ...)
+int TodSnprintf(SexyChar* theBuffer, int theSize, const SexyChar* theFormat, ...)
 {
 	va_list argList;
 	va_start(argList, theFormat);

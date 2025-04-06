@@ -1,5 +1,6 @@
 #include "Trail.h"
 #include "Definition.h"
+#include "FilterEffect.h"
 
 int gTrailDefCount;  //[0x6A9F20]
 TrailDefinition* gTrailDefArray;  //[0x6A9F24]
@@ -32,7 +33,11 @@ bool TrailLoadADef(TrailDefinition* theTrailDef, const char* theTrailFileName)
 {
 	TodHesitationBracket aHesitation("Load Trail '%s'", theTrailFileName);
 
+#ifdef _USE_WIDE_STRING
+	if (!DefinitionLoadXML(theTrailFileName, &gTrailDefMap, theTrailDef))
+#else
 	if (!DefinitionLoadXML(StringToSexyString(theTrailFileName), &gTrailDefMap, theTrailDef))
+#endif
 		return false;
 
 	FloatTrackSetDefault(theTrailDef->mWidthOverLength, 1.0f);
@@ -93,6 +98,7 @@ Trail::Trail()
 	{
 		mTrailInterp[i] = RandRangeFloat(0.0f, 1.0f);
 	}
+	mFilterEffect = FilterEffect::FILTER_EFFECT_NONE;
 }
 
 //0x51BB30
@@ -177,7 +183,7 @@ void Trail::Draw(Graphics* g)
 
 	float aTimeValue = mTrailAge / (float)(mTrailDuration - 1);
 	int aTriangleCount = (mNumTrailPoints - 1) * 2;
-	TOD_ASSERT(aTriangleCount < MAX_TRAIL_TRIANGLES);
+	TOD_ASSERT(aTriangleCount <= MAX_TRAIL_TRIANGLES);
 
 	TriVertex aVertArray[MAX_TRAIL_TRIANGLES][3];
 
@@ -268,7 +274,13 @@ void Trail::Draw(Graphics* g)
 		aVertArray[aVertNext][2].color = aColorNext.ToInt();
 	}
 
-	g->DrawTrianglesTex(mDefinition->mImage, aVertArray, aTriangleCount);
+	Image* aImage = mDefinition->mImage;
+
+	if (mFilterEffect != FilterEffect::FILTER_EFFECT_NONE) {
+		aImage = FilterEffectGetImage(aImage, mFilterEffect);
+	}
+
+	g->DrawTrianglesTex(aImage, aVertArray, aTriangleCount);
 }
 
 void TrailHolder::InitializeHolder()
