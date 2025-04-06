@@ -147,7 +147,7 @@ public:
 		return (T*)aNewItem;
 	}
 
-	T* DataArrayTryToGet(unsigned int theId) //potential bug fix teleport
+	T* DataArrayTryToGet(unsigned int theId)
 	{
 		if (!theId || (theId & DATA_ARRAY_INDEX_MASK) >= mMaxSize)
 			return nullptr;

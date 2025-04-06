@@ -2,6 +2,12 @@
 
 #include "SWTri.h"
 #include "Debug.h"
+#include "../Sexy.TodLib/EffectSystem.h"
+#ifdef _WIN64
+#include <intrin.h>
+#endif
+
+//#include <CL/cl.hpp>
 
 using namespace Sexy;
 
@@ -294,8 +300,8 @@ void SWHelper::SWDrawShape(XYZStruct *theVerts, int theNumVerts, MemoryImage *th
 {
 	float	tclx0 = theClipRect.mX;
 	float	tcly0 = theClipRect.mY;
-	float	tclx1 = theClipRect.mX + theClipRect.mWidth - 1;
-	float	tcly1 = theClipRect.mY + theClipRect.mHeight - 1;
+	float	tclx1 = theClipRect.mX + theClipRect.mWidth;
+	float	tcly1 = theClipRect.mY + theClipRect.mHeight;
 
 	//
 	// Okay, now we're gonna render.  We have the vertex list.
@@ -358,7 +364,7 @@ void SWHelper::SWDrawShape(XYZStruct *theVerts, int theNumVerts, MemoryImage *th
 	//
 
 	//
-	// Render the actual triangle strip.
+	// Render the actual triangle strip...
 	//
 	int aTriCounter=0;
 	bool aOddTriangle=false;
@@ -451,8 +457,8 @@ void SWHelper::SWDrawShape(XYZStruct *theVerts, int theNumVerts, MemoryImage *th
 				while(temp) {textureInfo.vShift += 1; temp >>= 1;}
 				textureInfo.vShift = 16 - textureInfo.vShift;
 
-				textureInfo.uMask = static_cast<unsigned int>(theImage->mWidth - 1) << 16;
-				textureInfo.vMask = static_cast<unsigned int>(theImage->mHeight - 1) << 16;
+				textureInfo.uMask = static_cast<unsigned int>(theImage->mWidth) << 16;
+				textureInfo.vMask = static_cast<unsigned int>(theImage->mHeight) << 16;
 			}
 
 			if (vertexColor)

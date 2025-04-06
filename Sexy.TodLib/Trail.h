@@ -2,6 +2,8 @@
 #define __TRAIL_H__
 
 #include "TodParticle.h"
+#include "FilterEffect.h"
+
 
 #define MAX_TRAIL_TRIANGLES 38
 
@@ -90,6 +92,7 @@ public:
 	SexyVector2				mTrailCenter;			//+0xCC
 	bool					mIsAttachment;			//+0xD4
 	Color					mColorOverride;			//+0xD8
+	FilterEffect			mFilterEffect;
 
 public:
 	Trail();

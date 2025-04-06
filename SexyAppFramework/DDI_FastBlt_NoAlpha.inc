@@ -76,7 +76,7 @@
 				ulong* aDestPixels = aDestPixelsRow;
 				
 				aSrcPixels = aSrcPixelsRow;
-
+    
 				for (int x = 0; x < theSrcRect.mWidth; x++)
 				{
 					*(aDestPixels++) = NEXT_SRC_COLOR;

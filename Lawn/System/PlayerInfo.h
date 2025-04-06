@@ -75,6 +75,7 @@ public:
     bool                mHardmodeIsOff;
     PottedPlant         mPottedPlant[MAX_POTTED_PLANTS];    //+0x358
     int                 mChallengeHardmodeRecords[NUM_GAME_MODES];
+    int                 mHasUnlockedMultiplayer;
 
 public:
     PlayerInfo();
