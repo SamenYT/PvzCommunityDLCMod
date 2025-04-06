@@ -11778,6 +11778,13 @@ int Board::GetGraveStoneCount()
 //0x41CDB0
 void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 {
+	if (mLevel == 65 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMultiplayer && CountCoinByType(CoinType::COIN_PRESENT_MULTIPLAYER_MODE) == 0)
+	{
+		mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
+		AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MULTIPLAYER_MODE, CoinMotion::COIN_MOTION_COIN);
+		return;
+	}
+
 	if (mApp->IsFirstTimeAdventureMode())
 	{
 		if (mLevel == 22 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMinigames && CountCoinByType(CoinType::COIN_PRESENT_MINIGAMES) == 0)
@@ -11790,12 +11797,6 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 		{
 			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
 			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_PUZZLE_MODE, CoinMotion::COIN_MOTION_COIN);
-			return;
-		}
-		if (mLevel == 74 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMultiplayer && CountCoinByType(CoinType::COIN_PRESENT_MULTIPLAYER_MODE) == 0)
-		{
-			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
-			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MULTIPLAYER_MODE, CoinMotion::COIN_MOTION_COIN);
 			return;
 		}
 	}
