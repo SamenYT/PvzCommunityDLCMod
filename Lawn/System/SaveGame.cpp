@@ -313,16 +313,16 @@ void SyncReanimation(Board* theBoard, Reanimation* theReanimation, SaveGameConte
 		theReanimation->mReanimationHolder = theBoard->mApp->mEffectSystem->mReanimationHolder;
 	}
 
-	if (theReanimation->mDefinition->mTrackCount != 0)
+	if (theReanimation->mDefinition->mTracks.count != 0)
 	{
-		int aSize = theReanimation->mDefinition->mTrackCount * sizeof(ReanimatorTrackInstance);
+		int aSize = theReanimation->mDefinition->mTracks.count * sizeof(ReanimatorTrackInstance);
 		if (theContext.mReading)
 		{
 			theReanimation->mTrackInstances = (ReanimatorTrackInstance*)FindGlobalAllocator(aSize)->Calloc(aSize);
 		}
 		theContext.SyncBytes(theReanimation->mTrackInstances, aSize);
 
-		for (int aTrackIndex = 0; aTrackIndex < theReanimation->mDefinition->mTrackCount; aTrackIndex++)
+		for (int aTrackIndex = 0; aTrackIndex < theReanimation->mDefinition->mTracks.count; aTrackIndex++)
 		{
 			ReanimatorTrackInstance& aTrackInstance = theReanimation->mTrackInstances[aTrackIndex];
 			theContext.SyncImage(aTrackInstance.mImageOverride);

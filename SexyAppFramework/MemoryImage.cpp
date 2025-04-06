@@ -10,6 +10,8 @@
 
 #include <math.h>
 
+#include <immintrin.h>
+
 using namespace Sexy;
 
 #ifdef OPTIMIZE_SOFTWARE_DRAWING
@@ -1302,7 +1304,7 @@ void MemoryImage::FillRect(const Rect& theRect, const Color& theColor, int theDr
 
 	if (oldAlpha == 0xFF)
 	{
-		for (int aRow = theRect.mY; aRow < theRect.mY+theRect.mHeight; aRow++)
+		for (int aRow = theRect.mY; aRow < theRect.mY + theRect.mHeight; aRow++)
 		{
 			ulong* aDestPixels = &aBits[aRow*mWidth+theRect.mX];
 
@@ -1470,9 +1472,6 @@ void MemoryImage::Blt(Image* theImage, int theX, int theY, const Rect& theSrcRec
 	case Graphics::DRAWMODE_ADDITIVE:
 		AdditiveBlt(theImage, theX, theY, theSrcRect, theColor);
 		break;
-	case Graphics::DRAWMODE_ERASE:
-		EraseBlt(theImage, theX, theY, theSrcRect, theColor);
-		break;
 	}
 }
 
@@ -1489,11 +1488,15 @@ void MemoryImage::BltF(Image* theImage, float theX, float theY, const Rect& theS
 ///////////////////////////////////////////////////////////////////////////////
 bool MemoryImage::BltRotatedClipHelper(float &theX, float &theY, const Rect &theSrcRect, const Rect &theClipRect, double theRot, FRect &theDestRect, float theRotCenterX, float theRotCenterY)
 {
-	// Clipping Code (this used to be in Graphics::DrawImageRotated)
+	if (theRot == 0)
+	{
+		theDestRect = FRect(theClipRect.mX, theClipRect.mY, theClipRect.mWidth, theClipRect.mHeight);
+		return true;
+	}
+
 	float aCos = cosf(theRot);
 	float aSin = sinf(theRot);
 
-	// Map the four corners and find the bounding rectangle
 	float px[4] = { 0, theSrcRect.mWidth, theSrcRect.mWidth, 0 };
 	float py[4] = { 0, 0, theSrcRect.mHeight, theSrcRect.mHeight };
 	float aMinX = 10000000;
@@ -1519,8 +1522,6 @@ bool MemoryImage::BltRotatedClipHelper(float &theX, float &theY, const Rect &the
 			aMaxY = py[i];
 	}
 
-
-
 	FRect aClipRect(theClipRect.mX,theClipRect.mY,theClipRect.mWidth,theClipRect.mHeight);
 
 	FRect aDestRect = FRect(aMinX, aMinY, aMaxX-aMinX, aMaxY-aMinY).Intersection(aClipRect);	
@@ -1533,20 +1534,21 @@ bool MemoryImage::BltRotatedClipHelper(float &theX, float &theY, const Rect &the
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-bool MemoryImage::StretchBltClipHelper(const Rect &theSrcRect, const Rect &theClipRect, const Rect &theDestRect, FRect &theSrcRectOut, Rect &theDestRectOut)
+bool MemoryImage::StretchBltClipHelper(const Rect& theSrcRect, const Rect& theClipRect, const Rect& theDestRect, FRect& theSrcRectOut, Rect& theDestRectOut)
 {
-	theDestRectOut = Rect(theDestRect.mX , theDestRect.mY, theDestRect.mWidth, theDestRect.mHeight).Intersection(theClipRect);	
+	theDestRectOut = Rect(theDestRect.mX, theDestRect.mY, theDestRect.mWidth, theDestRect.mHeight).Intersection(theClipRect);
 
-	double aXFactor = theSrcRect.mWidth / (double) theDestRect.mWidth;
-	double aYFactor = theSrcRect.mHeight / (double) theDestRect.mHeight;
+	double aXFactor = theSrcRect.mWidth / (double)theDestRect.mWidth;
+	double aYFactor = theSrcRect.mHeight / (double)theDestRect.mHeight;
 
-	theSrcRectOut = FRect(theSrcRect.mX + (theDestRectOut.mX - theDestRect.mX)*aXFactor, 
-				   theSrcRect.mY + (theDestRectOut.mY - theDestRect.mY)*aYFactor, 
-				   theSrcRect.mWidth + (theDestRectOut.mWidth - theDestRect.mWidth)*aXFactor, 
-				   theSrcRect.mHeight + (theDestRectOut.mHeight - theDestRect.mHeight)*aYFactor);
+	theSrcRectOut = FRect(theSrcRect.mX + (theDestRectOut.mX - theDestRect.mX) * aXFactor,
+		theSrcRect.mY + (theDestRectOut.mY - theDestRect.mY) * aYFactor,
+		theSrcRect.mWidth + (theDestRectOut.mWidth - theDestRect.mWidth) * aXFactor,
+		theSrcRect.mHeight + (theDestRectOut.mHeight - theDestRect.mHeight) * aYFactor);
 
-	return theSrcRectOut.mWidth>0 && theSrcRectOut.mHeight>0;
+	return theSrcRectOut.mWidth > 0 && theSrcRectOut.mHeight > 0;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -1573,7 +1575,7 @@ bool MemoryImage::StretchBltMirrorClipHelper(const Rect &theSrcRect, const Rect 
 ///////////////////////////////////////////////////////////////////////////////
 void MemoryImage::BltRotated(Image* theImage, float theX, float theY, const Rect &theSrcRect, const Rect& theClipRect, const Color& theColor, int theDrawMode, double theRot, float theRotCenterX, float theRotCenterY)
 {
-	theImage->mDrawn = true;
+	theImage->mDrawn = true;//
 
 	// This BltRotatedClipHelper clipping used to happen in Graphics::DrawImageRotated
 	FRect aDestRect;
@@ -1582,7 +1584,7 @@ void MemoryImage::BltRotated(Image* theImage, float theX, float theY, const Rect
 
 	MemoryImage* aMemoryImage = dynamic_cast<MemoryImage*>(theImage);
 	uchar* aMaxTable = mApp->mAdd8BitMaxTable;
-
+	
 	if (aMemoryImage != NULL)
 	{	
 		if (aMemoryImage->mColorTable == NULL)
@@ -1754,19 +1756,21 @@ void MemoryImage::StretchBlt(Image* theImage, const Rect& theDestRect, const Rec
 		SlowStretchBlt(theImage, aDestRect, aSrcRect, theColor, theDrawMode);
 }
 
+#include "../Sexy.TodLib/TodCommon.h";
+
 void MemoryImage::BltMatrixHelper(Image* theImage, float x, float y, const SexyMatrix3 &theMatrix, const Rect& theClipRect, const Color& theColor, int theDrawMode, const Rect &theSrcRect, void *theSurface, int theBytePitch, int thePixelFormat, bool blend)
 {
 	MemoryImage *anImage = dynamic_cast<MemoryImage*>(theImage);
 	if (anImage==NULL)
 		return;
- 
-	float w2 = theSrcRect.mWidth/2.0f;
-	float h2 = theSrcRect.mHeight/2.0f;
 
-	float u0 = (float)theSrcRect.mX/theImage->mWidth;
-	float u1 = (float)(theSrcRect.mX + theSrcRect.mWidth)/theImage->mWidth;
-	float v0 = (float)theSrcRect.mY/theImage->mHeight;
-	float v1 = (float)(theSrcRect.mY + theSrcRect.mHeight)/theImage->mHeight;
+	float w2 = theSrcRect.mWidth / 2.0f;
+	float h2 = theSrcRect.mHeight / 2.0f;
+
+	float u0 = (float)theSrcRect.mX / theImage->mWidth;
+	float u1 = (float)(theSrcRect.mX + theSrcRect.mWidth) / theImage->mWidth;
+	float v0 = (float)theSrcRect.mY / theImage->mHeight;
+	float v1 = (float)(theSrcRect.mY + theSrcRect.mHeight) / theImage->mHeight;
 
 	SWHelper::XYZStruct aVerts[4] =
 	{
@@ -1776,15 +1780,17 @@ void MemoryImage::BltMatrixHelper(Image* theImage, float x, float y, const SexyM
 		{ w2,	h2,		u1,	v1,	0xFFFFFFFF }
 	};
 
-	for (int i=0; i<4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		SexyVector3 v(aVerts[i].mX, aVerts[i].mY, 1);
-		v = theMatrix*v;
-		aVerts[i].mX = v.x + x - 0.5f;
-		aVerts[i].mY = v.y + y - 0.5f;
+		v = theMatrix * v;
+		aVerts[i].mX = v.x + x;
+		aVerts[i].mY = v.y + y;
 	}
 
-	SWHelper::SWDrawShape(aVerts, 4, anImage, theColor, theDrawMode, theClipRect, theSurface, theBytePitch, thePixelFormat, blend,false);
+	SWHelper::SWDrawShape(aVerts, 4, anImage, theColor, theDrawMode, theClipRect, theSurface, theBytePitch, thePixelFormat, blend, false);
+	
+ 
 }
 
 void MemoryImage::BltMatrix(Image* theImage, float x, float y, const SexyMatrix3 &theMatrix, const Rect& theClipRect, const Color& theColor, int theDrawMode, const Rect &theSrcRect, bool blend)
@@ -1804,10 +1810,10 @@ void MemoryImage::BltMatrix(Image* theImage, float x, float y, const SexyMatrix3
 void MemoryImage::BltTrianglesTexHelper(Image *theTexture, const TriVertex theVertices[][3], int theNumTriangles, const Rect &theClipRect, const Color &theColor, int theDrawMode, void *theSurface, int theBytePitch, int thePixelFormat, float tx, float ty, bool blend)
 {
 	MemoryImage *anImage = dynamic_cast<MemoryImage*>(theTexture);
-//	if (anImage==NULL)
-//		return;
+	if (anImage==NULL)
+		return;
 
-	int aColor = theColor.ToInt();
+	//int aColor = theColor.ToInt();
 	for (int i=0; i<theNumTriangles; i++)
 	{
 		bool vertexColor = false;

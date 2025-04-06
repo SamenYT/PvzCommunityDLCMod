@@ -14,7 +14,11 @@ enum TodStringFormatFlag
 class TodStringListFormat
 {
 public:
-    const char*     mFormatName;
+#ifdef _USE_WIDE_STRING
+    const wchar_t*     mFormatName;
+#else
+    const char* mFormatName;
+#endif
     Font**          mNewFont;
     Color           mNewColor;
     int             mLineSpacingOffset;
@@ -22,7 +26,11 @@ public:
 
 public:
     TodStringListFormat();
+#ifdef _USE_WIDE_STRING
+    TodStringListFormat(const wchar_t* theFormatName, Font** theFont, const Color& theColor, int theLineSpacingOffset, unsigned int theFormatFlags);
+#else
     TodStringListFormat(const char* theFormatName, Font** theFont, const Color& theColor, int theLineSpacingOffset, unsigned int theFormatFlags);
+#endif
 };
 extern int gTodStringFormatCount;               //[0x69DE4C]
 extern TodStringListFormat* gTodStringFormats;  //[0x69DA34]
@@ -32,20 +40,20 @@ extern TodStringListFormat gLawnStringFormats[14];  //0x6A5010
 
 void                TodStringListSetColors(TodStringListFormat* theFormats, int theCount);
 void                TodWriteStringSetFormat(const char* theFormat, TodStringListFormat& theCurrentFormat);
-bool                TodStringListReadName(const char*& thePtr, std::string& theName);
-bool                TodStringListReadValue(const char*& thePtr, std::string& theValue);
+bool                TodStringListReadName(const char*& thePtr, std::wstring& theName);
+bool                TodStringListReadValue(const char*& thePtr, std::wstring& theValue);
 bool                TodStringListReadItems(const char* theFileText);
 bool                TodStringListReadFile(const char* theFileName);
 void                TodStringListLoad(const char* theFileName);
 SexyString          TodStringListFind(const SexyString& theName);
 SexyString			TodStringTranslate(const SexyString& theString);
 SexyString			TodStringTranslate(const SexyChar* theString);
-bool                TodStringListExists(const SexyString& theString);
+bool                TodStringListExists(const std::string& theString);
 void                TodStringRemoveReturnChars(std::string& theString);
 bool                CharIsSpaceInFormat(char theChar, const TodStringListFormat& theCurrentFormat);
 int                 TodWriteString(Graphics* g, const SexyString& theString, int theX, int theY, TodStringListFormat& theCurrentFormat, int theWidth, DrawStringJustification theJustification, bool drawString, int theOffset, int theLength);
 /*inline*/ int      TodWriteWordWrappedHelper(Graphics* g, const SexyString& theString, int theX, int theY, TodStringListFormat& theCurrentFormat, int theWidth, DrawStringJustification theJustification, bool drawString, int theOffset, int theLength, int theMaxChars);
-int                 TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool drawString);
-/*inline*/ void		TodDrawStringWrapped(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification);
+int                 TodDrawStringWrappedHelper(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool drawString, bool reuseFormat = false);
+/*inline*/ void		TodDrawStringWrapped(Graphics* g, const SexyString& theText, const Rect& theRect, Font* theFont, const Color& theColor, DrawStringJustification theJustification, bool reuseFormat = false);
 
 #endif  //__TODSTRINGFILE_H__

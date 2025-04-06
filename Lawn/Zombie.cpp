@@ -855,6 +855,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         aFlagReanim->PlayReanim("Zombie_flag", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
         mSpecialHeadReanimID = mApp->ReanimationGetID(aFlagReanim);
         ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_flaghand");
+        aTrackInstance->mRenderInBack = true;
         AttachReanim(aTrackInstance->mAttachmentID, aFlagReanim, 0.0f, 0.0f);
         aBodyReanim->mFrameBasePose = 0;
 
@@ -1557,9 +1558,9 @@ void Zombie::ReanimIgnoreClipRect(const char* theTrackName, bool theIgnoreClipRe
     if (aBodyReanim == nullptr)
         return;
 
-    for (int i = 0; i < aBodyReanim->mDefinition->mTrackCount; i++)
+    for (int i = 0; i < aBodyReanim->mDefinition->mTracks.count; i++)
     {
-        if (stricmp(aBodyReanim->mDefinition->mTracks[i].mName, theTrackName) == 0)
+        if (stricmp(aBodyReanim->mDefinition->mTracks.tracks[i].mName, theTrackName) == 0)
         {
             aBodyReanim->mTrackInstances[i].mIgnoreClipRect = theIgnoreClipRect;
         }
@@ -1573,7 +1574,7 @@ void Zombie::ReanimReenableClipping()
     if (aBodyReanim == nullptr)
         return;
 
-    for (int i = 0; i < aBodyReanim->mDefinition->mTrackCount; i++)
+    for (int i = 0; i < aBodyReanim->mDefinition->mTracks.count; i++)
     {
         aBodyReanim->mTrackInstances[i].mIgnoreClipRect = false;
     }
@@ -8715,8 +8716,8 @@ void Zombie::UpdateAnimSpeed()
         }
         else if (aBodyReanim->TrackExists("_ground"))
         {
-            ReanimatorTrack* aTrack = &aBodyReanim->mDefinition->mTracks[aBodyReanim->FindTrackIndex("_ground")];
-            float aDistance = aTrack->mTransforms[aBodyReanim->mFrameStart + aBodyReanim->mFrameCount - 1].mTransX - aTrack->mTransforms[aBodyReanim->mFrameStart].mTransX;
+            ReanimatorTrack* aTrack = &aBodyReanim->mDefinition->mTracks.tracks[aBodyReanim->FindTrackIndex("_ground")];
+            float aDistance = aTrack->mTransforms.mTransforms[aBodyReanim->mFrameStart + aBodyReanim->mFrameCount - 1].mTransX - aTrack->mTransforms.mTransforms[aBodyReanim->mFrameStart].mTransX;
             if (aDistance >= 1e-6f)
             {
                 float aOneOverSpeed = aBodyReanim->mFrameCount / aDistance;
@@ -11454,6 +11455,7 @@ void Zombie::AttachShield()
     {
         ShowDoorArms(true);
         ReanimShowPrefix("Zombie_outerarm_screendoor", RENDER_GROUP_OVER_SHIELD);
+        ReanimShowPrefix("Zombie_innerarm_screendoor_hand", RENDER_GROUP_OVER_SHIELD);
         aTrackName = "anim_screendoor";
     }
     else if (mShieldType == ShieldType::SHIELDTYPE_TRASHCAN)
@@ -11470,6 +11472,7 @@ void Zombie::AttachShield()
     else if (mShieldType == ShieldType::SHIELDTYPE_LADDER)
     {
         ReanimShowPrefix("Zombie_outerarm", RENDER_GROUP_OVER_SHIELD);
+        ReanimShowPrefix("Zombie_ladder_innerarm_hand2", RENDER_GROUP_OVER_SHIELD);
         aTrackName = "Zombie_ladder_1";
     }
     else

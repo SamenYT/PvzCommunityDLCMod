@@ -216,6 +216,7 @@ enum CoinType
     COIN_SMALLBRAIN,
     COIN_PLANT_TROPHY,
     COIN_ZOMBIE_TROPHY,
+    COIN_PRESENT_MULTIPLAYER_MODE,
 };
 enum CrazyDaveState
 {

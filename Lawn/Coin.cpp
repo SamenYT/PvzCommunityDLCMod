@@ -460,7 +460,7 @@ bool Coin::IsBrain()
 //0x4309B0
 bool Coin::IsPresentWithAdvice()
 {
-    return mType == CoinType::COIN_PRESENT_MINIGAMES || mType == CoinType::COIN_PRESENT_PUZZLE_MODE || mType == CoinType::COIN_PRESENT_SURVIVAL_MODE;
+    return mType == CoinType::COIN_PRESENT_MINIGAMES || mType == CoinType::COIN_PRESENT_PUZZLE_MODE || mType == CoinType::COIN_PRESENT_SURVIVAL_MODE || mType == CoinType::COIN_PRESENT_MULTIPLAYER_MODE;
 }
 
 //0x4309D0
@@ -739,6 +739,10 @@ void Coin::UpdateCollected()
                 else if (mType == CoinType::COIN_PRESENT_PUZZLE_MODE)
                 {
                     mBoard->DisplayAdvice(_S("[UNLOCKED_PUZZLE_MODE]"), MessageStyle::MESSAGE_STYLE_HINT_TALL_UNLOCKMESSAGE, AdviceType::ADVICE_UNLOCKED_MODE);
+                }
+                else if (mType == CoinType::COIN_PRESENT_MULTIPLAYER_MODE)
+                {
+                    mBoard->DisplayAdvice(_S("[UNLOCKED_MULTIPLAYER_MODE]"), MessageStyle::MESSAGE_STYLE_HINT_TALL_UNLOCKMESSAGE, AdviceType::ADVICE_UNLOCKED_MODE);
                 }
             }
             else if (mBoard->mHelpIndex != AdviceType::ADVICE_UNLOCKED_MODE || !mBoard->mAdvice->IsBeingDisplayed())
@@ -1256,6 +1260,21 @@ void Coin::Collect()
 
         AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_AWARD_PICKUP_ARROW, nullptr);
         mApp->mPlayerInfo->mHasUnlockedSurvivalMode = 1;
+
+        return;
+    }
+
+    if (mType == CoinType::COIN_PRESENT_MULTIPLAYER_MODE)
+    {
+        TOD_ASSERT(mBoard);
+
+        mApp->AddTodParticle(mPosX + 30.0f, mPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_PRESENT_PICKUP);
+
+        mDisappearCounter = 0;
+        mFadeCount = 0;
+
+        AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_AWARD_PICKUP_ARROW, nullptr);
+        mApp->mPlayerInfo->mHasUnlockedMultiplayer = 1;
 
         return;
     }
