@@ -138,7 +138,7 @@ Bravery-shroom
 Shoots faster when zombies get close and is scared when left alone (requires scaredy-shroom)
 
 [KING_CACTUS]
-King Cactus
+Orbitus
 
 [KING_CACTUS_TOOLTIP]
 Shoots 8 spikes that orbit around itself in an oscillating pattern (requires cactus)
@@ -842,7 +842,7 @@ Good luck!
 {NO_SOUND}{NO_CLICK}Plant these on your scaredy-shrooms to turn them into bravery-shrooms! Bravery-shrooms shoot faster as zombies get closer!
 
 [CRAZY_DAVE_2042]
-{NO_SOUND}{NO_CLICK}Plant these on your cactuses to turn them into king cactuses! King Cactuses launch 8 spikes that orbit around themselves and can pop balloons!
+{NO_SOUND}{NO_CLICK}Plant these on your cactuses to turn them into orbituses! King Cactuses launch 8 spikes that orbit around themselves and can pop balloons!
 
 [CRAZY_DAVE_2043]
 {NO_SOUND}{NO_CLICK}Fire Peashooters shoot fireballs that deal moderate damage towards groups of zombies!
