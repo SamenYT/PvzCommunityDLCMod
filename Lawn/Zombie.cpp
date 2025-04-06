@@ -6370,7 +6370,8 @@ void Zombie::UpdatePlaying()
             aPitch = RandRangeFloat(40.0f, 50.0f);
         }
 
-        if (mZombieType == ZombieType::ZOMBIE_GARGANTUAR)
+        if (mZombieType == ZombieType::ZOMBIE_GARGANTUAR || mZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR 
+            || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
         {
             mApp->PlayFoley(FoleyType::FOLEY_LOW_GROAN);
         }
