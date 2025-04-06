@@ -510,7 +510,7 @@ void SeedChooserScreen::GetSeedPositionInChooser(int theIndex, int& x, int& y, S
 
 	for (int i = 0; i < 8; i++)
 	{
-		if (theSeedType == SEED_PULTSHROOM + i && mPage == 1) { x = i * 53 + 22; y = 0 * 70 + 1235555; }
+		if (theSeedType == SEED_PULTSHROOM + i && mPage == 1) { x = i * 53 + 22; y = 0 * 70 + 123; }
 	}
 
 	for (int i = 0; i < 8; i++)

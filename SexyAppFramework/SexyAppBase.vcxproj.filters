@@ -851,9 +851,6 @@
     <ClCompile Include="..\Lawn\Widget\GameSelector.cpp">
       <Filter>Lawn\Widget\Widget Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\Lawn\Zombie.cpp">
-      <Filter>Lawn\Board\Board Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\Lawn\Projectile.cpp">
       <Filter>Lawn\Board\Board Source</Filter>
     </ClCompile>
@@ -905,6 +902,9 @@
     <ClCompile Include="FileName.cpp" />
     <ClCompile Include="..\Lawn\PlayerController.cpp">
       <Filter>Lawn\Board\Board Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Lawn\Zombie.cpp">
+      <Filter>Lawn\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
