@@ -44,6 +44,7 @@ bool gShownMoreSunTutorial = false;
 bool BloodMoonIsOn = false;
 //int mRageDelay = 0;
 
+//sigma
 //0x407B50
 Board::Board(LawnApp* theApp)
 {
