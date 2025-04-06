@@ -170,13 +170,13 @@ class FoleyParams
 public:
     FoleyType           mFoleyType;
     float               mPitchRange;
-    int*                mSfxID[10];
+    int* mSfxID[10];
     unsigned int        mFoleyFlags;
 };
 
 /*inline*/ void         TodFoleyInitialize(FoleyParams* theFoleyParamArray, int theFoleyParamArraySize);
 /*inline*/ void         TodFoleyDispose();
-FoleyParams*            LookupFoley(FoleyType theFoleyType);
+FoleyParams* LookupFoley(FoleyType theFoleyType);
 
 extern int gFoleyParamArraySize;        //[0x6A9F04]
 extern FoleyParams* gFoleyParamArray;   //[0x6A9F00]
@@ -201,7 +201,7 @@ public:
 class FoleyInstance
 {
 public:
-    SoundInstance*      mInstance;
+    SoundInstance* mInstance;
     int                 mRefCount;
     bool                mPaused;
     int                 mStartTime;
@@ -239,7 +239,7 @@ public:
 
 void                    SoundSystemReleaseFinishedInstances(TodFoley* theSoundSystem);
 bool                    SoundSystemHasFoleyPlayedTooRecently(TodFoley* theSoundSystem, FoleyType theFoleyType);
-FoleyInstance*          SoundSystemFindInstance(TodFoley* theSoundSystem, FoleyType theFoleyType);
-FoleyInstance*          SoundSystemGetFreeInstanceIndex(TodFoley* theSoundSystem, FoleyType theFoleyType);
+FoleyInstance* SoundSystemFindInstance(TodFoley* theSoundSystem, FoleyType theFoleyType);
+FoleyInstance* SoundSystemGetFreeInstanceIndex(TodFoley* theSoundSystem, FoleyType theFoleyType);
 
 #endif

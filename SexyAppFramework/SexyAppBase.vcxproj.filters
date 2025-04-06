@@ -904,7 +904,7 @@
       <Filter>Lawn\Board\Board Source</Filter>
     </ClCompile>
     <ClCompile Include="..\Lawn\Zombie.cpp">
-      <Filter>Lawn\Common</Filter>
+      <Filter>Lawn\Board\Board Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3611,6 +3611,10 @@ unlock the Mini-games.
 Play more Adventure to 
 unlock Puzzle Mode.
 
+[MULTIPLAYER_LOCKED_MESSAGE]
+Play more Adventure to 
+unlock Multiplayer Mode.
+
 [CLICK_TO_START]
 CLICK TO START!
 
@@ -4137,6 +4141,10 @@ Play it from the main menu!
 
 [UNLOCKED_SURVIVAL_MODE]
 Survival mode unlocked!
+Play it from the main menu!
+
+[UNLOCKED_MULTIPLAYER_MODE]
+Multiplayer mode unlocked!
 Play it from the main menu!
 
 [CREDITS_GAMENAME]

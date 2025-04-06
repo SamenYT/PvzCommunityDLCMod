@@ -82,6 +82,12 @@
 			*pix = ((finalAlpha-1)<<24) | tr | tg | tb;
 		}
 		else
+		{
+#ifdef _WIN64
+			__nop();
+#else
 			_asm nop;
+#endif
+		}
 	}
 	#endif

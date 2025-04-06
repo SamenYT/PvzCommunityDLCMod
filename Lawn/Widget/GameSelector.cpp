@@ -294,6 +294,7 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mUnlockSelectorCheat = false;
 	mTrophyParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
 	mShowStartButton = false;
+	mMultiplayerLocked = false;
 
 	Reanimation* aSelectorReanim = mApp->AddReanimation(0.5f, 0.5f, 0, ReanimationType::REANIM_SELECTOR_SCREEN);
 	aSelectorReanim->PlayReanim("anim_open", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
@@ -432,38 +433,38 @@ void GameSelector::SyncButtons()
 
 	if (mMinigamesLocked)
 	{
-		mMinigameButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_BUTTON;
-		mMinigameButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_BUTTON;
+		//mMinigameButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
+		//mMinigameButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
 		mMinigameButton->SetColor(ButtonWidget::COLOR_BKG, Color(128, 128, 128));
 	}
 	else
 	{
-		mMinigameButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
-		mMinigameButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
+		//mMinigameButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
+		//mMinigameButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_SURVIVAL_HIGHLIGHT;
 		mMinigameButton->SetColor(ButtonWidget::COLOR_BKG, Color::White);
 	}
 	if (mPuzzleLocked)
 	{
-		mPuzzleButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_BUTTON;
-		mPuzzleButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_BUTTON;
+		//mPuzzleButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
+		//mPuzzleButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
 		mPuzzleButton->SetColor(ButtonWidget::COLOR_BKG, Color(128, 128, 128));
 	}
 	else
 	{
-		mPuzzleButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
-		mPuzzleButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
+		//mPuzzleButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
+		//mPuzzleButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;
 		mPuzzleButton->SetColor(ButtonWidget::COLOR_BKG, Color::White);
 	}
 	if (mSurvivalLocked)
 	{
-		mSurvivalButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_BUTTON;
-		mSurvivalButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_BUTTON;
+		//mSurvivalButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
+		//mSurvivalButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
 		mSurvivalButton->SetColor(ButtonWidget::COLOR_BKG, Color(128, 128, 128));
 	}
 	else
 	{
-		mSurvivalButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
-		mSurvivalButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
+		//mSurvivalButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
+		//mSurvivalButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_VASEBREAKER_HIGHLIGHT;
 		mSurvivalButton->SetColor(ButtonWidget::COLOR_BKG, Color::White);
 	}
 
@@ -477,6 +478,7 @@ void GameSelector::SyncButtons()
 	if (mShowStartButton)
 	{
 		aSelectorReanim->AssignRenderGroupToPrefix("SelectorScreen_Adventure_", RENDER_GROUP_HIDDEN);
+		aSelectorReanim->AssignRenderGroupToTrack("SelectorScreen_StartAdventure_shadow", RENDER_GROUP_NORMAL);
 		mAdventureButton->mButtonImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_STARTADVENTURE_BUTTON;
 		mAdventureButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_STARTADVENTURE_HIGHLIGHT;
 		mAdventureButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_STARTADVENTURE_HIGHLIGHT;
@@ -484,6 +486,7 @@ void GameSelector::SyncButtons()
 	else
 	{
 		aSelectorReanim->AssignRenderGroupToPrefix("SelectorScreen_StartAdventure_", RENDER_GROUP_HIDDEN);
+		aSelectorReanim->AssignRenderGroupToTrack("SelectorScreen_Adventure_shadow", RENDER_GROUP_NORMAL);
 		mAdventureButton->mButtonImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_BUTTON;
 		mAdventureButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT;
 		mAdventureButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT;
@@ -525,6 +528,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 		mLevel = mApp->mPlayerInfo->GetLevel();
 	mShowStartButton = true;
 	mMinigamesLocked = true;
+	mMultiplayerLocked = true;
 	mPuzzleLocked = true;
 	mSurvivalLocked = true;
 	if (mApp->mPlayerInfo && !mApp->IsIceDemo())
@@ -538,6 +542,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 			mSurvivalLocked = false;
 			mPuzzleLocked = false;
 			mShowStartButton = false;
+			mMultiplayerLocked = false;
 		}
 
 		if (mApp->mPlayerInfo->mHasUnlockedMinigames)
@@ -546,6 +551,8 @@ void GameSelector::SyncProfile(bool theShowLoading)
 			mPuzzleLocked = false;
 		if (mApp->mPlayerInfo->mHasUnlockedSurvivalMode)
 			mSurvivalLocked = false;
+		if (mApp->mPlayerInfo->mHasUnlockedMultiplayer)
+			mMultiplayerLocked = false;
 
 		if (mApp->IsTrialStageLocked())
 		{
@@ -849,6 +856,9 @@ void GameSelector::Update()
 	case SelectorAnimState::SELECTOR_OPEN:
 		if (mWidgetManager)
 			mWidgetManager->RehupMouse();
+		aSelectorReanim->AssignRenderGroupToPrefix("SelectorScreen_Adventure_button", RENDER_GROUP_HIDDEN);
+		aSelectorReanim->AssignRenderGroupToPrefix("SelectorScreen_StartAdventure_button", RENDER_GROUP_HIDDEN);
+		mAdventureButton->mBtnNoDraw = false;
 		if (aSelectorReanim->mLoopCount > 0)
 		{
 			aSelectorReanim->AssignRenderGroupToTrack("SelectorScreen_Adventure_button", RENDER_GROUP_HIDDEN);
@@ -981,7 +991,7 @@ void GameSelector::Update()
 	aSelectorReanim->SetImageOverride("woodsign2", (mChangeUserButton->mIsOver || mChangeUserButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN2_PRESS : nullptr);
 	TrackButton(mVersusModeButton, "woodsign3", 24.0f, 10.0f);
 	aSelectorReanim->SetImageOverride("woodsign3", (mVersusModeButton->mIsOver || mVersusModeButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS : nullptr);
-	if (mApp->mPlayerInfo->GetLevel() < 65 && !mApp->HasFinishedAdventure()) aSelectorReanim->SetImageOverride("woodsign3", IMAGE_BLANK);
+	//if (mApp && mApp->mPlayerInfo && mApp->mPlayerInfo->GetLevel() < 65 && !mApp->HasFinishedAdventure()) aSelectorReanim->SetImageOverride("woodsign3", IMAGE_BLANK);
 }
 
 //0x44BB20
@@ -1142,6 +1152,9 @@ void GameSelector::KeyDown(KeyCode theKey)
 //0x44C200
 void GameSelector::KeyChar(char theChar)
 {
+#ifndef _DEBUG
+	return;
+#endif
 	if (mStartingGame)
 		return;
 
@@ -1179,6 +1192,7 @@ void GameSelector::KeyChar(char theChar)
 			mMinigamesLocked = false;
 			mPuzzleLocked = false;
 			mSurvivalLocked = false;
+			mMultiplayerLocked = false;
 			SyncButtons();
 		}
 	}
@@ -1206,7 +1220,8 @@ void GameSelector::ButtonMouseEnter(int theId)
 {
 	if ((theId == GameSelector::GameSelector_Minigame && mMinigamesLocked) ||
 		(theId == GameSelector::GameSelector_Puzzle && mPuzzleLocked) ||
-		(theId == GameSelector::GameSelector_Survival && mSurvivalLocked))
+		(theId == GameSelector::GameSelector_Survival && mSurvivalLocked) || 
+		(theId == GameSelector::GameSelector_Versus && mMultiplayerLocked))
 		return;
 
 	mApp->PlayFoley(FoleyType::FOLEY_BLEEP);
@@ -1264,8 +1279,8 @@ void GameSelector::ClickedAdventure()
 	aHandReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
 	mHandReanimID = mApp->ReanimationGetID(aHandReanim);
 	mApp->PlayFoley(FoleyType::FOLEY_DIRT_RISE);
-	for (int i = 0; i < aHandReanim->mDefinition->mTrackCount; i++)
-		if (!strnicmp(aHandReanim->mDefinition->mTracks[i].mName, "rock", 4))
+	for (int i = 0; i < aHandReanim->mDefinition->mTracks.count; i++)
+		if (!strnicmp(aHandReanim->mDefinition->mTracks.tracks[i].mName, "rock", 4))
 			aHandReanim->mTrackInstances[i].mIgnoreClipRect = true;
 }
 
@@ -1291,6 +1306,11 @@ void GameSelector::ButtonDepress(int theId)
 	if (theId == GameSelector::GameSelector_Survival && mSurvivalLocked)
 	{
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("[SURVIVAL_LOCKED_MESSAGE]"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
+		return;
+	}
+	if (theId == GameSelector::GameSelector_Versus && mMultiplayerLocked)
+	{
+		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("[MULTIPLAYER_LOCKED_MESSAGE]"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 

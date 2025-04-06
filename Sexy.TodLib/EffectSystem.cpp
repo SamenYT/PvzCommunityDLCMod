@@ -404,7 +404,7 @@ void TodTriangleGroup::DrawGroup(Graphics* g)
 		}
 		else
 		{
-			g->mDestImage->BltTrianglesTex(mImage, mVertArray, mTriangleCount, Rect(0, 0, BOARD_WIDTH, BOARD_HEIGHT), Color::White, mDrawMode, 0.0f, 0.0f, g->mLinearBlend);
+			g->mDestImage->BltTrianglesTex(mImage, mVertArray, mTriangleCount, Rect(0, 0, BOARD_WIDTH, BOARD_HEIGHT), Color::White, mDrawMode, 0, 0, g->mLinearBlend);
 		}
 
 		mTriangleCount = 0;
@@ -419,6 +419,7 @@ void TodTriangleGroup::AddTriangle(Graphics* g, Image* theImage, const SexyMatri
 
 	if (mTriangleCount > 0 && (mDrawMode != theDrawMode || mImage != theImage))
 		DrawGroup(g);
+
 	mImage = theImage;
 	mDrawMode = theDrawMode;
 

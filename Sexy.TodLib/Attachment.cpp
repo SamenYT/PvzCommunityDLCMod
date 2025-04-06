@@ -796,6 +796,8 @@ Reanimation* FindReanimAttachment(AttachmentID& theAttachmentID)
 			}
 		}
 	}
+
+	return nullptr;
 }
 
 //0x405500
