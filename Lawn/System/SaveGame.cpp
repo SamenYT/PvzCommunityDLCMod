@@ -15,7 +15,7 @@
 #include "../../Sexy.TodLib/TodParticle.h"
 #include "../../Sexy.TodLib/EffectSystem.h"
 
-static const char* FILE_COMPILE_TIME_STRING = "Feb 16 200923:03:38";
+static const char* FILE_COMPILE_TIME_STRING = "Dec 10 201014:56:46";
 static const unsigned int SAVE_FILE_MAGIC_NUMBER = 0xFEEDDEAD;
 static const unsigned int SAVE_FILE_VERSION = 2U;
 static unsigned int SAVE_FILE_DATE = crc32(0, (Bytef*)FILE_COMPILE_TIME_STRING, strlen(FILE_COMPILE_TIME_STRING));  //[0x6AA7EC]
