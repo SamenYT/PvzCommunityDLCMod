@@ -14,8 +14,8 @@ static char gDebugDataFolder[MAX_PATH];
 void TodErrorMessageBox(const char* theMessage, const char* theTitle)
 {
 	HWND hWnd = (gSexyAppBase && gSexyAppBase->mHWnd) ? gSexyAppBase->mHWnd : GetActiveWindow();
-	TodTraceAndLog("%s.%s", theMessage, theTitle);
-	MessageBoxA(hWnd, theMessage, theTitle, MB_ICONEXCLAMATION);
+	TodTraceAndLog(_S("%s.%s"), theMessage, theTitle);
+	MessageBox(hWnd, theMessage, theTitle, MB_ICONEXCLAMATION);
 }
 
 void TodTraceMemory()
@@ -67,13 +67,13 @@ void TodAssertFailed(const char* theCondition, const char* theFile, int theLine,
 	{
 		TodSnprintf(aBuffer, sizeof(aBuffer), "\n%s(%d)\nassertion failed: %s\n", theFile, theLine, aFormattedMsg);
 	}
-	TodTrace("%s", aBuffer);
+	TodTrace(_S("%s"), aBuffer);
 
 	if (!IsDebuggerPresent())
 	{
 		if (gInAssert)
 		{
-			TodLog("Assert during exception processing");
+			TodLog(_S("Assert during exception processing"));
 			exit(0);
 		}
 
@@ -125,13 +125,13 @@ void TodLog(const char* theFormat, ...)
 void TodLogString(const char* theMsg)
 {
 #ifdef _DEBUG
-	FILE* f = fopen(gLogFileName, "a");
+	FILE* f = fopen(gLogFileName, _S("a"));
 	if (f == nullptr)
 	{
 		OutputDebugString(_S("Failed to open log file\n"));
 	}
 
-	if (fwrite(theMsg, strlen(theMsg), 1, f) != 1)
+	if (fwrite(theMsg, sexystrlen(theMsg), 1, f) != 1)
 	{
 		OutputDebugString(_S("Failed to write to log file\n"));
 	}
@@ -240,13 +240,13 @@ long __stdcall TodUnhandledExceptionFilter(LPEXCEPTION_POINTERS exceptioninfo)
 {
 	if (gInAssert)
 	{
-		TodLog("Exception during exception processing");
+		TodLog(_S("Exception during exception processing"));
 	}
 	else
 	{
 		gInAssert = true;
-		TodLog("\nUnhandled Exception");
-		TodReportError(exceptioninfo, "Unhandled Exception");
+		TodLog(_S("\nUnhandled Exception"));
+		TodReportError(exceptioninfo, _S("Unhandled Exception"));
 		gInAssert = false;
 	}
 
@@ -257,15 +257,15 @@ void (*gBetaSubmitFunc)() = nullptr;
 
 void TodAssertInitForApp()
 {
-	MkDir(GetAppDataFolder() + "userdataDLC");
-	std::string aRelativeUserPath = GetAppDataFolder() + "userdataDLC\\";
-	strcpy(gDebugDataFolder, GetFullPath(aRelativeUserPath).c_str());
-	strcpy(gLogFileName, gDebugDataFolder);
-	strcpy(gLogFileName + strlen(gLogFileName), "log.txt");
-	TOD_ASSERT(strlen(gLogFileName) < MAX_PATH);
+	MkDir(GetAppDataFolder() + "userdata");
+	string aRelativeUserPath = GetAppDataFolder() + _S("userdata\\");
+	sexystrcpy(gDebugDataFolder, GetFullPath(aRelativeUserPath).c_str());
+	sexystrcpy(gLogFileName, gDebugDataFolder);
+	sexystrcpy(gLogFileName + strlen(gLogFileName), _S("log.txt"));
+	TOD_ASSERT(sexystrlen(gLogFileName) < MAX_PATH);
 
 	__time64_t aclock = _time64(nullptr);
-	TodLog("Started %s\n", asctime(_localtime64(&aclock)));
+	TodLog(_S("Started %s\n"), asctime(_localtime64(&aclock)));
 
 	SetUnhandledExceptionFilter(TodUnhandledExceptionFilter);
 }

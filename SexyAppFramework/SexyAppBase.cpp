@@ -173,7 +173,6 @@ SexyAppBase::SexyAppBase()
 	mHeight = 480;
 	mFullscreenBits = 16;
 	mIsWindowed = true;
-	mIsFake3D = true;
 	//mHardmodeIsOff = true;
 	//mIsNotCoop = true;
 	mIsKeyboardPlayer1 = false;
@@ -371,31 +370,30 @@ SexyAppBase::~SexyAppBase()
 {
 	Shutdown();
 
-	// Check if we should write the current 3d setting
 	bool showedMsgBox = false;
-	/*if (mUserChanged3DSetting)
+	if (mUserChanged3DSetting)
 	{
 		bool writeToRegistry = true;
 		bool is3D = false;
 		bool is3DOptionSet = RegistryReadBoolean("Is3D", &is3D);
-		if(!is3DOptionSet) // should we write the option?
+		if (!is3DOptionSet) // should we write the option?
 		{
-			if(!Is3DAccelerationRecommended()) // may need to prompt user if he wants to keep 3d acceleration on
+			if (!Is3DAccelerationRecommended()) // may need to prompt user if he wants to keep 3d acceleration on
 			{
 				if (Is3DAccelerated())
 				{
 					showedMsgBox = true;
 					int aResult = MessageBox(NULL,
-									GetString("HARDWARE_ACCEL_SWITCHED_ON", 
-															_S("Hardware Acceleration was switched on during this session.\r\n")
-															_S("If this resulted in slower performance, it should be switched off.\r\n")
-															_S("Would you like to keep Hardware Acceleration switched on?")).c_str(),
-									(StringToSexyString(mCompanyName) + _S(" ") +
-									 GetString("HARDWARE_ACCEL_CONFIRMATION", _S("Hardware Acceleration Confirmation"))).c_str(),
-									MB_YESNO | MB_ICONQUESTION);
+						GetString("HARDWARE_ACCEL_SWITCHED_ON",
+							_S("Hardware Acceleration was switched on during this session.\r\n")
+							_S("If this resulted in slower performance, it should be switched off.\r\n")
+							_S("Would you like to keep Hardware Acceleration switched on?")).c_str(),
+						(StringToSexyString(mCompanyName) + _S(" ") +
+							GetString("HARDWARE_ACCEL_CONFIRMATION", _S("Hardware Acceleration Confirmation"))).c_str(),
+						MB_YESNO | MB_ICONQUESTION);
 
 					mDDInterface->mIs3D = aResult == IDYES ? true : false;
-					if (aResult!=IDYES)
+					if (aResult != IDYES)
 						writeToRegistry = false;
 				}
 				else
@@ -421,7 +419,7 @@ SexyAppBase::~SexyAppBase()
 
 		if (aResult==IDNO)
 			RegistryWriteBoolean("Is3D", false);
-	}*/
+	}
 
 
 	DialogMap::iterator aDialogItr = mDialogMap.begin();
@@ -1583,7 +1581,6 @@ void SexyAppBase::WriteToRegistry()
 	RegistryWriteInteger("CustomCursors", mCustomCursorsEnabled ? 1 : 0);		
 	RegistryWriteInteger("InProgress", 0);
 	RegistryWriteBoolean("WaitForVSync", mWaitForVSync);	
-	RegistryWriteInteger("IsFake3D", mIsFake3D ? 1 : 0);
 }
 
 bool SexyAppBase::RegistryEraseKey(const SexyString& _theKeyName)
@@ -1912,9 +1909,6 @@ void SexyAppBase::ReadFromRegistry()
 
 	if (RegistryReadInteger("ScreenMode", &anInt))
 		mIsWindowed = anInt == 0;
-
-	if (RegistryReadInteger("IsFake3D", &anInt))
-		mIsFake3D = anInt == 1;
 
 	RegistryReadInteger("PreferredX", &mPreferredX);
 	RegistryReadInteger("PreferredY", &mPreferredY);	
@@ -2343,7 +2337,7 @@ void SexyAppBase::Redraw(Rect* theClipRect)
 			}
 			else if (aResult == DDInterface::RESULT_3D_FAIL)
 			{
-				//Set3DAcclerated(false);
+				Set3DAcclerated(false);
 				return;
 			}
 			else if (aResult != DDInterface::RESULT_OK)
@@ -2385,12 +2379,13 @@ static void CalculateFPS()
 {
 	gFrameCount++;
 
-	static SysFont aFont(gSexyAppBase,"Tahoma",8);
-	if (gFPSImage==NULL)
+	static SysFont aFont(gSexyAppBase, "Tahoma", 8);
+
+	if (gFPSImage == NULL)
 	{
 		gFPSImage = new DDImage(gSexyAppBase->mDDInterface);
-		gFPSImage->Create(50,aFont.GetHeight()+4);
-		gFPSImage->SetImageMode(false,false);
+		gFPSImage->Create(50, aFont.GetHeight() + 4);
+		gFPSImage->SetImageMode(false, false);
 		gFPSImage->SetVolatile(true);
 		gFPSImage->mPurgeBits = false;
 		gFPSImage->mWantDDSurface = true;
@@ -2400,8 +2395,11 @@ static void CalculateFPS()
 	if (gFPSTimer.GetDuration() >= 1000 || gForceDisplay)
 	{
 		gFPSTimer.Stop();
+
 		if (!gForceDisplay)
-			gFPSDisplay = (int)(gFrameCount*1000/gFPSTimer.GetDuration() + 0.5f);
+		{
+			gFPSDisplay = (int)(gFrameCount * 1000 / gFPSTimer.GetDuration() + 0.5f);
+		}
 		else
 		{
 			gForceDisplay = false;
@@ -2415,24 +2413,28 @@ static void CalculateFPS()
 		aDrawG.SetFont(&aFont);
 		SexyString aFPS = StrFormat(_S("FPS: %d"), gFPSDisplay);
 		aDrawG.SetColor(0x000000);
-		aDrawG.FillRect(0,0,gFPSImage->GetWidth(),gFPSImage->GetHeight());
+		aDrawG.FillRect(0, 0, gFPSImage->GetWidth(), gFPSImage->GetHeight());
 		aDrawG.SetColor(0xFFFFFF);
-		aDrawG.DrawString(aFPS,2,aFont.GetAscent());
+		aDrawG.DrawString(aFPS, 2, aFont.GetAscent());
 		//gFPSImage->mKeepBits = false;
 		//gFPSImage->GenerateDDSurface();
 		gFPSImage->mBitsChangedCount++;
 	}
+
+	Graphics aDrawG(gFPSImage);
+	aDrawG.SetColor(gFrameCount % 2 == 1 ? Color(0xff00) : Color(0xff0000));
+	aDrawG.FillRect(0, gFPSImage->GetHeight() - 2, gSexyAppBase->mLoadingThreadCompleted ? gFPSImage->GetWidth() : gFPSImage->GetWidth() / 2, 2);
 }
 
 ///////////////////////////// FPS Stuff to draw mouse coords
 static void FPSDrawCoords(int theX, int theY)
 {
-	static SysFont aFont(gSexyAppBase,"Tahoma",8);
-	if (gFPSImage==NULL)
+	static SysFont aFont(gSexyAppBase, "Tahoma", 8);
+	if (gFPSImage == NULL)
 	{
 		gFPSImage = new DDImage(gSexyAppBase->mDDInterface);
-		gFPSImage->Create(50,aFont.GetHeight()+4);
-		gFPSImage->SetImageMode(false,false);
+		gFPSImage->Create(50, aFont.GetHeight() + 4);
+		gFPSImage->SetImageMode(false, false);
 		gFPSImage->SetVolatile(true);
 		gFPSImage->mPurgeBits = false;
 		gFPSImage->mWantDDSurface = true;
@@ -2441,11 +2443,11 @@ static void FPSDrawCoords(int theX, int theY)
 
 	Graphics aDrawG(gFPSImage);
 	aDrawG.SetFont(&aFont);
-	SexyString aFPS = StrFormat(_S("%d,%d"),theX,theY);
+	SexyString aFPS = StrFormat(_S("%d,%d"), theX, theY);
 	aDrawG.SetColor(0x000000);
-	aDrawG.FillRect(0,0,gFPSImage->GetWidth(),gFPSImage->GetHeight());
+	aDrawG.FillRect(0, 0, gFPSImage->GetWidth(), gFPSImage->GetHeight());
 	aDrawG.SetColor(0xFFFFFF);
-	aDrawG.DrawString(aFPS,2,aFont.GetAscent());	
+	aDrawG.DrawString(aFPS, 2, aFont.GetAscent());
 	gFPSImage->mBitsChangedCount++;
 }
 
@@ -4075,7 +4077,7 @@ bool SexyAppBase::DebugKeyDown(int theKey)
 	{
 		if(mWidgetManager->mKeyDown[KEYCODE_SHIFT])
 		{
-			//Set3DAcclerated(!Is3DAccelerated());
+			Set3DAcclerated(!Is3DAccelerated());
 
 			char aBuf[512];
 			sprintf(aBuf,"3D-Mode: %s",Is3DAccelerated()?"ON":"OFF");
@@ -4445,10 +4447,10 @@ bool SexyAppBase::ProcessDeferredMessages(bool singleMessage)
 					ClearKeysDown();
 					break;
 				}
-				else if ((wParam == 'O') && (mWidgetManager != NULL) && (mWidgetManager->mKeyDown[KEYCODE_SHIFT]) && (mWidgetManager->mKeyDown[KEYCODE_MENU]))
+				if ((wParam == 'D') && (mWidgetManager != NULL) && (mWidgetManager->mKeyDown[KEYCODE_CONTROL]) && (mWidgetManager->mKeyDown[KEYCODE_MENU]))
 				{
 					PlaySoundA("c:\\windows\\media\\Windows XP Menu Command.wav", NULL, SND_ASYNC);
-					mDebugKeysEnabled = !mDebugKeysEnabled;						
+					mDebugKeysEnabled = !mDebugKeysEnabled;
 				}
 
 				if (mDebugKeysEnabled)
@@ -4768,7 +4770,7 @@ void SexyAppBase::MakeWindow()
 		mDDInterface = new DDInterface(this);
 
 		// Enable 3d setting
-		bool is3D = true;
+		bool is3D = false;
 		bool is3DOptionSet = RegistryReadBoolean("Is3D", &is3D);
 		if (is3DOptionSet)
 		{
@@ -4781,7 +4783,7 @@ void SexyAppBase::MakeWindow()
 			if (is3D)
 				mTest3D = true;
 
-			mDDInterface->mIs3D = true;
+			mDDInterface->mIs3D = is3D;
 		}
 	}
 
@@ -4813,14 +4815,14 @@ void SexyAppBase::MakeWindow()
 	}
 	else if (aResult == DDInterface::RESULT_3D_FAIL)
 	{
-		//Set3DAcclerated(false);
+		Set3DAcclerated(false);
 		return;
 	}
 	else if (aResult != DDInterface::RESULT_OK)
 	{
 		if (Is3DAccelerated())
 		{
-			//Set3DAcclerated(false);
+			Set3DAcclerated(false);
 			return;
 		}
 		else
@@ -5001,15 +5003,12 @@ void SexyAppBase::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 
 	if (mIsWindowed == wantWindowed && !force)
 	{
-		mIsFake3D = is3d;
-		//Set3DAcclerated(is3d);
+		Set3DAcclerated(is3d);
 		return;
 	}
 
-	mIsFake3D = is3d;
-
 	// Set 3d acceleration preference
-	//Set3DAcclerated(is3d,false);
+	Set3DAcclerated(is3d, false);
 
 	// Always make the app windowed when playing demos, in order to
 	//  make it easier to track down bugs.  We place this after the
@@ -5017,10 +5016,10 @@ void SexyAppBase::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 	//if (mPlayingDemoBuffer)
 	//	wantWindowed = true;
 
-	mIsWindowed = wantWindowed;	
+	mIsWindowed = wantWindowed;
 
 	MakeWindow();
-	
+
 	// We need to do this check to allow IE to get focus instead of
 	//  stealing it away for ourselves
 	if (!mIsOpeningURL)
@@ -5034,10 +5033,10 @@ void SexyAppBase::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 		::ShowWindow(mHWnd, SW_SHOWNOACTIVATE);
 	}
 
-	if (mSoundManager!=NULL)
+	if (mSoundManager != NULL)
 	{
-		mSoundManager->SetCooperativeWindow(mHWnd,mIsWindowed);
-	}	
+		mSoundManager->SetCooperativeWindow(mHWnd, mIsWindowed);
+	}
 
 	mLastTime = timeGetTime();
 }
@@ -6973,11 +6972,6 @@ void SexyAppBase::Remove3DData(MemoryImage* theMemoryImage)
 		mDDInterface->Remove3DData(theMemoryImage);
 }
 
-bool SexyAppBase::IsFake3D()
-{
-	return mIsFake3D;
-}
-
 bool SexyAppBase::Is3DAccelerated()
 {
 	return mDDInterface->mIs3D;
@@ -7020,15 +7014,15 @@ void SexyAppBase::Set3DAcclerated(bool is3D, bool reinit)
 		return;
 
 	mUserChanged3DSetting = true;
-	mDDInterface->mIs3D = true;
-	
+	mDDInterface->mIs3D = is3D;
+
 	if (reinit)
 	{
 		int aResult = InitDDInterface();
 
 		if (is3D && aResult != DDInterface::RESULT_OK)
 		{
-			//Set3DAcclerated(false, reinit);
+			Set3DAcclerated(false, reinit);
 			return;
 		}
 		else if (aResult != DDInterface::RESULT_OK)

@@ -83,6 +83,7 @@ public:
     ToolTipWidget*              mToolTip;                   //+0x128
     bool                        mHasTrophy;                 //+0x12C
     bool                        mUnlockSelectorCheat;       //+0x12D
+    bool                        mMultiplayerLocked;
 
 public:
     GameSelector(LawnApp* theApp);

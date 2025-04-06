@@ -88,6 +88,7 @@ void PlayerInfo::SyncDetails(DataSync& theSync)
 	{
 		theSync.SyncLong(mChallengeHardmodeRecords[i]);
 	}
+	theSync.SyncLong(mHasUnlockedMultiplayer);
 }
 
 //0x469400
@@ -173,6 +174,7 @@ void PlayerInfo::Reset()
 	mIsNotCoop = true;
 	mHardmodeIsOff = true;
 	memset(mChallengeHardmodeRecords, 0, sizeof(mChallengeHardmodeRecords));
+	mHasUnlockedMultiplayer = 0;
 }
 
 void PlayerInfo::AddCoins(int theAmount)

@@ -163,7 +163,6 @@ public:
 	bool					mShutdown;
 	bool					mExitToTop;
 	bool					mIsWindowed;
-	bool					mIsFake3D;
 	//bool					mHardmodeIsOff;
 	//bool					mIsNotCoop;
 	bool					mIsKeyboardPlayer1;
@@ -490,7 +489,6 @@ public:
 	virtual bool			DebugKeyDownAsync(int theKey, bool ctrlDown, bool altDown);
 	virtual void			CloseRequestAsync();
 	bool					Is3DAccelerated();
-	bool					IsFake3D();
 	bool					Is3DAccelerationSupported();
 	bool					Is3DAccelerationRecommended();
 	void					DemoSyncRefreshRate();

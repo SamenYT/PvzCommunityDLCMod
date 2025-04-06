@@ -443,7 +443,7 @@ TodParticle* TodParticleEmitter::SpawnParticle(int theIndex, int theSpawnCount)
 	aParticle->mVelocity.y = cos(aLaunchAngle) * aLaunchSpeed;
 	aParticle->mPosition.x += FloatTrackEvaluate(mEmitterDef->mEmitterOffsetX, mSystemTimeValue, aEmitterOffsetXInterp);  // 横坐标加上横向偏移值
 	aParticle->mPosition.y += FloatTrackEvaluate(mEmitterDef->mEmitterOffsetY, mSystemTimeValue, aEmitterOffsetYInterp);  // 纵坐标加上纵向偏移值
-	
+
 	aParticle->mAnimationTimeValue = 0.0f;
 	if (mEmitterDef->mAnimated || FloatTrackIsSet(mEmitterDef->mAnimationRate))
 		aParticle->mImageFrame = 0;  // 如果定义了粒子动态或动画速率，则粒子的当前帧将在后续根据粒子时间值或动画循环率实时计算，此处先初始化为 0
@@ -778,7 +778,7 @@ void TodParticleEmitter::DeleteParticle(TodParticle* theParticle)
 		aCrossFadeParticle->mParticleEmitter->DeleteParticle(aCrossFadeParticle);  // 同时删除交叉混合的源粒子
 		theParticle->mCrossFadeParticleID = ParticleID::PARTICLEID_NULL;
 	}
-	
+
 	ParticleID aParticleID = (ParticleID)mParticleSystem->mParticleHolder->mParticles.DataArrayGetID(theParticle);
 	mParticleList.RemoveAt(mParticleList.Find(aParticleID));
 	mParticleSystem->mParticleHolder->mParticles.DataArrayFree(theParticle);
@@ -1016,11 +1016,11 @@ void RenderParticle(Graphics* g, TodParticle* theParticle, const Color& theColor
 	{
 		SexyMatrix3 aTransform;
 		TodScaleRotateTransformMatrix(
-			aTransform, 
-			theParams->mPosX, 
-			theParams->mPosY, 
-			theParams->mSpinPosition, 
-			theParams->mParticleScale, 
+			aTransform,
+			theParams->mPosX,
+			theParams->mPosY,
+			theParams->mSpinPosition,
+			theParams->mParticleScale,
 			theParams->mParticleStretch * theParams->mParticleScale
 		);
 		theTriangleGroup->AddTriangle(g, aImage, aTransform, g->mClipRect, theColor, aDrawMode, aSrcRect);
@@ -1039,9 +1039,9 @@ void TodParticleEmitter::DrawParticle(Graphics* g, TodParticle* theParticle, Tod
 	if (GetRenderParams(theParticle, &aParams))
 	{
 		Color aColor(
-			ClampInt(FloatRoundToInt(aParams.mRed), 0, 255), 
-			ClampInt(FloatRoundToInt(aParams.mGreen), 0, 255), 
-			ClampInt(FloatRoundToInt(aParams.mBlue), 0, 255), 
+			ClampInt(FloatRoundToInt(aParams.mRed), 0, 255),
+			ClampInt(FloatRoundToInt(aParams.mGreen), 0, 255),
+			ClampInt(FloatRoundToInt(aParams.mBlue), 0, 255),
 			ClampInt(FloatRoundToInt(aParams.mAlpha), 0, 255)
 		);
 		if (aColor.mAlpha > 0)  // 不透明度为 0 时，不绘制
@@ -1095,7 +1095,7 @@ void TodParticleEmitter::SystemMove(float theX, float theY)
 	float aDeltaY = theY - mSystemCenter.y;
 	if (FloatApproxEqual(aDeltaX, 0.0f) && FloatApproxEqual(aDeltaY, 0.0f))  // 移动前后的坐标几乎相等时，无需操作
 		return;
-	
+
 	mSystemCenter.x = theX;
 	mSystemCenter.y = theY;
 	if (!TestBit(mEmitterDef->mParticleFlags, (int)ParticleFlags::PARTICLE_PARTICLES_DONT_FOLLOW))

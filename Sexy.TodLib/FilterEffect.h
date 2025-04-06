@@ -30,5 +30,4 @@ void                FilterEffectDoLumSat(MemoryImage* theImage, float theLum, fl
 void                FilterEffectDoWhite(MemoryImage* theImage);
 MemoryImage*        FilterEffectCreateImage(Image* theImage, FilterEffect theFilterEffect);
 Image*              FilterEffectGetImage(Image* theImage, FilterEffect theFilterEffect);
-
 #endif

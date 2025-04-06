@@ -1,8 +1,8 @@
 #define EACH_ROW\
-	for (int y = 0; y < aDestRect.mHeight; y++, aDestPixelsRow += aDestPixelsPitch)\
+	for (int y = 0; y < aDestRect.mHeight - 1; y++, aDestPixelsRow += aDestPixelsPitch)\
 	{\
-		float aBaseX = ((int)aDestRect.mX) + 0 - theRotCenterX - theX;\
-		float aBaseY = ((int)aDestRect.mY) + y - theRotCenterY - theY;\
+		float aBaseX = roundf(((int)aDestRect.mX) + 0 - theRotCenterX - theX);\
+        float aBaseY = roundf(((int)aDestRect.mY) + y - theRotCenterY - theY);\
 		\
 		int aU = (int) ((aCos*(aBaseX) - aSin*(aBaseY) + theRotCenterX) * 0x10000);\
 		int aV = (int) ((aCos*(aBaseY) + aSin*(aBaseX) + theRotCenterY) * 0x10000);\
@@ -10,7 +10,7 @@
 		DEST_PIXEL_TYPE* aDestPixels = aDestPixelsRow;\
 		\
 		int aLeft = 0;\
-		int aRight = aDestRect.mWidth - 1;\
+		int aRight = aDestRect.mWidth;\
 		\
 		int aUInt = (aU >> 16);\
 		int aVInt = (aV >> 16);\
@@ -20,11 +20,11 @@
 			if (aUInt<0)\
 				continue;\
 		\
-			int anEdgeLeft = ((theSrcRect.mWidth << 16) - 0x27FFF - aU) / aCosLong;\
+			int anEdgeLeft = (((theSrcRect.mWidth + 1) << 16) - 0x27FFF - aU) / aCosLong;\
 			if (anEdgeLeft >= aLeft)\
 				aLeft = anEdgeLeft;\
 \
-			int anEdgeRight = (0x07FFF - aU) / aCosLong;\
+			int anEdgeRight = (0x07FFF - aU - 1) / aCosLong;\
 			if (anEdgeRight < aRight)\
 				aRight = anEdgeRight;\
 		}\
@@ -33,11 +33,11 @@
 			if (aUInt >= theSrcRect.mWidth-1)\
 				continue;\
 	\
-			int anEdgeLeft = (0x10000 - aU) / aCosLong;\
+			int anEdgeLeft = (0x10000 - aU - 1) / aCosLong;\
 			if (anEdgeLeft > aLeft)\
 				aLeft = anEdgeLeft;\
 \
-			int anEdgeRight = ((theSrcRect.mWidth << 16) - 0x17FFF - aU) / aCosLong;\
+			int anEdgeRight = (((theSrcRect.mWidth + 1) << 16) - 0x17FFF - aU) / aCosLong;\
 			if (anEdgeRight < aRight)\
 				aRight = anEdgeRight;\
 		}\
@@ -59,7 +59,7 @@
 		}\
 		else if (aSinLong >= 0x0001)\
 		{\
-			if (aVInt >= theSrcRect.mHeight-1)\
+			if (aVInt >= theSrcRect.mHeight)\
 				continue;\
 	\
 			int anEdgeLeft = (0x10000 - aV) / aSinLong;\
@@ -70,7 +70,7 @@
 			if (anEdgeRight < aRight)\
 				aRight = anEdgeRight;\
 		}\
-		else if ((aV < 0) || (aV >= (theSrcRect.mHeight - 1) << 16))\
+		else if ((aV < 0) || (aV >= theSrcRect.mHeight << 16))\
 			continue;\
 \
 		aU += aLeft * aCosLong;\
@@ -79,7 +79,6 @@
 \
 		int aWidth = theImage->mWidth;
 #define END_ROW }
-
 {
 #if defined(OPTIMIZE_SOFTWARE_DRAWING) && defined(WRITE_PIXEL_OPTIMIZED)
 	if (gOptimizeSoftwareDrawing)
@@ -247,8 +246,7 @@
 			int a4 = ((src4 >> 24) * ((ulong) ((           aUFactor) * (           aVFactor)) >> 16)) >> 16;
 			
 			WRITE_PIXEL;
-
-			
+	
 			aU += aCosLong;
 			aV += aSinLong;
 		}

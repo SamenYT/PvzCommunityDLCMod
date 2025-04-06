@@ -45,15 +45,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(IncludePath)</IncludePath>
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Debug\</OutDir>
+    <TargetName>PlantsVsZombies</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Debug\</OutDir>
+    <TargetName>PlantsVsZombies</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;WIN32;_DEBUG;_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -62,8 +66,19 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <UseFullPaths>true</UseFullPaths>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>C:\Users\Bassa\Desktop\Additional C++ Libraries\tinyfiledialogs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <StringPooling>true</StringPooling>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_USE_WIDE_STRING;WIN_32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -80,9 +95,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/Oy- /wd4996 %(AdditionalOptions)</AdditionalOptions>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;WIN32;NDEBUG;_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -91,6 +106,15 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>C:\Users\Bassa\Desktop\Additional C++ Libraries\tinyfiledialogs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <IntelJCCErratum>true</IntelJCCErratum>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_USE_WIDE_STRING;WIN_32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

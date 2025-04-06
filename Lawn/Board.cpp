@@ -9652,7 +9652,7 @@ void Board::UpdateFog()
 //0x41A730
 void Board::DrawFog(Graphics* g)
 {
-	Image* aImageFog = mApp->IsFake3D() ? Sexy::IMAGE_FOG : Sexy::IMAGE_FOG_SOFTWARE;
+	Image* aImageFog = mApp->Is3DAccelerated() ? Sexy::IMAGE_FOG : Sexy::IMAGE_FOG_SOFTWARE;
 	for (int x = 0; x < MAX_GRID_SIZE_X; x++)
 	{
 		for (int y = 0; y < MAX_GRID_SIZE_Y + 1; y++)
@@ -9678,7 +9678,7 @@ void Board::DrawFog(Graphics* g)
 
 			int aColorVariant = 255 - aCelLook * 1.5 - aMotion * 1.5;
 			int aLightnessVariant = 255 - aCelLook - aMotion;
-			if (!mApp->IsFake3D())
+			if (!mApp->Is3DAccelerated())
 			{
 				aPosX += 10;
 				aPosY += 3;
@@ -10033,6 +10033,10 @@ static void TodCrash()
 //0x41B950（原版中废弃）
 void Board::KeyChar(SexyChar theChar)
 {
+#ifndef _DEBUG
+	return;
+#endif
+
 	if (!mApp->mDebugKeysEnabled || !mApp->mPlayerInfo->mIsNotCoop)
 		return;
 
@@ -10794,7 +10798,7 @@ void Board::KeyChar(SexyChar theChar)
 		}
 		if (theChar == _S('%'))
 		{
-			mApp->SwitchScreenMode(mApp->mIsWindowed, !mApp->IsFake3D(), false, false);
+			mApp->SwitchScreenMode(mApp->mIsWindowed, !mApp->Is3DAccelerated(), false, false);
 		}
 		if (theChar == _S('M'))
 		{
@@ -11785,6 +11789,12 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 		{
 			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
 			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_PUZZLE_MODE, CoinMotion::COIN_MOTION_COIN);
+			return;
+		}
+		if (mLevel == 65 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMultiplayer && CountCoinByType(CoinType::COIN_PRESENT_MULTIPLAYER_MODE) == 0)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
+			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MULTIPLAYER_MODE, CoinMotion::COIN_MOTION_COIN);
 			return;
 		}
 	}
