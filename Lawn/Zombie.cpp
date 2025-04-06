@@ -11348,8 +11348,7 @@ void Zombie::ApplyBurn(int damage)
             aCharredPosX -= 36.0f;
             aCharredPosY -= 20.0f;
         }
-        if (mZombieType == ZombieType::ZOMBIE_GARGANTUAR || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR ||
-            mZombieType == ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
+        if (mZombieType == ZombieType::ZOMBIE_GARGANTUAR)
         {
             aReanimType = ReanimationType::REANIM_ZOMBIE_CHARRED_GARGANTUAR;
             aCharredPosX -= 15.0f;
@@ -11358,6 +11357,12 @@ void Zombie::ApplyBurn(int damage)
         if (mZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
         {
             aReanimType = ReanimationType::REANIM_ZOMBIE_CHARRED_GIGA_GARGANTUAR;
+            aCharredPosX -= 15.0f;
+            aCharredPosY -= 10.0f;
+        }
+        if (mZombieType == ZombieType::ZOMBIE_GLADIANTUAR)
+        {
+            aReanimType = ReanimationType::REANIM_ZOMBIE_CHARRED_GLADIANTUAR;
             aCharredPosX -= 15.0f;
             aCharredPosY -= 10.0f;
         }

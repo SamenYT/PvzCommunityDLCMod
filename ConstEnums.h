@@ -1136,6 +1136,7 @@ enum ReanimationType
         REANIM_VOLTSHROOM,
         REANIM_GHOSTPEPPER,
         REANIM_EXPLODEONUT,
+        REANIM_ZOMBIE_CHARRED_GLADIANTUAR,
     NUM_REANIMS
 };
 enum ReanimLoopType
