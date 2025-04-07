@@ -209,6 +209,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     mInPoolAfterShrink = false;
     mHasBeenStunned = false;
     mIsShrunken = false;
+    mIsShrinking = false;
     mGargSquishCounter = 0;
     mIsThrown = false;
     mBoneHealth = 0;
@@ -6412,13 +6413,20 @@ void Zombie::UpdatePlaying()
     if (mShrinkCounter > 0)
     {
         mShrinkCounter--;
-        if (mAnimCounter % 2 == 0 && (mScaleZombie > 0.5f || mZombieType == ZOMBIE_IMP || mZombieType == ZOMBIE_RAVEN))
+
+        if (mShrinkCounter == 0)
         {
-            mScaleZombie -= 0.01f; //shrink zombies down by half unless it's imp
+            mIsShrinking = false;
+            UpdateAnimSpeed();
+        }
+
+        if (mScaleZombie > 0.5f || mZombieType == ZOMBIE_IMP || mZombieType == ZOMBIE_RAVEN)
+        {
+            mScaleZombie -= 0.0025f; //shrink zombies down by half unless it's imp
             if ((mZombieType == ZOMBIE_IMP || mZombieType == ZOMBIE_RAVEN))
             {
-                mScaleZombie -= 0.01f;
-                if (mScaleZombie <= 0.1f)
+                mScaleZombie -= 0.0025f;
+                if (mScaleZombie <= 0.05f)
                 {
                     DieWithLoot();
                 }
@@ -7359,7 +7367,7 @@ void Zombie::UpdateReanim()
         aOverlayMatrix.m12 += aBodyReanim->mOverlayMatrix.m12;
         aBodyReanim->mOverlayMatrix = aOverlayMatrix;
     }
-
+    
     aBodyReanim->Update();
     aBodyReanim->PropogateColorToAttachments();
 }
@@ -7739,6 +7747,12 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         int aGrayness = mJustGotShotCounter * 10;
         Color aHighlightColor(aGrayness, aGrayness, aGrayness, 255);
         aExtraAdditiveColor = ColorAdd(aHighlightColor, aExtraAdditiveColor);
+        aEnableExtraAdditiveDraw = true;
+    }
+    if (mIsShrinking && mShrinkCounter > 0)
+    {
+        int aAlpha = TodAnimateCurveFloatTime(200, 0, mShrinkCounter, 255, 0, CURVE_LINEAR);
+        aExtraAdditiveColor = Color(255, 255, 255, aAlpha);
         aEnableExtraAdditiveDraw = true;
     }
     aBodyReanim->mColorOverride = aColorOverride;
@@ -8638,7 +8652,7 @@ void Zombie::CheckSquish(ZombieAttackType theAttackType)
 //0x52EEF0
 bool Zombie::IsImmobilizied()
 {
-    return mIceTrapCounter > 0 || mButteredCounter > 0 || mStunCounter > 0;
+    return mIceTrapCounter > 0 || mButteredCounter > 0 || mStunCounter > 0 || mIsShrinking && mShrinkCounter > 0;
 }
 
 //0x52EF10

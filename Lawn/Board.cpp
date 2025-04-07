@@ -12247,6 +12247,9 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
+		if (aZombie->mIsShrunken)
+			continue;
+
 		if (aZombie->EffectedByDamage(theDamageRangeFlags) && (aZombie->mZombieType != ZOMBIE_GLADIANTUAR_GIGA && aZombie->mZombieType != ZOMBIE_GLADIANTUAR) && aZombie->mZombieType != ZOMBIE_TARGET && aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING)
 		{
 			Rect aZombieRect = aZombie->GetZombieRect();
@@ -12254,7 +12257,7 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 
 			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
 			{
-				aZombie->mShrinkCounter = 100;
+				aZombie->mShrinkCounter = 200;
 				aZombie->mBodyMaxHealth /= 2;
 				aZombie->mHelmMaxHealth /= 2;
 				aZombie->mShieldMaxHealth /= 2;
@@ -12262,6 +12265,8 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 				aZombie->mBodyHealth /= 2;
 				aZombie->mHelmHealth /= 2;
 				aZombie->mIsShrunken = true;
+				aZombie->mIsShrinking = true;
+				aZombie->ApplyAnimRate(0.0f);
 			}
 		}
 	}
