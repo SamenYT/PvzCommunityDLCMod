@@ -4,11 +4,23 @@ Pult-shroom
 [PULT_SHROOM_TOOLTIP]
 Lobs spores at the enemy
 
-[WATER_POT]
-Water Pot
+[LUME_SHROOM]
+Lume-shroom
 
-[WATER_POT_TOOLTIP]
-Lets you plant aquatic plants outside of the pool
+[LUME_SHROOM_TOOLTIP]
+Removes boosts from zombies and produces sun
+
+[MORTAR_SHROOM]
+Mortar-shroom
+
+[MORTAR_SHROOM_TOOLTIP]
+Deals heavy damage anywhere except from up close
+
+[BLOOD_ORANGE]
+Blood Orange
+
+[BLOOD_ORANGE_TOOLTIP]
+Blows up all zombies in an area but boosts surviving zombies
 
 [LIGHTNING_REED]
 Lightning Reed
@@ -21,6 +33,24 @@ Hurrikale
 
 [HURRIKALE_TOOLTIP]
 Blows a chilling wind that pushes back zombies in its lane
+
+[GHOST_PEPPER]
+Ghost Pepper
+
+[GHOST_PEPPER_TOOLTIP]
+Haunts nearby zombies and explodes after a while
+
+[VOLT_SHROOM]
+Volt-shroom
+
+[MORTAR_SHROOM_TOOLTIP]
+Electrifies various zombies nearby
+
+[WATER_POT]
+Water Pot
+
+[WATER_POT_TOOLTIP]
+Lets you plant aquatic plants outside of the pool
 
 [FIRE_SHROOM]
 Fire-shroom
@@ -4261,7 +4291,16 @@ Lume-shrooms take benefits from zombies and give you sun.
 {KEYWORD}Special:{STAT} removes boosts from zombies
 {KEYWORD}Sun production:{STAT} Zombies killed around it produce sun
 {SHORTLINE}
-{FLAVOR}”Plantern and I go way back,” Lume-shroom says. "We have a bit of a friendly rivalry, Plantern gets a little jealous of the intense glow I make, although I try comforting him by telling him I can't maintain it for as long as he does."
+{FLAVOR}"Plantern and I go way back," Lume-shroom says. "We have a bit of a friendly rivalry, Plantern gets a little jealous of the intense glow I make, although I try comforting him by telling him I can't maintain it for as long as he does."
+
+[MORTAR_SHROOM_DESCRIPTION]
+Mortar-shrooms deal heavy damage to zombies anywhere except around themselves.
+{SHORLINE}
+{KEYWORD}Damage:{STAT} heavy
+{KEYWORD}Range:{STAT} lobbed
+{KEYWORD}Special:{STAT} can be planted on the roof without a flower pot
+{SHORTLINE}
+{FLAVOR}Mortar-shroom has a 3-step plan to kill zombies: locate the target, calibrate coordinates, shoot. Although, he always seems to forget to account for wind. If only he hadn't slept through physics class. 
 
 [LIGHTNING_REED_TOOLTIP]
 Zaps several zombies and crows per strike
@@ -4271,7 +4310,7 @@ Lightning Reeds deal light electrical damage to multiple zombies and crows.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} low
 {SHORTLINE}
-{FLAVOR}Lightning Reed wasn’t always the shocking star of the swamp, he started out as a humble glow stick for bog parties. One night, a freak thunderstorm and an energy drink changed everything. Now, he zaps with sizzling style. “Call it photosynthesis with flair,” he says.
+{FLAVOR}Lightning Reed wasn't always the shocking star of the swamp, he started out as a humble glow stick for bog parties. One night, a freak thunderstorm and an energy drink changed everything. Now, he zaps with sizzling style. "Call it photosynthesis with flair," he says.
 
 [HURRIKALE_TOOLTIP]
 Blows a chilling wind that pushes back zombies in a lane
@@ -4283,7 +4322,7 @@ Hurrikales blow a chilling wind that push back zombies in a lane.
 {KEYWORD}Usage:{STAT} single use, instant
 {KEYWORD}Special:{STAT} pushes and chills zombies
 {SHORTLINE}
-{FLAVOR}Hurrikale always dreamed of being a soliloquist. “To blow, or not to blow, let’s not pretend it was ever a question,” he formulates. However, he can’t be taken seriously as he’s known for accidentally blowing away the scenario curtains whenever he gets too emotional.
+{FLAVOR}Hurrikale always dreamed of being a soliloquist. "To blow, or not to blow, let's not pretend it was ever a question," he formulates. However, he can't be taken seriously as he's known for accidentally blowing away the scenario curtains whenever he gets too emotional.
 
 [BLOOD_ORANGE_TOOLTIP]
 Blows up all zombies in an area but boosts surviving zombies
@@ -4296,7 +4335,7 @@ Blood Oranges blow up all zombies in an area but benefit the ones that remain.
 {KEYWORD}Usage:{STAT} single use, instant
 {KEYWORD}Special:{STAT} boosts surviving zombies within its range
 {SHORTLINE}
-{FLAVOR}Blood Orange lives for scares, always rolling up with a wicked grin and a juicy splatter. "Whoa, is that blood?! Kidding! It’s just juice!", he cackles as another plant screams in terror. He thinks this never gets old. Everyone else disagrees.
+{FLAVOR}Blood Orange lives for scares, always rolling up with a wicked grin and a juicy splatter. "Whoa, is that blood?! Kidding! It's just juice!", he cackles as another plant screams in terror. He thinks this never gets old. Everyone else disagrees.
 
 [VOLT_SHROOM_TOOLTIP]
 Electrifies various zombies nearby
@@ -4320,4 +4359,4 @@ Ghost Peppers haunt zombies, dealing continuous damage and explode after some ti
 {KEYWORD}Range:{STAT} all zombies nearby
 {KEYWORD}Special:{STAT} explodes after some time
 {SHORTLINE}
-{FLAVOR} Ghost Pepper has a reputation for making an entrance. Legend has it, she once scorched an entire village just by floating through. However, she claims it was an accidental gust of heat. 
+{FLAVOR}Ghost Pepper has a reputation for making an entrance. Legend has it, she once scorched an entire village just by floating through. However, she claims it was an accidental gust of heat. 
