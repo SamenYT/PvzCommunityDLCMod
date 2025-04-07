@@ -7,8 +7,8 @@
 int gTodStringFormatCount;               //[0x69DE4C]
 TodStringListFormat* gTodStringFormats;  //[0x69DA34]
 
-int gLawnStringFormatCount = 12;
-TodStringListFormat gLawnStringFormats[14] = {    //0x6A5010
+int gLawnStringFormatCount = 14;
+TodStringListFormat gLawnStringFormats[16] = {    //0x6A5010
 	{ _S("NORMAL"),           nullptr,    Color(40,   50,     90,     255),       0,      0U },
 	{ _S("FLAVOR"),           nullptr,    Color(143,  67,     27,     255),       0,      1U },
 	{ _S("KEYWORD"),          nullptr,    Color(143,  67,     27,     255),       0,      0U },
@@ -17,6 +17,8 @@ TodStringListFormat gLawnStringFormats[14] = {    //0x6A5010
 	{ _S("STAT"),             nullptr,    Color(204,  36,     29,     255),       0,      0U },
 	{ _S("METAL"),            nullptr,    Color(204,  36,     29,     255),       0,      2U },
 	{ _S("KEYMETAL"),         nullptr,    Color(143,  67,     27,     255),       0,      2U },
+	{ _S("VASE"),			  nullptr,    Color(204,  36,     29,     255),       0,      4U },
+	{ _S("BUSH"),			  nullptr,    Color(204,  36,     29,     255),       0,      8U },
 	{ _S("SHORTLINE"),        nullptr,    Color(0,    0,      0,      0),         -9,     0U },
 	{ _S("EXTRASHORTLINE"),   nullptr,    Color(0,    0,      0,      0),         -14,    0U },
 	{ _S("CREDITS1"),         nullptr,    Color(0,    0,      0,      0),         3,      0U },

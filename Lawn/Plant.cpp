@@ -628,6 +628,12 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
 
         break;
     }
+    case SeedType::SEED_SHRINK:
+        if (!IsInPlay())
+        {
+            PlayBodyReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 0);
+        }
+        break;
     case SeedType::SEED_SUNSHROOM:
     {
         TOD_ASSERT(aBodyReanim);

@@ -1802,8 +1802,8 @@ Sea-shrooms are aquatic plants that shoot short ranged spores.
 [PLANTERN_DESCRIPTION]
 Planterns light up an area, letting you see through fog.
 {SHORTLINE}
-{KEYWORD}Range:{STAT} one lane
-{KEYWORD}Special:{STAT} lets you see through fog
+{KEYWORD}Range:{STAT} huge
+{KEYWORD}Special:{STAT} lets you see through fog{VASE} , vases{BUSH} , and bushes{KEYWORD}
 {SHORTLINE}
 {FLAVOR}Plantern defies science. He just does. Other plants eat light and excrete oxygen; Plantern eats 
 darkness and excretes light. Plantern's cagey about how he does it. "I'm not gonna say 'sorcery,' I 

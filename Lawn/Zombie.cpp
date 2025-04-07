@@ -8377,6 +8377,9 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     if (mApp->IsWallnutBowlingLevel() && theAttackType != ZombieAttackType::ATTACKTYPE_VAULT)
         return false;
 
+    if (thePlant->mSeedType == SEED_SHRINK)
+        return false;
+
     if (thePlant->NotOnGround() || thePlant->mSeedType == SeedType::SEED_TANGLEKELP)
         return false;
 

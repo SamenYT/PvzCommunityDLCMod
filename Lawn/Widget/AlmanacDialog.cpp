@@ -385,6 +385,38 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	SexyString aDescriptionName = StrFormat(_S("[%s_DESCRIPTION]"), aPlantDef.mPlantName);
 	//TodDrawString(g, to_string((int)mIncrement), 32, 32, Sexy::FONT_DWARVENTODCRAFT18YELLOW, Color::White, DS_ALIGN_CENTER);
 	TodDrawString(g, aName, 617, 288, Sexy::FONT_DWARVENTODCRAFT18YELLOW, Color::White, DS_ALIGN_CENTER);
+
+	for (TodStringListFormat& aFormat : gLawnStringFormats)
+	{
+		if (TestBit(aFormat.mFormatFlags, TodStringFormatFlag::TOD_FORMAT_HIDE_UNTIL_VASE))
+		{
+			if (mApp->HasSeedType(SeedType::SEED_SPLITPEA))
+			{
+				aFormat.mNewColor.mAlpha = 255;
+				aFormat.mLineSpacingOffset = 0;
+			}
+			else
+			{
+				aFormat.mNewColor.mAlpha = 0;
+				aFormat.mLineSpacingOffset = -17;
+			}
+		}
+
+		if (TestBit(aFormat.mFormatFlags, TodStringFormatFlag::TOD_FORMAT_HIDE_UNTIL_BUSH))
+		{
+			if (mApp->HasSeedType(SeedType::SEED_CHARD_GUARD))
+			{
+				aFormat.mNewColor.mAlpha = 255;
+				aFormat.mLineSpacingOffset = 0;
+			}
+			else
+			{
+				aFormat.mNewColor.mAlpha = 0;
+				aFormat.mLineSpacingOffset = -17;
+			}
+		}
+	}
+
 	TodDrawStringWrapped(g, aDescriptionName, Rect(485, 309, 258, 230), Sexy::FONT_BRIANNETOD12, Color(40, 50, 90), DS_ALIGN_LEFT);
 
 	if (mSelectedSeed != SeedType::SEED_IMITATER)
