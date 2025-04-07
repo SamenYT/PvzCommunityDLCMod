@@ -2603,7 +2603,14 @@ void Plant::UpdateSquash()
             mTargetX = aZombie->ZombieTargetLeadX(0.0f) - mWidth / 2;
             mState = PlantState::STATE_SQUASH_LOOK;
             mStateCountdown = 80;
-            PlayBodyReanim(mTargetX < mX ? "anim_lookleft" : "anim_lookright", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 10, 24.0f);
+            if (mApp->mGameMode == GAMEMODE_CHALLENGE_FLIPPED)
+            {
+                PlayBodyReanim(mTargetX < mX ? "anim_lookright" : "anim_lookleft", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 10, 24.0f);
+            }
+            else
+            {
+                PlayBodyReanim(mTargetX < mX ? "anim_lookleft" : "anim_lookright", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 10, 24.0f);
+            }
             mApp->PlayFoley(FoleyType::FOLEY_SQUASH_HMM);
         }
     }
