@@ -250,6 +250,8 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 
     case ZombieType::ZOMBIE_VAMPIRE:
         mBodyHealth = 500;
+        if (mApp->IsRhythmGarlicLevel())
+            mVelX *= TodAnimateCurveFloat(0, 19, mFromWave, 1.0f, 1.5f, TodCurves::CURVE_LINEAR);
         break;
 
     case ZombieType::ZOMBIE_GIGA_BASIC:
@@ -5447,6 +5449,30 @@ void Zombie::UpdateVampireZombie()
         if (mZombieAge % 5 == 0) mBodyHealth++;
         mHealCounter++;
     }
+    if (mApp->IsRhythmGarlicLevel())
+    {
+        if (mPosX > 520 && mPhaseCounter == 0 && mFromWave > 9)
+        {
+            mPhaseCounter = 100 + Rand(TodAnimateCurve(10, 19, mFromWave, 1000, 1, CURVE_LINEAR));
+            if (Rand(2))
+            {
+                bool CanGoUp = mRow > 0;
+                bool CanGoDown = mRow < 4;
+                if (CanGoUp && CanGoDown)
+                {
+                    SetRow(Rand(2) ? mRow + 1 : mRow - 1);
+                }
+                else if (CanGoUp)
+                {
+                    if (Rand(2)) SetRow(mRow - 1);
+                }
+                else if (CanGoDown)
+                {
+                    if (Rand(2)) SetRow(mRow + 1);
+                }
+            }
+        }
+    }
         
 }
 
@@ -6760,7 +6786,7 @@ void Zombie::AnimateChewSound()
             if (mZombieType == ZOMBIE_NEWSPAPER || mZombieType == ZOMBIE_SCREENDOOR || mZombieType == ZOMBIE_TRASHCAN) TakeBodyDamage(20, 0U);
             else TakeDamage(20, 0U);
         }
-        else if (aPlant->mSeedType == SeedType::SEED_GARLIC)
+        else if (aPlant->mSeedType == SeedType::SEED_GARLIC || aPlant->mSeedType == SeedType::SEED_FLYING_GARLIC)
         {
             if (mZombieType == ZombieType::ZOMBIE_VAMPIRE)
             {
@@ -11748,9 +11774,10 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
         aDeathTrackName = "anim_waterdeath";
         ReanimIgnoreClipRect("Zombie_duckytube", false);
     }
-    else if (aBodyReanim->TrackExists("anim_walnutdeath") && mHasHead && mZombieType == ZombieType::ZOMBIE_VAMPIRE)
+    else if (/*aBodyReanim->TrackExists("anim_walnutdeath") &&*/mHasHead && mZombieType == ZombieType::ZOMBIE_VAMPIRE)
     {
-        aDeathTrackName = "anim_walnutdeath";
+        aDeathTrackName = mApp->IsRhythmGarlicLevel() && Rand(100) ? "anim_garlicdeath" : "anim_walnutdeath";
+        aDeathAnimRate = RandRangeFloat(12.0f, 20.0f);
     }
     else if (aDeathAnimHit == 99 && aBodyReanim->TrackExists("anim_superlongdeath") && aCanDoSuperLongDeath && mChilledCounter == 0 && mBoard->CountZombiesOnScreen() <= 5)
     {

@@ -48,7 +48,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
@@ -59,7 +59,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
@@ -70,7 +70,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
@@ -81,7 +81,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
 		}
 	},
@@ -92,7 +92,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
 			0, 1, 0, 0, 1, 0, 0, 0, 1, 1,
-			0, 1, 0, 1, 1, 0, 1, 0, 1, 1,
+			0, 1, 0, 1, 0, 0, 1, 0, 1, 1,
 			0, 1, 0, 1, 0, 1, 1, 0, 1, 1,
 		}
 	},
@@ -103,7 +103,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 		}
 	},
@@ -125,7 +125,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 1, 0, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
@@ -303,7 +303,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			1, 1, 0, 0, 1, 0, 0, 0, 1, 0,
+			1, 1, 0, 0, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
@@ -314,7 +314,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 1, 1, 0, 0, 0, 1, 0,
+			0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 		}
 	},
@@ -599,6 +599,11 @@ void Challenge::StartLevel()
 		mBoard->mSeedBank->AddSeed(SEED_WALLNUT);
 		mConveyorBeltCounter = 400;
 		mShowBowlingLine = true;
+	}
+	if (mApp->IsRhythmGarlicLevel())
+	{
+		mBoard->mZombieCountDown = 200;
+		mBoard->mZombieCountDownStart = mBoard->mZombieCountDown;
 	}
 	if (aGameMode == GAMEMODE_CHALLENGE_SHOVEL || aGameMode == GAMEMODE_CHALLENGE_SQUIRREL)
 	{

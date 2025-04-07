@@ -1,0 +1,27 @@
+Exception: Access Violation (code 0xc0000005) at address 00EBD420 in thread 6F24
+Module: PlantsVsZombies.exe
+Logical Address: 0001:0013C420
+
+00AFF548 00EBD420 LawnApp::ReanimationTryToGet+0
+Params: 00000000 00C6EFE0 0C0C9338 00000001
+
+00AFF55C 00EC181B MessageWidget::ClearReanim+1B
+Params: D0878304 00AFF598 01289520 FFFFFFFF
+
+
+EAX:00AFF568 EBX:0C0C9338 ECX:00000000 EDX:00AFF5B0 ESI:0C0C93C8 EDI:00000080
+EIP:00EBD420 ESP:00AFF54C  EBP:00AFF574
+CS:0023 SS:002B DS:002B ES:002B FS:0053 GS:002B
+Flags:00010282
+
+Windows Ver: NT 6.2  Build 9200
+DDraw Ver: 10.0.19041.1
+DSound Ver: 10.0.19041.1
+
+Product: PlantsVsZombies
+Version: 
+Time Loaded: 00:00:07
+Fullscreen: No
+Primary ThreadId: 6F24
+Times Played: 0
+

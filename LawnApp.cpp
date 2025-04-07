@@ -2292,6 +2292,7 @@ bool LawnApp::IsLittleTroubleLevel()
 
 bool LawnApp::IsBigTroubleLevel()
 {
+	return false;
 	return (mBoard && ((mGameMode == GameMode::GAMEMODE_ADVENTURE && mPlayerInfo->mLevel == 55)) || 
 		    (mBoard && mGameMode == GAMEMODE_CHALLENGE_BIG_TROUBLE));
 }
@@ -2333,6 +2334,11 @@ bool LawnApp::IsBloodMoonLevel()
 {
 	if (mBoard->StageIsMoon() && !IsFinalBossLevel() && mGameMode != GAMEMODE_CHALLENGE_ECLIPSE) return true;
 	return false;
+}
+
+bool LawnApp::IsRhythmGarlicLevel()
+{
+	return mGameMode == GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC || (IsAdventureMode() && mPlayerInfo->mLevel == 55);
 }
 
 //0x453950

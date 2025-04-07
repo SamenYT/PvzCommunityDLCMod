@@ -664,6 +664,10 @@ void CutScene::PlaceLawnItems()
 
 		mBoard->PlaceRake();
 	}
+	if (mApp->IsRhythmGarlicLevel())
+	{
+		mBoard->NewPlant(4, Rand(5), SeedType::SEED_FLYING_GARLIC);
+	}
 }
 
 //0x43A710
@@ -1132,6 +1136,7 @@ void CutScene::AddGraveStoneParticles()
 //0x43B6F0
 void CutScene::AddFlowerPots()
 {
+	if (mApp->IsRhythmGarlicLevel()) return;
 	int aPotColumns = 0;
 	if (mBoard->mLevel == 41 || mBoard->mLevel == 51)
 	{

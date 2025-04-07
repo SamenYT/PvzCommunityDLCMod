@@ -791,7 +791,6 @@ void Board::PickZombieWaves()
 			if (!aIsFinalWave)
 				continue;
 		}
-
 		// ------------------------------------------------------------------------------------------------
 		// △ 计算该波的僵尸总点数
 		// ------------------------------------------------------------------------------------------------
@@ -813,7 +812,6 @@ void Board::PickZombieWaves()
 		{
 			aZombiePoints = aWave / 3 + 1;
 		}
-
 		// 旗帜波的特殊调整
 		if (aIsFlagWave)
 		{
@@ -821,7 +819,8 @@ void Board::PickZombieWaves()
 			aZombiePoints *= 2.5f;
 
 			if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 &&
-				mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GIGA && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GLITCH)
+				mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GIGA && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GLITCH
+				&& !mApp->IsRhythmGarlicLevel())
 			{
 				for (int _i = 0; _i < aPlainZombiesNum; _i++)
 				{
@@ -829,6 +828,16 @@ void Board::PickZombieWaves()
 				}
 				PutZombieInWave(ZombieType::ZOMBIE_FLAG, aWave, &aZombiePicker);
 			}
+		}
+
+		if (mApp->IsRhythmGarlicLevel())
+		{
+			int aVampCount = aZombiePoints;
+			for (int _i = 0; _i < aVampCount; _i++)
+			{
+				PutZombieInWave(ZombieType::ZOMBIE_VAMPIRE, aWave, &aZombiePicker);
+			}
+			continue;
 		}
 
 		// 部分关卡的多倍出怪
@@ -1906,6 +1915,10 @@ void Board::InitLevel()
 	{
 		mSunMoney = 150;
 	}
+	else if (mApp->IsRhythmGarlicLevel())
+	{
+		mSunMoney = gPlantDefs[SEED_BLOODORANGE].mSeedCost * 3;
+	}
 	else
 	{
 		mSunMoney = 50;
@@ -2219,6 +2232,12 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[1].SetPacketType(SeedType::SEED_GRAVEBUSTER);
 		mSeedBank->mSeedPackets[2].SetPacketType(mApp->IsAdventureMode() ? SeedType::SEED_CHERRYBOMB : SeedType::SEED_ICESHROOM);
 	}
+	else if (mApp->IsRhythmGarlicLevel())
+	{
+		TOD_ASSERT(mSeedBank->mNumPackets == 1);
+		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_BLOODORANGE);
+
+	}
 	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank())
 	{
 		mSeedBank->mNumPackets = GetNumSeedsInBank();
@@ -2346,6 +2365,7 @@ bool Board::ChooseSeedsOnCurrentLevel()
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES ||
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED ||
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST || 
+		mApp->IsRhythmGarlicLevel() ||
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM)
 		return false;
 
@@ -5626,6 +5646,20 @@ void Board::MouseDown(int x, int y, int theClickCount)
 		//ShellExecute(NULL, "open", "https://discord.gg/rTz2QHD9aR", NULL, NULL, SW_SHOWNORMAL);
 	}
 
+	else if (mApp->IsRhythmGarlicLevel())
+	{
+		Plant* aPlant = nullptr;
+		while (IteratePlants(aPlant))
+		{
+			if (aPlant->mSeedType == SeedType::SEED_FLYING_GARLIC)
+			{
+				aPlant->mRow = PixelToGridYKeepOnBoard(x, y);
+				aPlant->mRenderOrder = aPlant->CalcRenderOrder();
+				break;
+			}
+		}
+	}
+
 	UpdateCursor();
 }
 
@@ -5981,6 +6015,16 @@ void Board::BungeeDropZombie(BungeeDropGrid* theBungeeDropGrid, ZombieType theZo
 //0x412C30
 void Board::SpawnZombiesFromSky()
 {
+	if (mApp->IsRhythmGarlicLevel())
+	{
+		for (int i = 6 ; i < 9 ; i++)
+		{
+			Zombie* aZombie = AddZombie(ZombieType::ZOMBIE_VAMPIRE, mCurrentWave);
+			Zombie* aBungee = AddZombie(ZombieType::ZOMBIE_BUNGEE, mCurrentWave);
+			aBungee->BungeeDropZombie(aZombie, i, Rand(5));
+		}
+		return;
+	}
 	if (mIceTrapCounter > 0)
 		return;
 
@@ -6107,6 +6151,19 @@ void Board::SpawnZombieWave()
 			{
 				BungeeDropZombie(&aBungeeDropGrid, aZombieType);
 			}
+		}
+	}
+	else if (mApp->IsRhythmGarlicLevel())
+	{
+		TOD_ASSERT(mCurrentWave >= 0 && mCurrentWave < MAX_ZOMBIE_WAVES && mCurrentWave < mNumWaves);
+		for (int i = 0; i < MAX_ZOMBIES_IN_WAVE; i++)
+		{
+			ZombieType aZombieType = mZombiesInWave[mCurrentWave][i];
+			if (aZombieType == ZombieType::ZOMBIE_INVALID)
+				break;
+			Zombie* aZombie = AddZombie(aZombieType, mCurrentWave);
+			if (aZombieType == ZombieType::ZOMBIE_VAMPIRE)
+				aZombie->mPosX += i * 80;
 		}
 	}
 	else
@@ -11041,7 +11098,7 @@ bool Board::HasConveyorBeltSeedBank()
 //0x41BEE0
 int Board::GetNumSeedsInBank()
 {
-	if (mApp->IsScaryPotterLevel())
+	if (mApp->IsScaryPotterLevel() || mApp->IsRhythmGarlicLevel())
 	{
 		return 1;
 	}

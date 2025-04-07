@@ -172,7 +172,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_REVERSE_STARFRUIT,      nullptr, ReanimationType::REANIM_STARFRUIT,     31,  550,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CHOMPER"),-1 },
     { SeedType::SEED_REVERSE_THREEPEATER,    nullptr, ReanimationType::REANIM_THREEPEATER,   31,  325,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER"),-1 },
     { SeedType::SEED_DUMMY,                  nullptr, ReanimationType::REANIM_DUMMY,         2,    50,   3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DUMMY"),-1 },
-
+    { SeedType::SEED_FLYING_GARLIC,          nullptr, ReanimationType::REANIM_GARLIC,        2,    50,   3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DUMMY"),-1 },
 };
 
 //0x401B20
@@ -4184,6 +4184,7 @@ void Plant::UpdateAbilities()
     else if (mSeedType == SeedType::SEED_LEMON_NADE)                                            UpdateLemon();
     else if (mSeedType == SeedType::SEED_SHRINK)                                                UpdateViolet();
     else if (mSeedType == SeedType::SEED_ALOEVERA)                                              UpdateAloe();
+    else if (mSeedType == SeedType::SEED_FLYING_GARLIC)                                         UpdateFlyingGarlic();
 
     if (mSubclass == PlantSubClass::SUBCLASS_SHOOTER)
     {
@@ -4197,6 +4198,13 @@ void Plant::UpdateAbilities()
             DoSpecial();
         }
     }
+}
+
+void Plant::UpdateFlyingGarlic()
+{
+    int mTargetY = mBoard->GridToPixelY(4, mRow);
+    mY = (mY + mTargetY) / 2;
+    mPlantHealth = 99999;
 }
 
 //0x463420

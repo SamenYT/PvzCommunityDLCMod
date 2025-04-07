@@ -251,6 +251,7 @@ public:
 	/*inline*/ bool					IsVersusLevel();
 	/*inline*/ bool					IsStormyNightLevel();
 	/*inline*/ bool					IsBloodMoonLevel();
+	bool							IsRhythmGarlicLevel();
 	/*inline*/ bool					IsFinalBossLevel();
 	/*inline*/ bool					IsBungeeBlitzLevel();
 	static /*inline*/ SeedType		GetAwardSeedForLevel(int theLevel);
