@@ -8,7 +8,7 @@ Lobs spores at the enemy
 Water Pot
 
 [WATER_POT_TOOLTIP]
-Lets you plant aquatic plants on the roof or lawn
+Lets you plant aquatic plants outside of the pool
 
 [LIGHTNING_REED]
 Lightning Reed
@@ -114,10 +114,10 @@ Plasmawood
 Peas that pass through it turn into plasmaballs (requires torchwood)
 
 [ICE_QUEEN_PEA]
-Ice Queen Pea
+Ice Pea
 
 [ICE_QUEEN_PEA_TOOLTIP]
-Shoots solid frozen peas that damage and ice trap the enemy (requires snowpea)
+Shoots solid frozen peas that damage and ice trap the enemy (requires snow pea)
 
 [VINE_NUT]
 Vine-nut
@@ -147,21 +147,21 @@ Shoots 8 spikes that orbit around itself in an oscillating pattern (requires cac
 Shooting Star
 
 [SHOOTING_STAR_TOOLTIP]
-Shoots shooting stars from the sky
+Shoots stars from the sky
 (requires starfruit)
 
 [FIRE_PEASHOOTER]
-Fire Peashooter
+Fire Pea
 
 [FIRE_PEASHOOTER_TOOLTIP]
 Shoots fireballs that damage groups of zombies
 
 [PLASMAPEA_TOOLTIP]
 Shoots plasmaballs that damage groups of zombies
-(requires firepeashooter)
+(requires fire pea)
 
 [PLASMAPEA]
-Plasma Peashooter
+Plasma Pea
 
 [PEPPER_PULT]
 Pepper-Pult
@@ -179,133 +179,133 @@ Freezes and damages an entire lane of zombies
 Ice-nut
 
 [ZOMBIE_TOOLTIP]
-Regular Garden-variety Zombie.
+Regular Garden-variety Zombie
 
 [FLAG_ZOMBIE_TOOLTIP]
-Flag Zombie marks the arrival of a huge pile or "wave" of zombies.
+Flag Zombie marks the arrival of a huge pile or "wave" of zombies
 
 [CONEHEAD_ZOMBIE_TOOLTIP]
-His traffic cone headpiece makes him twice as tough as normal zombies.
+His traffic cone headpiece makes him twice as tough as normal zombies
 
 [BUCKETHEAD_ZOMBIE_TOOLTIP]
-His bucket hat makes him extremely resistant to damage.
+His bucket hat makes him extremely resistant to damage
 
 [POLE_VAULTING_ZOMBIE_TOOLTIP]
-Pole Vaulting Zombie vaults with a pole.
+Pole Vaulting Zombie vaults with a pole
 
 [NEWSPAPER_ZOMBIE_TOOLTIP]
-His newspaper provides limited defense.
+His newspaper provides limited defense
 
 [SCREEN_DOOR_ZOMBIE_TOOLTIP]
-His screen door is an effective shield.
+His screen door is an effective shield
 
 [FOOTBALL_ZOMBIE_TOOLTIP]
-Football Zombie makes the big plays.
+Football Zombie makes the big plays
 
 [DANCING_ZOMBIE_TOOLTIP]
-Any resemblance between Dancing Zombie and persons living or dead is purely coincidental.
+Any resemblance between Dancing Zombie and persons living or dead is purely coincidental
 
 [SNORKEL_ZOMBIE_TOOLTIP]
-Snorkel zombies can swim underwater.
+Snorkel zombies can swim underwater
 
 [BACKUP_DANCER_TOOLTIP]
-These zombies appear in sets of four whenever Dancing Zombie rocks out.
+These zombies appear in sets of four whenever Dancing Zombie rocks out
 
 [ZOMBONI_TOOLTIP]
-The Zomboni applies ice, steam and pressure to your plants.
+The Zomboni applies ice, steam and pressure to your plants
 
 [DOLPHIN_RIDER_ZOMBIE_TOOLTIP]
-Dolphin Rider Zombies use dolphins to exploit weaknesses in your pool defense.
+Dolphin Rider Zombies use dolphins to exploit weaknesses in your pool defense
 
 [JACK_IN_THE_BOX_ZOMBIE_TOOLTIP]
-This zombie carries an explosive surprise.
+This zombie carries an explosive surprise
 
 [BALLOON_ZOMBIE_TOOLTIP]
-Balloon Zombie floats above the fray, immune to most attacks.
+Balloon Zombie floats above the fray, immune to most attacks
 
 [DIGGER_ZOMBIE_TOOLTIP]
-This zombie digs to bypass your defenses.
+This zombie digs to bypass your defenses
 
 [POGO_ZOMBIE_TOOLTIP]
-Pogo Zombie hops to bypass your defenses.
+Pogo Zombie hops to bypass your defenses
 
 [BUNGEE_ZOMBIE_TOOLTIP]
-Bungee Zombie attacks from above.
+Bungee Zombie attacks from above
 
 [LADDER_ZOMBIE_TOOLTIP]
-Ladder Zombie climbs over obstacles.
+Ladder Zombie climbs over obstacles
 
 [CATAPULT_ZOMBIE_TOOLTIP]
-Catapult Zombie operates heavy machinery.
+Catapult Zombie operates heavy machinery
 
 [GARGANTUAR_TOOLTIP]
-Gargantuar is a gigantic zombie.
+Gargantuar is a gigantic zombie
 
 [REDEYED_GARGANTUAR_TOOLTIP]
-Giga-gargantuar is a gigantic zombie.
+Giga-gargantuar is a gigantic zombie
 
 [IMP_TOOLTIP]
-Imps are tiny zombies hurled by Gargantuar deep into your defenses.
+Imps are tiny zombies hurled by Gargantuar deep into your defenses
 
 [BOSS_TOOLTIP]
-Dr. Zomboss rules them all.
+Dr. Zomboss rules them all
 
 [GRAVE]
 Gravestone
 
 [GRAVE_TOOLTIP]
-Produces brains, protects Target Zombies. Mmmm... buying power.
+Produces brains, protects Target Zombies. Mmmm... buying power
 
 [VAMPIRE]
 Vampire Zombie
 
 [VAMPIRE_TOOLTIP]
-Vampire Zombie heals himself from eating your plants.
+Vampire Zombie heals himself from eating your plants
 
 [SCARECROW]
 Scarecrow Zombie
 
 [SCARECROW_TOOLTIP]
-Scarecrow Zombie summon Crows to peck away at your defense.
+Scarecrow Zombie summon Crows to peck away at your defense
 
 [RAVEN]
 Zombie Crow
 
 [GIGA_FOOTBALL_ZOMBIE]
-Giga-Football Zombie
+Giga-football Zombie
 
 [GIGA_FOOTBALL_ZOMBIE_TOOLTIP]
-Giga-Football Zombie makes the big plays.
+Giga-football Zombie makes the big plays
 
 [GLADIANTUAR]
 Gladiantuar
 
 [GLADIANTUAR_TOOLTIP]
-Gladiantuar's attacks leave devastating effects on your lawn.
+Gladiantuar's attacks leave devastating effects on your lawn
 
 [LEAFBLOWER]
 Leaf Blower Zombie
 
 [LEAFBLOWER_TOOLTIP]
-An expert in the leaf blowing field.
+An expert in the leaf blowing field
 
 [LUMBERJACK]
 Lumberjack Zombie
 
 [LUMBERJACK_TOOLTIP]
-Lumberjack Zombie uses his axe to destroy plants in its path.
+Lumberjack Zombie uses his axe to destroy plants in its path
 
 [FISHERMAN]
 Fisherman Zombie
 
 [FISHERMAN_TOOLTIP]
-Fisherman Zombie traps plants inside his net.
+Fisherman Zombie traps plants inside his net
 
 [HUNTER]
 Hunter Zombie
 
 [HUNTER_TOOLTIP]
-Hunter Zombie shoots plants from a distance.
+Hunter Zombie shoots plants from a distance
 
 [BIGFOOT]
 Zombie Bigfoot
@@ -314,19 +314,19 @@ Zombie Bigfoot
 Ice Block Zombie
 
 [ICE_TOOLTIP]
-His ice armor makes him eight times as tough as normal zombies.
+His ice armor makes him eight times as tough as normal zombies
 
 [GIGA_GLADIANTUAR]
 Giga-gladiantuar
 
 [GIGA_GLADIANTUAR_TOOLTIP]
-Giga-gladiantuar oversees the destruction of your lawn.
+Giga-gladiantuar oversees the destruction of your lawn
 
 [TRASHCAN_ZOMBIE]
 Trash Can Zombie
 
 [TRASHCAN_ZOMBIE_TOOLTIP]
-A zombie holding a trash can.
+A zombie holding a trash can
 
 [TARGET]
 Target Zombie
@@ -368,10 +368,10 @@ Cherry Bomb Zombie
 Chomper Zombie
 
 [FIREPEA_ZOMBIE]
-Fire Peashooter Zombie
+Fire Pea Zombie
 
 [EPEA_ZOMBIE]
-Electric Peashooter Zombie
+Electric Pea Zombie
 
 [GLITCH]
 Glitch Zombie
@@ -400,9 +400,9 @@ Pult-shrooms are cheap, but don't do much damage.
 [WATER_POT_DESCRIPTION]
 Water Pots let you plant aquatic plants on the roof or lawn.
 {SHORTLINE}
-{KEYWORD}Special:{STAT} allows you to plant aquatic plants on the roof or lawn
+{KEYWORD}Special:{STAT} allows you to plant aquatic plants outside of the pool
 {SHORTLINE}
-{FLAVOR}If you pay close attention, then you'll realise Water Pot has a face too! He always did, he was only too embarrassed to show it in the Zen Garden.
+{FLAVOR}If you pay close attention, you'll realise Water Pot has a face too! He always did, he was only too embarrassed to show it in the Zen Garden.
 
 [LIGHTNING_REED_DESCRIPTION]
 Lightning Reeds deal light electrical damage to multiple zombies and crows.
