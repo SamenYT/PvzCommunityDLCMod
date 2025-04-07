@@ -471,7 +471,7 @@ Seastars launch 5 stars and occasionally rotate to launch in 10 directions.
 Pickled Peppers can destroy an entire column of zombies.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} massive
-{KEYWORD}Range:{STAT} all zombies in column
+{KEYWORD}Range:{STAT} all zombies in a column
 {KEYWORD}Usage:{STAT} single use, instant
 {SHORTLINE}
 {FLAVOR}"GAAARGH!!!" says Pickled Pepper, "My chic outfit is SO MUCH BETTER than that silly Jalapeno's!"
