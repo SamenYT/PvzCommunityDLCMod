@@ -261,6 +261,12 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 		Graphics aSeedG(*g);
 		aSeedG.mScaleX = theScale * g->mScaleX;
 		aSeedG.mScaleY = theScale * g->mScaleY;
+		if (theSeedType == SEED_ZOMBIE_BUNGEE)
+		{
+			aSeedG.mClipRect.mY = y + theOffsetY + 10;
+			y -= 180;
+		}
+
 		Plant::DrawSeedType(&aSeedG, theSeedType, theImitaterType, DrawVariation::VARIATION_NORMAL, x + theOffsetX, y + theOffsetY);
 	}
 	
@@ -324,7 +330,6 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	}
 	else
 	{
-		
 		if (SeedPacket::IsZombiePack(theSeedType) || (((LawnApp*)gSexyAppBase)->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES && ((LawnApp*)gSexyAppBase)->mBoard && (theSeedType >= SEED_ZOMBIE_NORMAL && theSeedType <= SEED_ZOMBIE_ZOMBOSS || theSeedType == SEED_GRAVE)))
 		{
 			TodDrawImageScaledF(g, Sexy::IMAGE_ZOMBIE_PACK, x, y, g->mScaleX, g->mScaleY);

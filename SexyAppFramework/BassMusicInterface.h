@@ -61,6 +61,7 @@ public:
 
 	// functions for dealing with MODs
 	int						GetMusicOrder(int theSongId);
+	int						GetChannelPosition(int theSongId);
 };
 
 }

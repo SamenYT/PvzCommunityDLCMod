@@ -70,7 +70,7 @@ public:
     void                    Draw(Graphics* g);
     void                    DrawShadow(Graphics* g);
     void                    Die();
-    void                    DoImpact(Zombie* theZombie);
+    void                    DoImpact(Zombie* theZombie, bool isSilent = false);
     void                    DoImpactPlant(Plant* thePlant);
     void                    DoImpactGridItem(GridItem* theGridItem);
     void                    UpdateMotion();

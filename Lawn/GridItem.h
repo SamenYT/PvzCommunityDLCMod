@@ -50,7 +50,7 @@ public:
 	Rect                    mGridItemRect;
 	int                     mHealth;
 	int                     mMaxHealth;
-	int						mFlashCounter;
+	int						mJustGotShotCounter;
 	bool					mIsTrash;
 
 public:

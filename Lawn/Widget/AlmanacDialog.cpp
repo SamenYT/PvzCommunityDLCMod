@@ -500,7 +500,10 @@ void AlmanacDialog::DrawZombies(Graphics* g)
 					aZombieGraphics.SetColor(Color(0, 0, 0, 40));
 					aZombieGraphics.SetColorizeImages(true);
 				}
-				if (aZombieType == ZOMBIE_ZOMBONI) aZombieGraphics.mTransX -= 25;
+				if (aZombieType == ZombieType::ZOMBIE_BUNGEE)
+				{
+					aZombieGraphics.mTransY -= 300;
+				}
 				mApp->mReanimatorCache->DrawCachedZombie(&aZombieGraphics, 0, 0, aZombieTypeToDraw);
 				aZombieGraphics.SetColorizeImages(false);
 

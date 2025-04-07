@@ -192,18 +192,25 @@ void CursorObject::Draw(Graphics* g)
         {
             aOffsetX -= 55.0f;
             aOffsetY -= 70.0f;
+            if (mType == SeedType::SEED_ZOMBIE_BUNGEE)
+            {
+                aOffsetY -= 600;
+            }
+            else if (mType == SeedType::SEED_ZOMBONI)
+            {
+                aOffsetX += 10;
+                aOffsetY -= 25;
+            }
         }
         else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES)
         {
             seedG.mScaleX *= -1;
 
-            //g->mColor = Color(128, 0, 192, 255);
-
             if (aPlantingSeedType == SEED_GRAVE)
             {
                 aOffsetX += 80;
             }
-            else 
+            else
             {
                 aOffsetX += 125.0f;
                 aOffsetY -= 70.0f;
@@ -346,9 +353,27 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 30.0f;
             }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BALLOON)
+            {
+                aHeight -= 30.0f;
+            }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_POGO)
+            {
+                aHeight -= 16.0f;
+            }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
+            {
+                aHeight -= 600;
+            }
 
             aOffsetY = aHeight - 78.0f;
             aOffsetX = -49.0f;
+
+            if (aSeedType == SeedType::SEED_ZOMBONI)
+            {
+                aOffsetX += 10;
+                aOffsetY -= 25;
+            }
         }
         else if ((mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES))
         {
@@ -359,6 +384,18 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 30.0f;
             }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BALLOON)
+            {
+                aHeight -= 30.0f;
+            }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_POGO)
+            {
+                aHeight -= 16.0f;
+            }
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
+            {
+                aHeight -= 600;
+            }
 
             if (aSeedType == SEED_GRAVE)
             {
@@ -368,6 +405,12 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aOffsetX = 125.0f;
                 aOffsetY = aHeight - 78.0f;
+            }
+
+            if (aSeedType == SeedType::SEED_ZOMBONI)
+            {
+                aOffsetX += 10;
+                aOffsetY -= 25;
             }
         }
         else if (mApp->IsVersusLevel() && mBoard->CheckZombiePack(aSeedType) && aSeedType != SEED_GRAVE)

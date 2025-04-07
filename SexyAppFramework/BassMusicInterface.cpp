@@ -56,13 +56,20 @@ BassMusicInterface::BassMusicInterface(HWND theHWnd)
 
 	BOOL success;
 
+#ifdef _WIN64
+	success = gBass->BASS_Init(1, 44100, 0, theHWnd, NULL);
+	gBass->BASS_SetConfig(BASS_CONFIG_BUFFER, 2000);
+#else
 	if (gBass->mVersion2)
 	{
 		success = gBass->BASS_Init2(1, 44100, 0, theHWnd, NULL);
 		gBass->BASS_SetConfig(BASS_CONFIG_BUFFER, 2000);
 	}
 	else
+	{
 		success = gBass->BASS_Init(-1, 44100, 0, theHWnd);
+	}
+#endif
 
 	mixerSetControlDetails(phmx, &mcd, 0L);
 
@@ -419,6 +426,18 @@ int BassMusicInterface::GetMusicOrder(int theSongId)
 	{		
 		BassMusicInfo* aMusicInfo = &anItr->second;
 		int aPosition = gBass->BASS_MusicGetOrderPosition(aMusicInfo->GetHandle());
+		return aPosition;
+	}
+	return -1;
+}
+
+int BassMusicInterface::GetChannelPosition(int theSongId)
+{
+	BassMusicMap::iterator anItr = mMusicMap.find(theSongId);
+	if (anItr != mMusicMap.end())
+	{
+		BassMusicInfo* aMusicInfo = &anItr->second;
+		int aPosition = gBass->BASS_ChannelGetPosition(aMusicInfo->GetHandle());
 		return aPosition;
 	}
 	return -1;

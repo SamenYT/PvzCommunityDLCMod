@@ -1472,6 +1472,8 @@ void ImageFont::DrawStringEx(Graphics* g, int theX, int theY, const SexyString& 
 			aNextChar = mFontData->mCharMap[(uchar) theString[aCharNum+1]];
 
 		int aMaxXPos = aCurXPos;
+		
+		int aLayerCount = 0;
 
 		ActiveFontLayerList::iterator anItr = mActiveLayerList.begin();
 		while (anItr != mActiveLayerList.end())
@@ -1526,7 +1528,9 @@ void ImageFont::DrawStringEx(Graphics* g, int theX, int theY, const SexyString& 
 			aColor.mBlue = min((theColor.mBlue * anActiveFontLayer->mBaseFontLayer->mColorMult.mBlue / 255) + anActiveFontLayer->mBaseFontLayer->mColorAdd.mBlue, 255);
 			aColor.mAlpha = min((theColor.mAlpha * anActiveFontLayer->mBaseFontLayer->mColorMult.mAlpha / 255) + anActiveFontLayer->mBaseFontLayer->mColorAdd.mAlpha, 255);
 			
-			int anOrder = anActiveFontLayer->mBaseFontLayer->mBaseOrder + anActiveFontLayer->mBaseFontLayer->mCharData[(uchar) aChar].mOrder;
+			int aBaseOrder = anActiveFontLayer->mBaseFontLayer->mBaseOrder;
+			if (!aBaseOrder) aBaseOrder = aLayerCount++;
+			int anOrder = aBaseOrder + anActiveFontLayer->mBaseFontLayer->mCharData[(uchar) aChar].mOrder;
 
 			if (aCurPoolIdx >= POOL_SIZE)
 				break;

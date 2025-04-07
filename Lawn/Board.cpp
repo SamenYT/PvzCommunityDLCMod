@@ -853,8 +853,14 @@ void Board::PickZombieWaves()
 		{
 			aZombiePoints *= 2;
 		}
-		if (!mApp->mPlayerInfo->mHardmodeIsOff && !HasConveyorBeltSeedBank()) aZombiePoints *= 2;
-		else if (!mApp->mPlayerInfo->mHardmodeIsOff && HasConveyorBeltSeedBank()) aZombiePoints++;
+		if (!mApp->mPlayerInfo->mHardmodeIsOff && !HasConveyorBeltSeedBank()) 
+		{
+			aZombiePoints *= 2;
+		}
+		else if (!mApp->mPlayerInfo->mHardmodeIsOff && HasConveyorBeltSeedBank()) 
+		{
+			aZombiePoints++;
+		}
 		// ------------------------------------------------------------------------------------------------
 		// △ 向出怪列表中加入固定刷出的僵尸
 		// ------------------------------------------------------------------------------------------------
@@ -969,7 +975,7 @@ void Board::PickZombieWaves()
 			PutZombieInWave(ZombieType::ZOMBIE_GIGA_FOOTBALL, aWave, &aZombiePicker);
 		}
 		// 冒险模式关卡的最后一波会出现本关卡可能出现的所有僵尸
-		if (mApp->IsAdventureMode() && aIsFinalWave)
+		if (/*mApp->IsAdventureMode() &&*/ aIsFinalWave)
 		{
 			PutInMissingZombies(aWave, &aZombiePicker);
 		}
@@ -1016,6 +1022,7 @@ void Board::PickZombieWaves()
 		while (aZombiePoints > 0 && aZombiePicker.mZombieCount < MAX_ZOMBIES_IN_WAVE)
 		{
 			ZombieType aZombieType = PickZombieType(aZombiePoints, aWave, &aZombiePicker);
+			if (aZombieType == ZombieType::ZOMBIE_INVALID) break;
 			PutZombieInWave(aZombieType, aWave, &aZombiePicker);
 		}
 	}
@@ -1175,7 +1182,6 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_TEST:
 	case GameMode::GAMEMODE_CHALLENGE_SHOVEL:
 	case GameMode::GAMEMODE_CHALLENGE_SQUIRREL:
-	case GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES:
 	case GameMode::GAMEMODE_CHALLENGE_BOMBALL:
 	case GameMode::GAMEMODE_CHALLENGE_SNOWPEA:
 	case GameMode::GAMEMODE_CHALLENGE_VERSUS:
@@ -1235,6 +1241,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_3:
 	case GameMode::GAMEMODE_CHALLENGE_GLADIANTUAR:
 	case GameMode::GAMEMODE_CHALLENGE_VERSUS_NIGHT:
+	case GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES:
 		mBackground = BackgroundType::BACKGROUND_2_NIGHT;
 		break;
 
@@ -1918,7 +1925,7 @@ void Board::InitLevel()
 	}
 	// 初始化阳光掉落
 	mNumSunsFallen = 0;
-	if (!StageIsNight())
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES || !StageIsNight())
 	{
 		mSunCountDown = RandRangeInt(425, 700);
 	}
@@ -3185,7 +3192,21 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 			}
 		}
 		// 僵尸最早出现的波数的限制（出怪限制）
-		else if (aGameMode != GameMode::GAMEMODE_CHALLENGE_POGO_PARTY && aGameMode != GameMode::GAMEMODE_CHALLENGE_BOBSLED_BONANZA && aGameMode != GameMode::GAMEMODE_CHALLENGE_AIR_RAID && aGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH)
+		/*else if (aGameMode != GameMode::GAMEMODE_CHALLENGE_POGO_PARTY && aGameMode != GameMode::GAMEMODE_CHALLENGE_BOBSLED_BONANZA && aGameMode != GameMode::GAMEMODE_CHALLENGE_AIR_RAID && aGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH)
+		{
+			int aFirstAllowedWave = aZombieDef.mFirstAllowedWave;
+			// 无尽模式中，僵尸最早可出现的波数逐渐前移
+			if (mApp->IsSurvivalEndless(aGameMode))
+			{
+				int aFlags = GetSurvivalFlagsCompleted();
+				int aAllowedWave = aFirstAllowedWave - TodAnimateCurve(18, 50, aFlags, 0, 15, TodCurves::CURVE_LINEAR);
+				aFirstAllowedWave = max(aAllowedWave, 1);
+			}
+			if (theWaveIndex + 1 < aFirstAllowedWave || theZombiePoints < aZombieDef.mZombieValue)
+			{
+				continue;
+			}
+		}*/
 		{
 			int aFirstAllowedWave = aZombieDef.mFirstAllowedWave;
 			// 无尽模式中，僵尸最早可出现的波数逐渐前移
@@ -3217,7 +3238,7 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 				}
 			}
 			// 红眼的旗帜波出怪上限和非旗帜波出怪总和上限
-			else if (aZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR || aZombieType == ZombieType::ZOMBIE_GLADIANTUAR)
+			else if (aZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR || aZombieType == ZombieType::ZOMBIE_GLADIANTUAR || aZombieType >= ZombieType::ZOMBIE_GIGA_BASIC && aZombieType <= ZombieType::ZOMBIE_GIGA_FOOTBALL)
 			{
 				if (IsFlagWave(theWaveIndex))
 				{
@@ -3245,10 +3266,15 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 				aPickWeight = TodAnimateCurve(10, 50, aFlags, aPickWeight, aPickWeight / 4, TodCurves::CURVE_LINEAR);
 			}
 		}
+
+		if (aPickWeight <= 0)	continue;
+
 		aZombieWeightArray[aPickCount].mItem = aZombieType;
 		aZombieWeightArray[aPickCount].mWeight = aPickWeight;
 		aPickCount++;
 	}
+
+	if (aPickCount <= 0)	return ZombieType::ZOMBIE_INVALID;
 
 	// 加权随机地取得一种可能的僵尸类型并返回
 	return (ZombieType)TodPickFromWeightedArray(aZombieWeightArray, aPickCount);
@@ -6366,7 +6392,7 @@ bool Board::HasLevelAwardDropped()
 //0x413A70
 void Board::UpdateSunSpawning()
 {
-	if (StageIsNight() || 
+	if ((mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES && StageIsNight()) ||
 		HasLevelAwardDropped() || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RAINING_SEEDS || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST || 
@@ -6419,7 +6445,7 @@ void Board::UpdateSunSpawning()
 	}
 	else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES)
 	{
-		AddCoin(RandRangeInt(600, 749), 60, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_SKY);
+		AddCoin(RandRangeInt(100, 649), 60, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_SKY);
 	}
 	else if (StageHasShadow())
 	{
@@ -6507,15 +6533,16 @@ void Board::UpdateZombieSpawning()
 					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_POOL_WATERYGRAVES || 
 					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_FOG_RIGORMORMIST ||
 					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_ROOF_GRAZETHEROOF ||
-					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_MOON_GRASSTHEMOON)
+					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_MOON_GRASSTHEMOON ||
+					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_FOREST || 
+					mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_GLITCH)
 				{
 					if (mHugeWaveCountDown == 400)
 					{
 						mApp->mMusic->StartBurst();
 					}
 				}
-				else if (mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS || 
-						 mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_FOREST || mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_GLITCH)
+				else if (mApp->mMusic->mCurMusicTune == MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS )
 				{
 					if (mHugeWaveCountDown == 700)
 					{

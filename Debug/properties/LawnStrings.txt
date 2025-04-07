@@ -4250,3 +4250,74 @@ Replay level?
 
 [REPLAY_LEVEL_BODY]
 Do you wish to replay level 3-4?
+
+[LUME_SHROOM_TOOLTIP]
+Removes boosts from zombies and produces sun
+
+[LUME_SHROOM_DESCRIPTION]
+Lume-shrooms take benefits from zombies and give you sun.
+{SHORTLINE}
+{KEYWORD}Range:{STAT} all zombies in a medium area
+{KEYWORD}Special:{STAT} removes boosts from zombies
+{KEYWORD}Sun production:{STAT} Zombies killed around it produce sun
+{SHORTLINE}
+{FLAVOR}”Plantern and I go way back,” Lume-shroom says. "We have a bit of a friendly rivalry, Plantern gets a little jealous of the intense glow I make, although I try comforting him by telling him I can't maintain it for as long as he does."
+
+[LIGHTNING_REED_TOOLTIP]
+Zaps several zombies and crows per strike
+
+[LIGHTNING_REED_DESCRIPTION]
+Lightning Reeds deal light electrical damage to multiple zombies and crows.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} low
+{SHORTLINE}
+{FLAVOR}Lightning Reed wasn’t always the shocking star of the swamp, he started out as a humble glow stick for bog parties. One night, a freak thunderstorm and an energy drink changed everything. Now, he zaps with sizzling style. “Call it photosynthesis with flair,” he says.
+
+[HURRIKALE_TOOLTIP]
+Blows a chilling wind that pushes back zombies in a lane
+
+[HURRIKALE_DESCRIPTION]
+Hurrikales blow a chilling wind that push back zombies in a lane.
+{SHORTLINE}
+{KEYWORD}Range:{STAT} all zombies in a lane
+{KEYWORD}Usage:{STAT} single use, instant
+{KEYWORD}Special:{STAT} pushes and chills zombies
+{SHORTLINE}
+{FLAVOR}Hurrikale always dreamed of being a soliloquist. “To blow, or not to blow, let’s not pretend it was ever a question,” he formulates. However, he can’t be taken seriously as he’s known for accidentally blowing away the scenario curtains whenever he gets too emotional.
+
+[BLOOD_ORANGE_TOOLTIP]
+Blows up all zombies in an area but boosts surviving zombies
+
+[BLOOD_ORANGE_DESCRIPTION]
+Blood Oranges blow up all zombies in an area but benefit the ones that remain.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} massive
+{KEYWORD}Range:{STAT} all zombies in a medium area
+{KEYWORD}Usage:{STAT} single use, instant
+{KEYWORD}Special:{STAT} boosts surviving zombies within its range
+{SHORTLINE}
+{FLAVOR}Blood Orange lives for scares, always rolling up with a wicked grin and a juicy splatter. "Whoa, is that blood?! Kidding! It’s just juice!", he cackles as another plant screams in terror. He thinks this never gets old. Everyone else disagrees.
+
+[VOLT_SHROOM_TOOLTIP]
+Electrifies various zombies nearby
+
+[VOLT_SHROOM_DESCRIPTION]
+Volt-shrooms conduct electricity to multiple zombies nearby.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} high
+{KEYWORD}Range:{STAT} all zombies nearby
+{KEYWORD}Special:{STAT} evenly distributes damage across zombies in range
+{SHORTLINE}
+{FLAVOR}Volt-shroom seeks out all that goes zap and glows. From kettles, to toothbrushes, to night lights, to hijacking the breaker unit at the Lawn of Doom festival every Halloween.
+
+[GHOST_PEPPER_TOOLTIP]
+Haunts nearby zombies and explodes after a while
+
+[GHOST_PEPPER_DESCRIPTION]
+Ghost Peppers haunt zombies, dealing continuous damage and explode after some time.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} high
+{KEYWORD}Range:{STAT} all zombies nearby
+{KEYWORD}Special:{STAT} explodes after some time
+{SHORTLINE}
+{FLAVOR} Ghost Pepper has a reputation for making an entrance. Legend has it, she once scorched an entire village just by floating through. However, she claims it was an accidental gust of heat. 

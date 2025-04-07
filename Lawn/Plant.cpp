@@ -330,6 +330,16 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
 
     switch (theSeedType)
     {
+    case SeedType::SEED_TWINSUNFLOWER:
+    case SeedType::SEED_SUNFLOWER:
+    {
+        TOD_ASSERT(aBodyReanim);
+        if (IsInPlay() && mApp->IsIZombieLevel())
+        {
+            aBodyReanim->mAnimTime = 0.15f;
+        }
+        break;
+    }
     case SeedType::SEED_BLOVER:
     case SeedType::SEED_HURIKALE:
     {
@@ -686,7 +696,13 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     case SeedType::SEED_MARIGOLD:
         TOD_ASSERT(aBodyReanim);
-        aBodyReanim->mAnimRate = RandRangeFloat(15.0f, 20.0f);
+        if (IsInPlay())
+        {
+            if (mApp->IsIZombieLevel())
+                aBodyReanim->mAnimTime = 0.15f;
+            else 
+                aBodyReanim->mAnimRate = RandRangeFloat(15.0f, 20.0f);
+        }
         break;
     case SeedType::SEED_CACTUS:
         mState = PlantState::STATE_CACTUS_LOW;
@@ -1929,6 +1945,9 @@ void Plant::UpdateProductionPlant()
         else if (mSeedType == SeedType::SEED_AMPLI_FLOWER)
         {
             mApliflowerCounter = 700;
+            PlayBodyReanim("anim_cheer", ReanimLoopType::REANIM_LOOP, 20, 0.0f);
+            mState = PlantState::STATE_AMPLI_DANCING;
+            TodParticleSystem* aPinataParticle = mApp->AddTodParticle(mX + 20.0f, mY + 40.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_ZOMBIE_PINATA);
         }
         else if (mSeedType == SeedType::SEED_GRAVE)
         {
@@ -2392,7 +2411,7 @@ void Plant::UpdateBraveShroom()
     }
     else
     {
-        mBoostCounter == 0;
+        mBoostCounter = 0;
     }
 
     if (mState != PlantState::STATE_READY)
@@ -3057,20 +3076,13 @@ void Plant::UpdateBonkChoy()
 
 void Plant::UpdateAmpliflower()
 {
-    if (mApliflowerCounter > 0)
+    Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+    if (mState == PlantState::STATE_AMPLI_DANCING)
     {
-        Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
-        if (mApliflowerCounter == 700)
+        if (aBodyReanim && mApliflowerCounter <= 0)
         {
-            PlayBodyReanim("anim_cheer", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 0.0f);
-        }
-        if (aBodyReanim)
-        {
-            if (aBodyReanim->mLoopCount > 0)
-            {
-                PlayIdleAnim(aBodyReanim->mDefinition->mFPS);
-                mState = PlantState::STATE_READY;
-            }
+            PlayIdleAnim(aBodyReanim->mDefinition->mFPS);
+            mState = PlantState::STATE_READY;
         }
     }
 }
@@ -3093,7 +3105,7 @@ void Plant::UpdateChardGuard() {
                  PlayCustomIdleAnim(aBodyReanim->mDefinition->mFPS, "anim_arm_idle");
             }
 
-            if (aZombie)
+            if (aZombie && aZombie->mHasHead && !aZombie->IsDeadOrDying())
             {
                 if (aZombie->mX <= mX + 40.0f && aZombie->mX >= mX - 40 && aZombie->mHasHead)
                 {
@@ -3103,7 +3115,8 @@ void Plant::UpdateChardGuard() {
             }
             else
             {
-                PlayIdleAnim(aBodyReanim->mDefinition->mFPS);
+                //PlayIdleAnim(aBodyReanim->mDefinition->mFPS);
+                PlayBodyReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, aBodyReanim->mDefinition->mFPS);
                 mState = PlantState::STATE_READY;
             }  
         }
@@ -3182,7 +3195,7 @@ void Plant::UpdateAloe()
                 (aPlant->mPlantCol == mPlantCol - 1 || aPlant->mPlantCol == mPlantCol || aPlant->mPlantCol == mPlantCol + 1) &&
                 (aPlant->mRow == mRow - 1 || aPlant->mRow == mRow || aPlant->mRow == mRow + 1) && aPlant->mSeedType != SeedType::SEED_ALOEVERA)
             {
-                PlayBodyReanim("anim_heal", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 0.0f);
+                PlayBodyReanim("anim_heal", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 0.0f);
             }
             if (aBodyReanim->mLoopCount > 0) PlayBodyReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 10, 12.0f);
         }
@@ -4273,10 +4286,10 @@ void Plant::UpdateReanimColor()
     if (aBodyReanim == nullptr)
         return;
 
-    aBodyReanim->mColorOverride = Color(75, 75, 255, 255);
-
     SeedType aSeedType = mBoard->GetSeedTypeInCursor();
-    Color aColorOverride;
+    Color aColorOverride = Color::White;
+    Color aExtraAdditiveColor = Color::Black;
+    bool aEnableExtraAdditiveDraw = false;
 
     bool isOnGlove = false;
     if (mBoard->mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_GLOVE)
@@ -4310,13 +4323,17 @@ void Plant::UpdateReanimColor()
         int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_LAWN_MOWER, mRow, 1);
         mApp->AddTodParticle(mX + 8, mY + 13, aRenderPosition, ParticleEffect::PARTICLE_SNOWPEA_PUFF);
     }*/
-    else if (mChilledCounter)
+    else if (mChilledCounter > 0)
     {
-        aColorOverride = aColorOverride = Color(100, 160, 255);
+        aColorOverride = aColorOverride = Color(75, 75, 255);
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mHypnotized)
     {
-        aColorOverride = Color(212, 125, 255, 255);
+        aColorOverride = Color(128, 64, 192);
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mPlantHealth < mPlantMaxHealth && mBoard->FindAloePlant(mPlantCol, mRow) && mSeedType != SeedType::SEED_ALOEVERA)
     {
@@ -4328,41 +4345,44 @@ void Plant::UpdateReanimColor()
 
             Reanimation* aHeal = mApp->AddReanimation(mX+10, mY-30, aRenderOrder, ReanimationType::REANIM_HEAL);
             aHeal->OverrideScale(0.5f, 0.5f);
+            mEatenFlashCountdown = 25;
         }
-        aColorOverride = Color(255, 255, 255);
     }
-    else
-    {
-        aColorOverride = Color(255, 255, 255);
-    }
-
-    aBodyReanim->mColorOverride = aColorOverride;
 
     if (mHighlighted)
     {
-        aBodyReanim->mExtraAdditiveColor = Color(255, 255, 255, 196);
-        aBodyReanim->mEnableExtraAdditiveDraw = true;
-        if (mImitaterType == SeedType::SEED_IMITATER)
-        {
-            aBodyReanim->mExtraAdditiveColor = Color(255, 255, 255, 92);
-        }
+        aExtraAdditiveColor = ColorAdd(mImitaterType == SeedType::SEED_IMITATER ? Color(255, 255, 255, 92) : Color(255, 255, 255, 196), aBodyReanim->mExtraAdditiveColor);
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mBeghouledFlashCountdown > 0)
     {
         int anAlpha = TodAnimateCurve(50, 0, mBeghouledFlashCountdown % 50, 0, 128, TodCurves::CURVE_BOUNCE);
-        aBodyReanim->mExtraAdditiveColor = Color(255, 255, 255, anAlpha);
-        aBodyReanim->mEnableExtraAdditiveDraw = true;
+        aExtraAdditiveColor = ColorAdd(Color(255, 255, 255, anAlpha), aExtraAdditiveColor);
+        aEnableExtraAdditiveDraw = true;
+    }
+    else if (mBoostCounter > 0)
+    {
+        int anAlpha = TodAnimateCurve(50, 0, mBoard->mMainCounter % 50, 0, 64, TodCurves::CURVE_BOUNCE);
+        aExtraAdditiveColor = Color(255, 255, 255, anAlpha);
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mEatenFlashCountdown > 0)
     {
         int aGrayness = ClampInt(mEatenFlashCountdown * 3, 0, mImitaterType == SeedType::SEED_IMITATER ? 128 : 255);
-        aBodyReanim->mExtraAdditiveColor = Color(aGrayness, aGrayness, aGrayness);
-        aBodyReanim->mEnableExtraAdditiveDraw = true;
+        Color aHighlightColor(aGrayness, aGrayness, aGrayness, 255);
+        aExtraAdditiveColor = ColorAdd(aHighlightColor, aExtraAdditiveColor);
+        aEnableExtraAdditiveDraw = true;
     }
-    else
+    else if (mChilledCounter <= 0 && !mHypnotized)
     {
         aBodyReanim->mEnableExtraAdditiveDraw = false;
     }
+
+
+    aBodyReanim->mColorOverride = aColorOverride;
+    aBodyReanim->mExtraAdditiveColor = aExtraAdditiveColor;
+    aBodyReanim->mEnableExtraAdditiveDraw = aEnableExtraAdditiveDraw;
+
 
     if (mBeghouledFlashCountdown > 0)
     {
@@ -4696,6 +4716,27 @@ void Plant::Update()
     if (doUpdate)
     {
         int skipEverySecondFrame = mChilledCounter % 2; //teleport plant freeze
+
+        if (mChilledCounter > 0 && skipEverySecondFrame == 1) {
+            if (mRecentlyEatenCountdown > 0)
+            {
+                mRecentlyEatenCountdown--;
+            }
+            if (mEatenFlashCountdown > 0)
+            {
+                mEatenFlashCountdown--;
+            }
+            if (mBeghouledFlashCountdown > 0)
+            {
+                mBeghouledFlashCountdown--;
+            }
+
+            if (mSquished)
+            {
+                mFrame = 0;
+            }
+        }
+
         if (skipEverySecondFrame == 0 && mStunnedWeb <= 0 && mStunned <= 0)
         {
             UpdateAbilities();

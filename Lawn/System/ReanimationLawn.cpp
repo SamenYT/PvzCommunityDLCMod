@@ -311,13 +311,15 @@ MemoryImage* ReanimatorCache::MakeCachedPlantFrame(SeedType theSeedType, DrawVar
 //0x46F8A0
 MemoryImage* ReanimatorCache::MakeCachedZombieFrame(ZombieType theZombieType)
 {
-	MemoryImage* aMemoryImage = MakeBlankMemoryImage(200, 210);
-	Graphics aMemoryGraphics(aMemoryImage);
-	if (theZombieType == ZombieType::ZOMBIE_ZOMBONI)
-	{
-		aMemoryGraphics.mTransX += 50;
-	}
 
+	int maxWidth = 200;
+	int maxHeight = 210;
+
+	if (theZombieType == ZombieType::ZOMBIE_ZOMBONI)	maxWidth = 300;
+	if (theZombieType == ZombieType::ZOMBIE_BUNGEE) maxHeight = 810;
+
+	MemoryImage* aMemoryImage = MakeBlankMemoryImage(maxWidth, maxHeight);
+	Graphics aMemoryGraphics(aMemoryImage);
 	aMemoryGraphics.SetLinearBlend(true);
 
 	ZombieType aUseZombieType = theZombieType;
@@ -502,6 +504,61 @@ MemoryImage* ReanimatorCache::MakeCachedZombieFrame(ZombieType theZombieType)
 		aReanim.AssignRenderGroupToTrack("boss_body1", RENDER_GROUP_HIDDEN);
 		aReanim.AssignRenderGroupToTrack("boss_neck", RENDER_GROUP_HIDDEN);
 		aReanim.AssignRenderGroupToTrack("boss_head2", RENDER_GROUP_HIDDEN);
+		aReanim.Draw(&aMemoryGraphics);
+	}
+	else if (theZombieType == ZombieType::ZOMBIE_BALLOON)
+	{
+		Reanimation aReanim;
+		aReanim.ReanimationInitializeType(aPosX, aPosY, aZombieDef.mReanimationType);
+		Reanimation aPropellerReanim;
+		aPropellerReanim.ReanimationInitializeType(aPosX, aPosY, aZombieDef.mReanimationType);
+		aPropellerReanim.SetFramesForLayer("Propeller");
+		aPropellerReanim.mLoopType = ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME;
+
+		aReanim.Draw(&aMemoryGraphics);
+		aPropellerReanim.Draw(&aMemoryGraphics);
+	}
+	else if (theZombieType == ZombieType::ZOMBIE_BUNGEE)
+	{
+		Reanimation aReanim;
+		int relativeY = maxHeight - 210;
+		aReanim.ReanimationInitializeType(aPosX, aPosY, aZombieDef.mReanimationType);
+
+		int aCordCelHeight = IMAGE_BUNGEECORD->GetCelHeight();
+		int iterat = 0;
+		for (float y = maxHeight + 210 - aCordCelHeight; y > -aCordCelHeight; y -= aCordCelHeight)
+		{
+			aMemoryGraphics.DrawImageF(IMAGE_BUNGEECORD, 61.0f - 4.0f + 22, -iterat * aCordCelHeight - 14 + relativeY);
+			iterat++;
+		}
+
+		MemoryImage* aMemoryImage2 = MakeBlankMemoryImage(200, 210);
+		Graphics aMemoryGraphics2(aMemoryImage2);
+		aMemoryGraphics2.SetLinearBlend(true);
+		aReanim.Draw(&aMemoryGraphics2);
+		aMemoryGraphics.DrawImageF(aMemoryImage2, 0, relativeY);
+	}
+	else if (theZombieType == ZombieType::ZOMBIE_DANCER)
+	{
+		Reanimation aReanim;
+		aReanim.OverrideScale(0.79872f, 0.79872f);
+		aPosX += 8;
+		aPosY += 32;
+
+		aReanim.ReanimationInitializeType(aPosX, aPosY, aZombieDef.mReanimationType);
+		aReanim.PlayReanim("anim_moonwalk", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 24.0f);
+		aReanim.Draw(&aMemoryGraphics);
+	}
+	else if (theZombieType == ZombieType::ZOMBIE_BACKUP_DANCER)
+	{
+		Reanimation aReanim;
+		aReanim.OverrideScale(0.79872f, 0.79872f);
+		aPosX += 8;
+		aPosY += 32;
+
+		aReanim.ReanimationInitializeType(aPosX, aPosY, aZombieDef.mReanimationType);
+		aReanim.PlayReanim("anim_armraise", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 24.0f);
+		aReanim.mAnimTime = 0.5f;
 		aReanim.Draw(&aMemoryGraphics);
 	}
 	else if (aZombieDef.mReanimationType == ReanimationType::REANIM_GARGANTUAR || aZombieDef.mReanimationType == ReanimationType::REANIM_GLADIANTUAR)

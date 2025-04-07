@@ -459,7 +459,7 @@ void TodDrawImageCelScaled(Graphics* g, Image* theImageStrip, int thePosX, int t
 	if (theScaleX < 0)
 		g->DrawImageMirror(theImageStrip, aDestRect, aSrcRect);
 	else
-		g->DrawImage(theImageStrip, aDestRect,aSrcRect);
+		g->DrawImage(theImageStrip, aDestRect, aSrcRect);
 }
 
 static const int POOL_SIZE = 4096;
@@ -518,7 +518,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 					aSpacing = aLayer->mSpacing;
 
 					aSpacing += aCharData->mKerningOffsets[aNextChar];
-					
+
 				}
 			}
 			else
@@ -536,7 +536,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 					aSpacing = aLayer->mSpacing;
 
 					aSpacing += aCharData->mKerningOffsets[aNextChar] * aScale;
-				
+
 				}
 			}
 
@@ -559,7 +559,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 			aRenderCommand->mSrc[1] = aKernItr->mScaledCharImageRects[aChar].mY;
 			aRenderCommand->mSrc[2] = aKernItr->mScaledCharImageRects[aChar].mWidth;
 			aRenderCommand->mSrc[3] = aKernItr->mScaledCharImageRects[aChar].mHeight;
-	
+
 			aRenderCommand->mMode = aLayer->mDrawMode;
 			//aRenderCommand->mUseAlphaCorrection = aLayer->mUseAlphaCorrection;
 			aRenderCommand->mNext = nullptr;
@@ -612,7 +612,7 @@ void TodDrawStringMatrix(Graphics* g, const Font* theFont, const SexyMatrix3& th
 				SexyMatrix3Multiply(aTransform, theMatrix, aTransform);
 				TodBltMatrix(g, aRenderCommand->mImage, aTransform, g->mClipRect, aRenderCommand->mColor, aDrawMode, aSrcRect);
 			}
-			
+
 			aRenderCommand = aRenderCommand->mNext;
 		}
 	}
@@ -938,7 +938,7 @@ void FixPixelsOnAlphaEdgeForBlending(Image* theImage)
 	}
 }
 
-void SexyMatrix3Transpose(const SexyMatrix3& m, SexyMatrix3 &r)
+void SexyMatrix3Transpose(const SexyMatrix3& m, SexyMatrix3& r)
 {
 	SexyMatrix3 temp;
 	temp.m00 = m.m00;
@@ -950,7 +950,7 @@ void SexyMatrix3Transpose(const SexyMatrix3& m, SexyMatrix3 &r)
 	temp.m20 = m.m02;
 	temp.m21 = m.m12;
 	temp.m22 = m.m22;
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -961,9 +961,9 @@ void SexyMatrix3Transpose(const SexyMatrix3& m, SexyMatrix3 &r)
 }
 
 //0x512D00
-void SexyMatrix3Inverse(const SexyMatrix3& m, SexyMatrix3 &r)
+void SexyMatrix3Inverse(const SexyMatrix3& m, SexyMatrix3& r)
 {
-	float aDet = (m.m22 * m.m11 - m.m21 * m.m12) * m.m00- (m.m22 * m.m10 - m.m20 * m.m12) * m.m01 + (m.m21 * m.m10 - m.m20 * m.m11) * m.m02;
+	float aDet = (m.m22 * m.m11 - m.m21 * m.m12) * m.m00 - (m.m22 * m.m10 - m.m20 * m.m12) * m.m01 + (m.m21 * m.m10 - m.m20 * m.m11) * m.m02;
 	float aInvDet = 1.0f / aDet;
 
 	SexyMatrix3 temp;
@@ -1016,7 +1016,7 @@ Color GetFlashingColor(int theCounter, int theFlashTime)
 	int aTimeAge = theCounter % theFlashTime;
 	int aTimeInf = theFlashTime / 2;
 	//int aTimeDel = abs(aTimeInf - aTimeAge) / aTimeInf;
-	int aGrayness = ClampInt(55 + 200 * abs(aTimeInf - aTimeAge)/ aTimeInf, 0, 255);
+	int aGrayness = ClampInt(55 + 200 * abs(aTimeInf - aTimeAge) / aTimeInf, 0, 255);
 	return Color(aGrayness, aGrayness, aGrayness, 255);
 }
 
@@ -1041,7 +1041,7 @@ int ColorComponentMultiply(int theColor1, int theColor2)
 Color ColorsMultiply(const Color& theColor1, const Color& theColor2)
 {
 	return Color(
-		ColorComponentMultiply(theColor1.mRed, theColor2.mRed), 
+		ColorComponentMultiply(theColor1.mRed, theColor2.mRed),
 		ColorComponentMultiply(theColor1.mGreen, theColor2.mGreen),
 		ColorComponentMultiply(theColor1.mBlue, theColor2.mBlue),
 		ColorComponentMultiply(theColor1.mAlpha, theColor2.mAlpha)
@@ -1092,7 +1092,7 @@ bool TodResourceManager::TodLoadResources(const std::string& theGroup)
 }
 
 void TodAddImageToMap(SharedImageRef* theImage, const std::string& thePath)
-{ 
+{
 	((TodResourceManager*)gSexyAppBase->mResourceManager)->AddImageToMap(theImage, thePath);
 }
 

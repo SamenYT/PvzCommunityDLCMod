@@ -464,6 +464,7 @@ void Projectile::CheckForCollision()
 				if ((!aPlant->IsFirePlant() && !aPlant->IsFrozenPlant()) && aPlant->mChilledCounter == 0 && !mBoard->FindFirePlant(aPlant->mPlantCol, aPlant->mRow)) mApp->PlayFoley(FoleyType::FOLEY_FROZEN);
 				aPlant->FreezePlant();
 				mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
+				mApp->AddTodParticle(mPosX - 3.0f, mPosY + 17.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_SNOWPEA_SPLAT);
 			}
 			else if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_FLAMEPEA)
 			{
@@ -553,6 +554,7 @@ void Projectile::DoImpactPlant(Plant* thePlant)
 			thePlant->FreezePlant();
 		}
 		mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
+		mApp->AddTodParticle(mPosX - 3.0f, mPosY + 17.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_SNOWPEA_SPLAT);
 	}
 	else
 	{
@@ -1221,15 +1223,51 @@ void Projectile::DoImpactGridItem(GridItem* theGridItem)
 			if (aRand == 0)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC);
 			else if (aRand == 1)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC2);
 			else  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC3);
-			theGridItem->mFlashCounter = 25;
+			theGridItem->mJustGotShotCounter = 25;
 			theGridItem->mHealth -= GetProjectileDef().mDamage;
 			mGridItem = theGridItem;
 		}
 		return;
 	}
+
+	if (theGridItem->mGridItemType == GRIDITEM_WOOD_LOG)
+	{
+		bool aPlaySplatSound = true;
+		if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_KERNEL_SPLAT);
+			aPlaySplatSound = false;
+		}
+		else if (mProjectileType == ProjectileType::PROJECTILE_BUTTER)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_BUTTER);
+			aPlaySplatSound = false;
+		}
+		else if ((mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMABALL || mProjectileType == ProjectileType::PROJECTILE_SHOOTING_STAR))
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_IGNITE);
+			aPlaySplatSound = false;
+		}
+		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_MELONIMPACT);
+			aPlaySplatSound = false;
+		}
+		else if (mProjectileType == ProjectileType::PROJECTILE_PEPPER)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_IGNITE);
+			aPlaySplatSound = false;
+		}
+
+		if (aPlaySplatSound)
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_PLASTIC_HIT);
+		}
+	}
+
 	//ParticleEffect aEffect = ParticleEffect::PARTICLE_PEA_SPLAT;
 	//mApp->PlayFoley(FOLEY_SPLAT);
-	theGridItem->mFlashCounter = 25;
+	theGridItem->mJustGotShotCounter = 25;
 	theGridItem->mHealth -= GetProjectileDef().mDamage;
 	/*if (mProjectileType == ProjectileType::PROJECTILE_PEA)
 	{
@@ -1260,12 +1298,12 @@ void Projectile::DoImpactGridItem(GridItem* theGridItem)
 		aEffect = ParticleEffect::PARTICLE_BUTTER_SPLAT;
 	}
 	mApp->AddTodParticle((theGridItem->mGridX + 1) * 80.0f, mY + 20.0f, mRenderOrder + 1, aEffect);*/
-	DoImpact(nullptr);
-	 Die();
+	DoImpact(nullptr, true);
+	Die();
 }
 
 //0x46E000
-void Projectile::DoImpact(Zombie* theZombie)
+void Projectile::DoImpact(Zombie* theZombie, bool isSilent)
 {
 	int colorNumber = 0;
 
@@ -1308,8 +1346,10 @@ void Projectile::DoImpact(Zombie* theZombie)
 		}
 		return;
 	}
-
-	PlayImpactSound(theZombie);
+	if (!isSilent)
+	{
+		PlayImpactSound(theZombie);
+	}
 	if (theZombie && theZombie->mZombieType == ZOMBIE_TARGET)
 	{
 		theZombie->PlayZombieReanim("anim_hit", REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);

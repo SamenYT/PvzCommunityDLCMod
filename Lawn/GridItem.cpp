@@ -43,7 +43,7 @@ GridItem::GridItem()
     mGridItemRect = Rect(0, 0, 0, 0);
     mMaxHealth = 360;
     mHealth = 360;
-    mFlashCounter = 0;
+    mJustGotShotCounter = 0;
     mIsTrash = false;
 }
 
@@ -235,25 +235,21 @@ void GridItem::DrawWoodLog(Graphics* g)
         if (mIsTrash)
         {
             aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN3;
-            TodDrawImageScaledF(g, aImage, x + 20.0f, y - aVisibleHeight + aExtraTopClip + 5.0f, 0.8f, 0.8f);
         }
         else
         {
             aImage = IMAGE_LOG3;
-            g->DrawImageF(aImage, x + 10.0f, y - aVisibleHeight + aExtraTopClip + 15.0f);
         }
     }
     else if (mHealth < mMaxHealth * 2 / 3)
     {
         if (mIsTrash)
         {
-            aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN2;
-            TodDrawImageScaledF(g, aImage, x + 20.0f, y - aVisibleHeight + aExtraTopClip + 5.0f, 0.8f, 0.8f);
+            aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN2;           
         }
         else
         {
             aImage = IMAGE_LOG2;
-            g->DrawImageF(aImage, x + 10.0f, y - aVisibleHeight + aExtraTopClip + 15.0f);
         }
     }
     else
@@ -261,22 +257,37 @@ void GridItem::DrawWoodLog(Graphics* g)
         if (mIsTrash)
         {
             aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN1;
-            TodDrawImageScaledF(g, aImage, x + 20.0f, y - aVisibleHeight + aExtraTopClip + 5.0f, 0.8f, 0.8f);
         }
         else
         {
             aImage = IMAGE_LOG1;
-            g->DrawImageF(aImage, x + 10.0f, y - aVisibleHeight + aExtraTopClip + 15.0f);
         }
     }
-
-    if (mFlashCounter > 0 && !mIsTrash)
+    
+    if (mIsTrash)
     {
-        mFlashCounter--;
-        g->SetColorizeImages(true);
+        TodDrawImageScaledF(g, aImage, x + 20.0f, y - aVisibleHeight + aExtraTopClip + 5.0f, 0.8f, 0.8f);
+    }
+    else
+    {
         g->DrawImageF(aImage, x + 10.0f, y - aVisibleHeight + aExtraTopClip + 15.0f);
-        g->SetColor(Color(200, 200, 200));
-        g->SetColorizeImages(false);
+    }
+
+    if (mJustGotShotCounter > 0)
+    {
+        Graphics gridG(*g);
+        gridG.SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+        gridG.SetColorizeImages(true);
+        int aGrayness = mJustGotShotCounter * 10;
+        gridG.SetColor(Color(aGrayness, aGrayness, aGrayness));
+        if (mIsTrash)
+        {
+            TodDrawImageScaledF(&gridG, aImage, x + 20.0f, y - aVisibleHeight + aExtraTopClip + 5.0f, 0.8f, 0.8f);
+        }
+        else
+        {
+            gridG.DrawImageF(aImage, x + 10.0f, y - aVisibleHeight + aExtraTopClip + 15.0f);
+        }
     }
 }
 
@@ -681,24 +692,13 @@ void GridItem::UpdateBrain()
 
 void GridItem::UpdateWoodLog()
 {
+    mJustGotShotCounter--;
+
     if (mHealth <= 0)
     {
         mApp->PlayFoley(FOLEY_BREAK);
         GridItemDie();
     }
-    /*Color aColorOverride(255, 255, 255, 255);
-    Color aExtraAdditiveColor = Color::Black;
-    bool aEnableExtraAdditiveDraw = false;
-    if (mFlashCounter > 0)
-    {
-        int aGrayness = mFlashCounter * 10;
-        Color aHighlightColor(aGrayness, aGrayness, aGrayness, 255);
-        aExtraAdditiveColor = ColorAdd(aHighlightColor, aExtraAdditiveColor);
-        aEnableExtraAdditiveDraw = true;
-    }
-    aGridItemReanim->mColorOverride = aColorOverride;
-    aGridItemReanim->mExtraAdditiveColor = aExtraAdditiveColor;
-    aGridItemReanim->mEnableExtraAdditiveDraw = aEnableExtraAdditiveDraw;*/
 }
 
 void GridItem::UpdateBush()
