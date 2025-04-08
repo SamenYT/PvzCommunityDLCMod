@@ -747,18 +747,20 @@ void Board::PickZombieWaves()
 		else if (aGameMode == GameMode::GAMEMODE_CHALLENGE_WHACK_A_ZOMBIE)
 			mNumWaves = 12;
 		else if (aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING || aGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID || aGameMode == GameMode::GAMEMODE_CHALLENGE_WOOD ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER || aGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY || 
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL || aGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_ICE || aGameMode == GameMode::GAMEMODE_CHALLENGE_BOMBALL || aGameMode == GameMode::GAMEMODE_CHALLENGE_FLIPPED ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_BIG_TROUBLE || aGameMode == GameMode::GAMEMODE_CHALLENGE_DARK || aGameMode == GameMode::GAMEMODE_CHALLENGE_GLITCH)
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER || aGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL || aGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIESVSZOMBIES ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_ICE || aGameMode == GameMode::GAMEMODE_CHALLENGE_BOMBALL || aGameMode == GameMode::GAMEMODE_CHALLENGE_FLIPPED ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_BIG_TROUBLE || aGameMode == GameMode::GAMEMODE_CHALLENGE_DARK || aGameMode == GameMode::GAMEMODE_CHALLENGE_GLITCH)
 			mNumWaves = 20;
 		else if (mApp->IsStormyNightLevel() || mApp->IsLittleTroubleLevel() || mApp->IsBungeeBlitzLevel() ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN || mApp->IsShovelLevel() || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_ECLIPSE ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY || aGameMode == GameMode::GAMEMODE_CHALLENGE_SMASH || aGameMode == GameMode::GAMEMODE_CHALLENGE_HIGHGROUND ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 || aGameMode == GameMode::GAMEMODE_CHALLENGE_BORDER ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_3 || aGameMode == GameMode::GAMEMODE_CHALLENGE_GIGA)
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN || mApp->IsShovelLevel() || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_ECLIPSE ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY || aGameMode == GameMode::GAMEMODE_CHALLENGE_SMASH || aGameMode == GameMode::GAMEMODE_CHALLENGE_HIGHGROUND ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 || aGameMode == GameMode::GAMEMODE_CHALLENGE_BORDER ||
+			aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_3 || aGameMode == GameMode::GAMEMODE_CHALLENGE_GIGA)
 			mNumWaves = 30;
+		else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC)
+			mNumWaves = 25;
 		else
 			mNumWaves = 40;
 	}
