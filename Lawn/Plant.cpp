@@ -340,6 +340,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
             //aGarlic->AttachToAnotherReanimation(aBodyReanim, "Airraid_pottop");
         aBodyReanim->AssignRenderGroupToPrefix("Pot_pumpkin", RENDER_GROUP_HIDDEN);
         AttachEffect* aAttachedGarlic = AttachReanim(aTrackInstance->mAttachmentID, aGarlic, -2.0f, -30.0f);
+        UpdateReanim();
         aBodyReanim->Update();
     }
     case SeedType::SEED_TWINSUNFLOWER:
@@ -4214,7 +4215,7 @@ void Plant::UpdateAbilities()
 
 void Plant::UpdateFlyingGarlic()
 {
-    int mTargetY = mBoard->GridToPixelY(4, mRow);
+    int mTargetY = mBoard->GridToPixelY(4, mRow) - 10;
     mY = (mY + mTargetY) / 2;
     mPlantHealth = 99999;
 }
@@ -4527,6 +4528,11 @@ void Plant::UpdateReanim()
         aScaleY *= 0.8f;
         aOffsetX += 5.0f;
         aOffsetY += 10.0f;
+    }
+    if (mSeedType == SeedType::SEED_FLYING_GARLIC)
+    {
+        aOffsetX += 8.0f;
+        aOffsetY -= 10.0f;
     }
 
     if (mSeedType == SeedType::SEED_SHRINK)

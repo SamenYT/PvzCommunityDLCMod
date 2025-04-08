@@ -10127,6 +10127,20 @@ static void TodCrash()
 //0x41B950（原版中废弃）
 void Board::KeyChar(SexyChar theChar)
 {
+
+	if (mApp->IsRhythmGarlicLevel() && theChar >= '1' && theChar <= '5')
+	{
+		Plant* aPlant = nullptr;
+		while (IteratePlants(aPlant))
+		{
+			if (aPlant->mSeedType == SeedType::SEED_FLYING_GARLIC)
+			{
+				aPlant->mRow = theChar - '1';
+				aPlant->mRenderOrder = aPlant->CalcRenderOrder();
+				break;
+			}
+		}
+	}
 #ifndef _DEBUG
 	return;
 #endif
