@@ -736,15 +736,15 @@ void ZenGarden::AddHappyEffect(Plant* thePlant)
     Plant* aFlowerPot = mBoard->GetTopPlantAt(thePlant->mPlantCol, thePlant->mRow, PlantPriority::TOPPLANT_ONLY_UNDER_PLANT);
     if (aFlowerPot == nullptr)
     {
-        thePlant->AddAttachedParticle(thePlant->mX + 40, thePlant->mY + 60, thePlant->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_ZEN_GLOW, false);
+        thePlant->AddAttachedParticle(thePlant->mX + 40, thePlant->mY + 60, thePlant->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_ZEN_GLOW);
     }
     else if (Plant::IsAquatic(thePlant->mSeedType))
     {
-        aFlowerPot->AddAttachedParticle(aFlowerPot->mX + 40, aFlowerPot->mY + 61, aFlowerPot->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_WATER_PLANT_GLOW, false);
+        aFlowerPot->AddAttachedParticle(aFlowerPot->mX + 40, aFlowerPot->mY + 61, aFlowerPot->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_WATER_PLANT_GLOW);
     }
     else
     {
-        aFlowerPot->AddAttachedParticle(aFlowerPot->mX + 40, aFlowerPot->mY + 63, aFlowerPot->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_ZEN_GLOW, false);
+        aFlowerPot->AddAttachedParticle(aFlowerPot->mX + 40, aFlowerPot->mY + 63, aFlowerPot->mRenderOrder - 1, ParticleEffect::PARTICLE_POTTED_ZEN_GLOW);
     }
 }
 

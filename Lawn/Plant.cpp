@@ -340,6 +340,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
             //aGarlic->AttachToAnotherReanimation(aBodyReanim, "Airraid_pottop");
         aBodyReanim->AssignRenderGroupToPrefix("Pot_pumpkin", RENDER_GROUP_HIDDEN);
         AttachEffect* aAttachedGarlic = AttachReanim(aTrackInstance->mAttachmentID, aGarlic, -2.0f, -30.0f);
+        UpdateReanim();
         aBodyReanim->Update();
     }
     case SeedType::SEED_TWINSUNFLOWER:
@@ -700,7 +701,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
 
         if (!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
         {
-            AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE, false);
+            AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
         }
         if (IsInPlay())
         {
@@ -1081,7 +1082,7 @@ void Plant::DoRowAreaDamage(int theDamage, unsigned int theDamageFlags)
 }
 
 //0x45EEA0
-TodParticleSystem* Plant::AddAttachedParticle(int thePosX, int thePosY, int theRenderPosition, ParticleEffect theEffect, bool icy)
+TodParticleSystem* Plant::AddAttachedParticle(int thePosX, int thePosY, int theRenderPosition, ParticleEffect theEffect)
 {
     TodParticleSystem* aParticle = mApp->ParticleTryToGet(mParticleID);
     if (aParticle)
@@ -1091,7 +1092,7 @@ TodParticleSystem* Plant::AddAttachedParticle(int thePosX, int thePosY, int theR
     if (aNewParticle)
         mParticleID = mApp->ParticleGetID(aNewParticle);
 
-    if (icy)aNewParticle->OverrideColor(nullptr, Color(0, 255, 255, 255));
+    //if (icy)aNewParticle->OverrideColor(nullptr, Color(0, 255, 255, 255));
 
     return aNewParticle;
 }
@@ -2038,7 +2039,7 @@ void Plant::UpdateGraveBuster()
             //else 
             mStateCountdown = 400;
             mState = PlantState::STATE_GRAVEBUSTER_EATING;
-            AddAttachedParticle(mX + 40, mY + 40, mRenderOrder + 4, ParticleEffect::PARTICLE_GRAVE_BUSTER, false);
+            AddAttachedParticle(mX + 40, mY + 40, mRenderOrder + 4, ParticleEffect::PARTICLE_GRAVE_BUSTER);
         }
     }
     else if (mState == PlantState::STATE_GRAVEBUSTER_EATING && mStateCountdown == 0)
@@ -4214,7 +4215,7 @@ void Plant::UpdateAbilities()
 
 void Plant::UpdateFlyingGarlic()
 {
-    int mTargetY = mBoard->GridToPixelY(4, mRow);
+    int mTargetY = mBoard->GridToPixelY(4, mRow) - 10;
     mY = (mY + mTargetY) / 2;
     mPlantHealth = 99999;
 }
@@ -4527,6 +4528,11 @@ void Plant::UpdateReanim()
         aScaleY *= 0.8f;
         aOffsetX += 5.0f;
         aOffsetY += 10.0f;
+    }
+    if (mSeedType == SeedType::SEED_FLYING_GARLIC)
+    {
+        aOffsetX += 8.0f;
+        aOffsetY -= 10.0f;
     }
 
     if (mSeedType == SeedType::SEED_SHRINK)
@@ -5314,12 +5320,12 @@ void Plant::UpdateShooting()
     if (mSeedType == SeedType::SEED_FUMESHROOM && mShootingCounter == 15)
     {
         int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
-        AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD, false);
+        AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD);
     }
     if (mSeedType == SeedType::SEED_ICYFUME && mShootingCounter == 15)
     {
         int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
-        AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD, true);
+        AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FROSTCLOUD);
     }
 
     if (mSeedType == SeedType::SEED_GLOOMSHROOM)
@@ -5327,7 +5333,7 @@ void Plant::UpdateShooting()
         if (mShootingCounter == 136 || mShootingCounter == 108 || mShootingCounter == 80 || mShootingCounter == 52)
         {
             int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
-            AddAttachedParticle(mX + 40, mY + 40, aRenderPosition, ParticleEffect::PARTICLE_GLOOMCLOUD, false);
+            AddAttachedParticle(mX + 40, mY + 40, aRenderPosition, ParticleEffect::PARTICLE_GLOOMCLOUD);
         }
         if (mShootingCounter == 126 || mShootingCounter == 98 || mShootingCounter == 70 || mShootingCounter == 42)
         {

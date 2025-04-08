@@ -253,7 +253,7 @@ public:
     void                            LandFlyer(unsigned int theDamageFlags);
     void                            UpdateZombieDigger();
     bool                            IsWalkingBackwards();
-    TodParticleSystem*              AddAttachedParticle(int thePosX, int thePosY, ParticleEffect theEffect, int color);
+    TodParticleSystem*              AddAttachedParticle(int thePosX, int thePosY, ParticleEffect theEffect);
     void                            PogoBreak(unsigned int theDamageFlags);
     void                            UpdateZombieFalling();
     void                            UpdateZombieDancer();
