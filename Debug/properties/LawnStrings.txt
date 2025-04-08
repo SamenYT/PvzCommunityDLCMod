@@ -587,6 +587,15 @@ Ice Peas shoot solid frozen peas that damage and ice trap the enemy.
 {SHORTLINE}
 {FLAVOR}"Spoot!" says Ice Pea as he launches another ice-pellet. It's not as dignified as he'd like, but them's the breaks when you're emitting frozen projectiles.
 
+[PLASMAPEA_DESCRIPTION]
+Plasma pea shoots plasma bullets
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} very heavy
+{KEYWORD}Special:{STAT} does thrice the damage than a regular pea
+{KEYWORD}Must be planted on fire peashooter
+{SHORTLINE}
+{FLAVOR}Plasma pea always says "I AM STRONGER SO I AM BETTER!" Fire pea responds with "Atleast I am not as hotheaded" Twin sunflowers laugh in the distance Plasma pea was embarassed, for obvious reasons.
+
 [VINE_NUT_DESCRIPTION]
 Vine-nuts cannot only be jumped over, but will also block and damage zombies.
 {SHORTLINE}
@@ -632,6 +641,15 @@ Pepper-pults hurl flaming peppers at the enemy.
 {KEYWORD}Special:{STAT} peppers damage nearby zombies on impact
 {SHORTLINE}
 {FLAVOR}Some say Pepper-pult is a hot head. Some find his fiery disposition off-putting. But the truth is, he's just very focused and determined. He loves what he does. He appreciates everything he has.
+
+[SHOOTING_STAR_DESCRIPTION]
+Shooting Star shoots star projectiles from the sky.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} heavy
+{KEYWORD}Special:{STAT} can fly
+{KEYWORD}Must be planted on starfruits or seastars
+{SHORTLINE}
+{FLAVOR}Shooting Star has wandered all across the cosmos waiting for someone to find him. People see Shooting Star as a myth, making a wish every time they see it, oh boy will zombies want a wish when they meet him.
 
 [VAMPIRE_DESCRIPTION]
 Vampire Zombies heal themselves from eating your plants.
@@ -1655,6 +1673,13 @@ Snow Peas shoot frozen peas that damage and slow the enemy.
 {FLAVOR}Folks often tell Snow Pea how "cool" he is, or exhort him to "chill out." They
 tell him to "stay frosty." Snow Pea just rolls his eyes. He's heard 'em all.
 
+[FIRE_PEASHOOTER_DESCRIPTION]
+Fire Peashooters shoot flaming peas down the lane.
+{SHORTLINE}
+{KEYWORD}Special:{STAT} Fire peas can deal splash damage towards nearby zombies.
+{SHORTLINE}
+{FLAVOR}Fire Peashooter knows that what she does looks exciting. But working with an open flame is serious and dangerous business. That's why, in her spare time, she talks to children about the importance of fire safety. "I'm a trained professional," she explains. "Don't try this at home, kids!" 
+
 [CHOMPER_DESCRIPTION]
 Chompers can devour a zombie whole, but they are vulnerable while chewing.
 {SHORTLINE}
@@ -1790,6 +1815,15 @@ Jalapenos destroy an entire lane of zombies.
 {SHORTLINE}
 {FLAVOR}"NNNNNGGGGGG!!!!!!!!" Jalapeno says. He's not going to explode, not this time. But soon. Oh, so soon.
 It's close. He knows it, he can feel it, his whole life's been leading up to this moment.
+
+[CHILLYPEPPER_DESCRIPTION]
+Chilly Pepper freezes and damages an entire lane of zombies.
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} normal, freezes zombies
+{KEYWORD}Range:{STAT} all zombies in a lane
+{KEYWORD}Usage:{STAT} single use, instant
+{SHORTLINE}
+{FLAVOR}Chilly pepper hated his pepper brothers, "They cant catch anything, not even a cold!" he says, so then he just tried to get a fever for days just to prove his point, it seems to have worked out.
 
 [SPIKEWEED_DESCRIPTION]
 Spikeweeds pop tires and hurt any zombies that step on them.
