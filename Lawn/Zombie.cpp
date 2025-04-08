@@ -44,10 +44,10 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_GARGANTUAR,        REANIM_GARGANTUAR,          10,     48,     15,     1500,   _S("GARGANTUAR") },
     { ZOMBIE_IMP,               REANIM_IMP,                 10,     48,     1,      0,      _S("IMP") },     
 
-    { ZOMBIE_VAMPIRE,           REANIM_VAMPIRE,             3,      51,     10,     2000,   _S("VAMPIRE"),0 },
+    { ZOMBIE_VAMPIRE,           REANIM_VAMPIRE,             2,      51,     5,      2000,   _S("VAMPIRE"),0 },
     { ZOMBIE_SCARECROW,         REANIM_SCARECROW,           5,      53,     15,     4000,   _S("SCARECROW"),0 },
     { ZOMBIE_RAVEN,             REANIM_RAVEN,               1,      53,     1,      0,      _S("RAVEN"),0 },
-    { ZOMBIE_SKELETON,          REANIM_SKELETON,            2,      56,     15,     4000,   _S("SKELETON"),0 },
+    { ZOMBIE_SKELETON,          REANIM_SKELETON,            3,      56,     5,      2000,   _S("SKELETON"),0 },
     { ZOMBIE_GLADIANTUAR,       REANIM_GLADIANTUAR,         12,     58,     15,     1000,   _S("GLADIANTUAR"),0 },
 
     { ZOMBIE_LEAFBLOWER,        REANIM_LEAFBLOWER,          3,      61,     10,     2000,   _S("LEAFBLOWER"),1 },
@@ -244,13 +244,13 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 
     case ZombieType::ZOMBIE_SKELETON: 
         LoadPlainZombieReanim();
-        mBoneHealth = 300;
+        mBoneHealth = 480;
         mZombiePhase = PHASE_ZOMBIE_NORMAL;
         break;
 
     case ZombieType::ZOMBIE_VAMPIRE:
         mZombieAttackRect = Rect(20, 0, 50, 115);
-        mBodyHealth = 500;
+        mBodyHealth = 400;
         if (mApp->IsRhythmGarlicLevel())
             mVelX *= TodAnimateCurveFloat(0, 19, mFromWave, 1.0f, 1.5f, TodCurves::CURVE_LINEAR);
         break;
