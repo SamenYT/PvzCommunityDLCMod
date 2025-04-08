@@ -242,6 +242,7 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = { /
 	{ ReanimationType::REANIM_GHOSTPEPPER,						    "reanim\\Zombie_charred_skeleton.reanim",			0 },
 	{ ReanimationType::REANIM_EXPLODEONUT,						    "reanim\\ExplodeONut.reanim",						0 },
 	{ ReanimationType::REANIM_ZOMBIE_CHARRED_GLADIANTUAR,			"reanim\\Zombie_charred_gladiantuar.reanim",		0 },
+	{ ReanimationType::REANIM_ZOMBIE_CHARRED_SCARECROW,			    "reanim\\Zombie_charred_scarecrow.reanim",		    0 },
 };
 
 //0x471540

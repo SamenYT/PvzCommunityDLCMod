@@ -11443,6 +11443,12 @@ void Zombie::ApplyBurn(int damage)
             aCharredPosX += 5.0f;
             aCharredPosY += 5.0f;
         }
+        if (mZombieType == ZombieType::ZOMBIE_SCARECROW)
+        {
+            aReanimType = ReanimationType::REANIM_ZOMBIE_CHARRED_SCARECROW;
+            aCharredPosX += 4.0f;
+            aCharredPosY += 5.0f;
+        }
         if (mZombieType == ZombieType::ZOMBIE_SKELETON)
         {
             aReanimType = ReanimationType::REANIM_CHARRED_SKELETON;            
