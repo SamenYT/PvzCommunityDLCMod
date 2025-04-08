@@ -668,7 +668,7 @@ int Board::GetNumWavesPerFlag()
 //0x409080
 bool Board::IsFlagWave(int theWaveNumber)
 {
-	if (mApp->IsFirstTimeAdventureMode() && mLevel == 1)
+	if ((mApp->IsFirstTimeAdventureMode() && mLevel == 1) || mApp->IsRhythmGarlicLevel())
 		return false;
 
 	int aWavesPerFlag = GetNumWavesPerFlag();
@@ -760,7 +760,7 @@ void Board::PickZombieWaves()
 			aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_3 || aGameMode == GameMode::GAMEMODE_CHALLENGE_GIGA)
 			mNumWaves = 30;
 		else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC)
-			mNumWaves = 25;
+			mNumWaves = 20;
 		else
 			mNumWaves = 40;
 	}
@@ -834,7 +834,7 @@ void Board::PickZombieWaves()
 
 		if (mApp->IsRhythmGarlicLevel())
 		{
-			int aVampCount = aZombiePoints;
+			int aVampCount = aZombiePoints + 2;
 			if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC) aVampCount = min(aVampCount, 10);
 			for (int _i = 0; _i < aVampCount; _i++)
 			{
@@ -6167,7 +6167,7 @@ void Board::SpawnZombieWave()
 				break;
 			Zombie* aZombie = AddZombie(aZombieType, mCurrentWave);
 			if (aZombieType == ZombieType::ZOMBIE_VAMPIRE)
-				aZombie->mPosX += i * 80;
+				aZombie->mPosX += i * (mCurrentWave % 5 == 4 ? 120 : 80);
 		}
 	}
 	else
@@ -8014,6 +8014,10 @@ void Board::DrawBackdrop(Graphics* g)
 		g->DrawImage(Sexy::IMAGE_BACKGROUND_BLOODMOON, -BOARD_OFFSET, 0);
 		g->SetColorizeImages(false);
 	}
+	if (mApp->IsRhythmGarlicLevel())
+	{
+		g->DrawImage(Sexy::IMAGE_RHYTHM_NUMBERGRID, 426, 66);
+	}
 	//TodDrawString(g, to_string(int(mCutScene->mCutsceneTime)), 300, 100, FONT_HOUSEOFTERROR20, Color::White, DS_ALIGN_CENTER);
 }
 
@@ -8742,7 +8746,8 @@ bool Board::ProgressMeterHasFlags()
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST ||
 		mApp->IsSlotMachineLevel() ||
 		mApp->IsSquirrelLevel() ||
-		mApp->IsIZombieLevel())
+		mApp->IsRhythmGarlicLevel() ||
+		mApp->IsIZombieLevel()) 
 		return false;
 
 	return true;

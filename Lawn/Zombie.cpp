@@ -249,6 +249,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         break;
 
     case ZombieType::ZOMBIE_VAMPIRE:
+        mZombieAttackRect = Rect(20, 0, 50, 115);
         mBodyHealth = 500;
         if (mApp->IsRhythmGarlicLevel())
             mVelX *= TodAnimateCurveFloat(0, 19, mFromWave, 1.0f, 1.5f, TodCurves::CURVE_LINEAR);

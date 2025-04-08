@@ -809,6 +809,7 @@ namespace Sexy
 	extern Image* IMAGE_STONEBUTTON_RIGHT_HOVER;
 	extern Image* IMAGE_STONEBUTTON_LEFT;
 	extern Image* IMAGE_STONEBUTTON_LEFT_HOVER;
+	extern Image* IMAGE_RHYTHM_NUMBERGRID;
 
 	// LoadingSounds Resources
 	bool ExtractLoadingSoundsResources(ResourceManager *theMgr);

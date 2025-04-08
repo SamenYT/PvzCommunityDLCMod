@@ -172,7 +172,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_REVERSE_STARFRUIT,      nullptr, ReanimationType::REANIM_STARFRUIT,     31,  550,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CHOMPER"),-1 },
     { SeedType::SEED_REVERSE_THREEPEATER,    nullptr, ReanimationType::REANIM_THREEPEATER,   31,  325,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER"),-1 },
     { SeedType::SEED_DUMMY,                  nullptr, ReanimationType::REANIM_DUMMY,         2,    50,   3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DUMMY"),-1 },
-    { SeedType::SEED_FLYING_GARLIC,          nullptr, ReanimationType::REANIM_GARLIC,        2,    50,   3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DUMMY"),-1 },
+    { SeedType::SEED_FLYING_GARLIC,          nullptr, ReanimationType::REANIM_AIRRAID_POT,        2,    50,   3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DUMMY"),-1 },
 };
 
 //0x401B20
@@ -330,6 +330,18 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
 
     switch (theSeedType)
     {
+    case SeedType::SEED_FLYING_GARLIC:
+    {
+        Reanimation* aGarlic = mApp->AddReanimation(0.0f, 0.0f, mRenderOrder + 2, ReanimationType::REANIM_GARLIC);
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Airraid_pottop");
+
+        aGarlic->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 12.0f);
+        mHeadReanimID = mApp->ReanimationGetID(aGarlic);
+            //aGarlic->AttachToAnotherReanimation(aBodyReanim, "Airraid_pottop");
+        aBodyReanim->AssignRenderGroupToPrefix("Pot_pumpkin", RENDER_GROUP_HIDDEN);
+        AttachEffect* aAttachedGarlic = AttachReanim(aTrackInstance->mAttachmentID, aGarlic, -2.0f, -30.0f);
+        aBodyReanim->Update();
+    }
     case SeedType::SEED_TWINSUNFLOWER:
     case SeedType::SEED_SUNFLOWER:
     {
@@ -7909,7 +7921,7 @@ bool Plant::IsAquatic(SeedType theSeedType)
 
 bool Plant::IsFlying(SeedType theSeedtype)
 {
-    return theSeedtype == SeedType::SEED_INSTANT_COFFEE;
+    return theSeedtype == SeedType::SEED_INSTANT_COFFEE || theSeedtype == SeedType::SEED_FLYING_GARLIC;
 }
 
 //0x467EC0

@@ -380,6 +380,7 @@
 <Image id="STONEBUTTON_RIGHT_HOVER" path="highlightrightstone" />
 <Image id="STONEBUTTON_LEFT" path="leftstone" />
 <Image id="STONEBUTTON_LEFT_HOVER" path="hightlightstoneleft" />
+<Image id="RHYTHM_NUMBERGRID" path="background6_NumberGrid" />
 
 <!-- Zombies -->
 <Image id="ZOMBIE_BOBSLED1" path="Zombie_bobsled1" />
