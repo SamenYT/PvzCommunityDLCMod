@@ -43,7 +43,7 @@ Haunts nearby zombies and explodes after a while
 [VOLT_SHROOM]
 Volt-shroom
 
-[MORTAR_SHROOM_TOOLTIP]
+[VOLT_SHROOM_TOOLTIP]
 Electrifies various zombies nearby
 
 [WATER_POT]
@@ -477,12 +477,12 @@ Pickled Peppers can destroy an entire column of zombies.
 {FLAVOR}"GAAARGH!!!" says Pickled Pepper, "My chic outfit is SO MUCH BETTER than that silly Jalapeno's!"
 
 [ELECTRIC_PEA_DESCRIPTION]
-Electric Peashooters shoot peas that pass through zombies and ignore the roof's slope.
+Electric Peas shoot peas that pass through zombies and ignore the roof's slope.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} heavy
 {KEYWORD}Special:{STAT} ignores roof's slope
 {SHORTLINE}
-{FLAVOR}Electric Peashooter has always had a dream, a dream of becoming a superhero. One day while watching TV, he discovered superheroes can transform via "electricity." Since then, he visits the power plant every day.
+{FLAVOR}Electric Pea has always had a dream, a dream of becoming a superhero. One day while watching TV, he discovered superheroes can transform via "electricity." Since then, he visits the power plant every day.
 
 [BEESHOOTER_DESCRIPTION]
 Beeshooters shoot bees that find zombies in bushes.
@@ -625,13 +625,13 @@ Bravery Shrooms shoot faster when zombies aproach it
 {FLAVOR}Bravery Shroom lost his behavior of being scared by anything, he has seen the horrors of the zombie war, he won't hold back is what he promised to himself.
 
 [KING_CACTUS_DESCRIPTION]
-King Cactuses shoot spikes that orbit them and shoot down balloon zombies.
+Orbituses shoot spikes that orbit them and shoot down balloon zombies.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} normal
 {KEYWORD}Range:{STAT} orbits, 8 directions
 {KEYWORD}Must be planted on cactuses
 {SHORTLINE}
-{FLAVOR}King Cactus attained his title after emerging victorious at the 2009 Chess Tournament. He dropped his crown in the fog the same week he had won and hasn't been able to locate it since then.
+{FLAVOR}Orbitus attained his title after emerging victorious at the 2009 Chess Tournament. He dropped his crown in the fog the same week he had won and hasn't been able to locate it since then.
 
 [PEPPER_PULT_DESCRIPTION]
 Pepper-pults hurl flaming peppers at the enemy.
@@ -643,7 +643,7 @@ Pepper-pults hurl flaming peppers at the enemy.
 {FLAVOR}Some say Pepper-pult is a hot head. Some find his fiery disposition off-putting. But the truth is, he's just very focused and determined. He loves what he does. He appreciates everything he has.
 
 [SHOOTING_STAR_DESCRIPTION]
-Shooting Star shoots star projectiles from the sky.
+Shooting Stars shoot star projectiles from the sky.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} heavy
 {KEYWORD}Special:{STAT} can fly
