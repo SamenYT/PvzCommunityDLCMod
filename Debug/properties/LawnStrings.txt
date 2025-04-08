@@ -579,13 +579,13 @@ Plasmawoods turn peas that pass through them into plasmaballs that deal thrice a
 {FLAVOR}Plasmawood became wise and literate by eating a fruit from the Tree of Wisdom. To let the plants know his story, he wrote a book called "The Plasma Diaries."
 
 [ICE_QUEEN_PEA_DESCRIPTION]
-Ice Queen Peas shoot solid frozen peas that damage and ice trap the enemy.
+Ice Peas shoot solid frozen peas that damage and ice trap the enemy.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} normal, slowing
 {KEYWORD}Special:{STAT} ice traps zombies
 {KEYWORD}Must be planted on snow peas
 {SHORTLINE}
-{FLAVOR}"Spoot!" says Ice Queen Pea as she launches another ice-pellet. It's not as dignified as she'd like, but them's the breaks when you're emitting frozen projectiles.
+{FLAVOR}"Spoot!" says Ice Pea as he launches another ice-pellet. It's not as dignified as he'd like, but them's the breaks when you're emitting frozen projectiles.
 
 [VINE_NUT_DESCRIPTION]
 Vine-nuts cannot only be jumped over, but will also block and damage zombies.
@@ -860,7 +860,7 @@ Good luck!
 {NO_SOUND}{NO_CLICK}Plant these on your torchwoods to turn them into plasmawoods! Plasmawoods turn peas into plasmaballs that deal heavy damage towards groups of zombies!
 
 [CRAZY_DAVE_2038]
-{NO_SOUND}{NO_CLICK}Plant these on your snow peas to turn them into ice queen peas! Ice Peas freeze zombies solid and trap them in ice!
+{NO_SOUND}{NO_CLICK}Plant these on your snow peas to turn them into ice peas! Ice Peas freeze zombies solid and trap them in ice!
 
 [CRAZY_DAVE_2039]
 {NO_SOUND}{NO_CLICK}Plant these on your tall-nuts to turn them into vine-nuts! Vine-nuts stop vehicles and deal damage when being eaten!
