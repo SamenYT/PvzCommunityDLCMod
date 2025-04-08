@@ -1983,8 +1983,8 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[1].SetPacketType(SeedType::SEED_SUNFLOWER);
 		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_WALLNUT);
 		mSeedBank->mSeedPackets[3].SetPacketType(SeedType::SEED_REVERSE_SNOWPEA);
-		mSeedBank->mSeedPackets[4].SetPacketType(SeedType::SEED_LEFTPEATER);
-		mSeedBank->mSeedPackets[5].SetPacketType(SeedType::SEED_REVERSE_CHOMPER);
+		mSeedBank->mSeedPackets[4].SetPacketType(SeedType::SEED_REVERSE_CHOMPER);
+		mSeedBank->mSeedPackets[5].SetPacketType(SeedType::SEED_LEFTPEATER);
 		mSeedBank->mSeedPackets[6].SetPacketType(SeedType::SEED_SQUASH);
 		mSeedBank->mSeedPackets[7].SetPacketType(SeedType::SEED_REVERSE_THREEPEATER);
 		mSeedBank->mSeedPackets[8].SetPacketType(SeedType::SEED_GARLIC);
