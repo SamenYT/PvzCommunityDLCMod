@@ -2240,12 +2240,12 @@ bool LawnApp::IsIZombieLevel()
 		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_12 ||
 		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_13 ||
 		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_14 ||
-		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15; //||
-		/*mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16 ||
+		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15 ||
+		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16 ||
 		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17 ||
 		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18 ||
-		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19; //||
-		//mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20;*/
+		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19 ||
+		mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20;
 }
 
 //0x453820

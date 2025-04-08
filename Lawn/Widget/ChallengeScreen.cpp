@@ -122,11 +122,11 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_13,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      6,  2,  _S("[I_ZOMBIE_13]") },
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_14,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      6,  3,  _S("[I_ZOMBIE_14]") },
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      6,  4,  _S("[I_ZOMBIE_15]") },
-	/*{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE2,     3,  0,  _S("[I_ZOMBIE_16]") },
-	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE2,     3,  1,  _S("[I_ZOMBIE_17]")},
-	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE2,     3,  2,  _S("[I_ZOMBIE_18]") },
-	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE2,     3,  3,  _S("[I_ZOMBIE_19]") },
-	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_ENDLESS,	           11,  ChallengePage::CHALLENGE_PAGE_PUZZLE2,     3,  4,  _S("[I_ZOMBIE_ENDLESS]") }, */
+	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  0,  _S("[I_ZOMBIE_16]") },
+	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  1,  _S("[I_ZOMBIE_17]")},
+	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  2,  _S("[I_ZOMBIE_18]") },
+	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  3,  _S("[I_ZOMBIE_19]") },
+	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  4,  _S("[I_ZOMBIE_20]") },
 	{ GameMode::GAMEMODE_CHALLENGE_GLITCH,				       48,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  0,  _S("[MINIGAME_GLITCH]") },
 	{ GameMode::GAMEMODE_CHALLENGE_FLIPPED,				       49,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  1,  _S("[MINIGAME_FLIPPED]") },
 	{ GameMode::GAMEMODE_CHALLENGE_GIGA,				       50,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  2,  _S("[MINIGAME_GIGA]") },
@@ -818,7 +818,7 @@ void ChallengeScreen::Draw(Graphics* g)
 	}
 
 	int aTrophiesGot = (!mApp->mPlayerInfo->mHardmodeIsOff ? mApp->GetNumTrophiesHardmode(mPageIndex) : mApp->GetNumTrophies(mPageIndex));
-	int aTrophiesTotal = mPageIndex == CHALLENGE_PAGE_SURVIVAL ? 14 : mPageIndex == CHALLENGE_PAGE_CHALLENGE ? 50 : mPageIndex == CHALLENGE_PAGE_PUZZLE ? 33 : 0;
+	int aTrophiesTotal = mPageIndex == CHALLENGE_PAGE_SURVIVAL ? 14 : mPageIndex == CHALLENGE_PAGE_CHALLENGE ? 50 : mPageIndex == CHALLENGE_PAGE_PUZZLE ? 38 : 0;
 	
 	if (aTrophiesTotal > 0)
 	{

@@ -194,7 +194,7 @@ Shoots plasmaballs that damage groups of zombies
 Plasma Pea
 
 [PEPPER_PULT]
-Pepper-Pult
+Pepper-pult
 
 [PEPPER_PULT_TOOLTIP]
 Lobs flaming peppers at zombies and warms nearby plants
@@ -471,7 +471,7 @@ Seastars launch 5 stars and occasionally rotate to launch in 10 directions.
 Pickled Peppers can destroy an entire column of zombies.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} massive
-{KEYWORD}Range:{STAT} all zombies in column
+{KEYWORD}Range:{STAT} all zombies in a column
 {KEYWORD}Usage:{STAT} single use, instant
 {SHORTLINE}
 {FLAVOR}"GAAARGH!!!" says Pickled Pepper, "My chic outfit is SO MUCH BETTER than that silly Jalapeno's!"
@@ -579,13 +579,13 @@ Plasmawoods turn peas that pass through them into plasmaballs that deal thrice a
 {FLAVOR}Plasmawood became wise and literate by eating a fruit from the Tree of Wisdom. To let the plants know his story, he wrote a book called "The Plasma Diaries."
 
 [ICE_QUEEN_PEA_DESCRIPTION]
-Ice Queen Peas shoot solid frozen peas that damage and ice trap the enemy.
+Ice Peas shoot solid frozen peas that damage and ice trap the enemy.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} normal, slowing
 {KEYWORD}Special:{STAT} ice traps zombies
 {KEYWORD}Must be planted on snow peas
 {SHORTLINE}
-{FLAVOR}"Spoot!" says Ice Queen Pea as she launches another ice-pellet. It's not as dignified as she'd like, but them's the breaks when you're emitting frozen projectiles.
+{FLAVOR}"Spoot!" says Ice Pea as he launches another ice-pellet. It's not as dignified as he'd like, but them's the breaks when you're emitting frozen projectiles.
 
 [VINE_NUT_DESCRIPTION]
 Vine-nuts cannot only be jumped over, but will also block and damage zombies.
@@ -860,7 +860,7 @@ Good luck!
 {NO_SOUND}{NO_CLICK}Plant these on your torchwoods to turn them into plasmawoods! Plasmawoods turn peas into plasmaballs that deal heavy damage towards groups of zombies!
 
 [CRAZY_DAVE_2038]
-{NO_SOUND}{NO_CLICK}Plant these on your snow peas to turn them into ice queen peas! Ice Queen Peas freeze zombies solid and trap them in ice!
+{NO_SOUND}{NO_CLICK}Plant these on your snow peas to turn them into ice peas! Ice Peas freeze zombies solid and trap them in ice!
 
 [CRAZY_DAVE_2039]
 {NO_SOUND}{NO_CLICK}Plant these on your tall-nuts to turn them into vine-nuts! Vine-nuts stop vehicles and deal damage when being eaten!
@@ -872,10 +872,10 @@ Good luck!
 {NO_SOUND}{NO_CLICK}Plant these on your scaredy-shrooms to turn them into bravery-shrooms! Bravery-shrooms shoot faster as zombies get closer!
 
 [CRAZY_DAVE_2042]
-{NO_SOUND}{NO_CLICK}Plant these on your cactuses to turn them into orbituses! King Cactuses launch 8 spikes that orbit around themselves and can pop balloons!
+{NO_SOUND}{NO_CLICK}Plant these on your cactuses to turn them into orbituses! Orbituses launch 8 spikes that orbit around themselves and can pop balloons!
 
 [CRAZY_DAVE_2043]
-{NO_SOUND}{NO_CLICK}Fire Peashooters shoot fireballs that deal moderate damage towards groups of zombies!
+{NO_SOUND}{NO_CLICK}Fire Pea shoot fireballs that deal moderate damage towards groups of zombies!
 
 [CRAZY_DAVE_2044]
 {NO_SOUND}{NO_CLICK}Pepper-pults lob flaming peppers at zombies and warm nearby plants!
@@ -890,7 +890,7 @@ Good luck!
 {NO_SOUND}{NO_CLICK}Seastars can aim to fire 5 stars in 10 directions! 
 
 [CRAZY_DAVE_2048]
-{NO_SOUND}{NO_CLICK}Plant these on your fire peashooters to turn them into plasma peashooters! Plasma Peashooters shoot plasmaballs that deal extreme damage towards groups of zombies!
+{NO_SOUND}{NO_CLICK}Plant these on your fire peas to turn them into plasma peas! Plasma Pea shoot plasmaballs that deal extreme damage towards groups of zombies!
 
 [CRAZY_DAVE_2049]
 {NO_SOUND}{NO_CLICK}Plant these on your starfruits to turn them into shooting stars! Shooting Stars shoot cosmic stars from the sky that deal heavy damage towards all zombies!
@@ -1772,7 +1772,7 @@ Threepeaters shoot peas in three lanes.
 going to shows, particularly modern jazz. "I'm just looking for that special someone," he says. Threepeater's favorite number is 5.
 
 [TANGLE_KELP_DESCRIPTION]
-Tangle Kelp are aquatic plants that pull the first zombie that nears them underwater.
+Tangle Kelps are aquatic plants that pull the first zombie that nears them underwater.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} massive
 {KEYWORD}Usage:{STAT} single use, on contact
@@ -1920,7 +1920,7 @@ Kernel-pults fling corn kernels and butter at zombies.
 {KEYWORD}Range:{STAT} lobbed
 {KEYWORD}Special:{STAT} butter immobilizes zombies
 {SHORTLINE}
-{FLAVOR}Kernel-Pult is the eldest of the Pult brothers. Of the three of them, Kernel is the only one
+{FLAVOR}Kernel-pult is the eldest of the Pult brothers. Of the three of them, Kernel is the only one
 who consistently remembers the others' birthdays. He bugs them about it a little, too.
 
 [COFFEE_BEAN_DESCRIPTION]
@@ -1933,7 +1933,7 @@ Use Coffee Beans to wake up sleeping mushrooms.
 What thing? Whoa! Lions!" Yep, Coffee Bean sure does get excited.
 
 [GARLIC_DESCRIPTION]
-Garlic diverts zombies into other lanes.
+Garlics divert zombies into other lanes.
 {SHORTLINE}
 {KEYWORD}Usage:{STAT} on contact
 {KEYWORD}Special:{STAT} diverts zombies into other lanes
@@ -3777,7 +3777,7 @@ Brains Eaten
 Cost
 
 [WAIT_TIME]
-Recharge 
+Recharge
 
 [WAIT_TIME_SHORT]
 fast

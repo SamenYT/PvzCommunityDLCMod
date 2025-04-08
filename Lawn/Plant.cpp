@@ -7736,7 +7736,7 @@ int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_POLE) return 100;
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_ZOMBONI) return 175;
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_JACK) return 100;
-        else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_DIGGER) return 125;
+        else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_DIGGER) return 150;
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_POGO) return 225;
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_CATAPULT) return 200;
         else if (gLawnApp->mGameMode == GAMEMODE_CHALLENGE_VERSUS_OLD && theSeedType == SeedType::SEED_VERSUS_GARGANTUAR) return 250;
