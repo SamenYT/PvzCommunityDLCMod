@@ -486,7 +486,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         else
         {
             mZombiePhase = ZombiePhase::PHASE_DIGGER_TUNNELING;
-            AddAttachedParticle(60, 100, ParticleEffect::PARTICLE_DIGGER_TUNNEL, 0);
+            AddAttachedParticle(60, 100, ParticleEffect::PARTICLE_DIGGER_TUNNEL);
             aRenderOffset = 7;
             PlayZombieReanim("anim_dig", ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME, 0, 12.0f);
             PickRandomSpeed();
@@ -4652,6 +4652,10 @@ void Zombie::DropHead(unsigned int theDamageFlags)
     {
         aEffect = ParticleEffect::PARTICLE_ZOMBIE_AXE_HEAD;
     }
+    else if (mZombieType == ZombieType::ZOMBIE_ICE)
+    {
+        aEffect = ParticleEffect::PARTICLE_ZOMBIE_ICE_HEAD;
+    }
     else if (mZombieType == ZombieType::ZOMBIE_POGO)
     {
         PogoBreak(theDamageFlags);
@@ -6492,7 +6496,7 @@ void Zombie::UpdatePlaying()
         if (mIceTrapCounter == 0)
         {
             RemoveIceTrap();
-            AddAttachedParticle(75, 106, ParticleEffect::PARTICLE_ICE_TRAP_RELEASE, 0);
+            AddAttachedParticle(75, 106, ParticleEffect::PARTICLE_ICE_TRAP_RELEASE);
         }
     }
     if (mHypnoCounter > 0)
@@ -8630,7 +8634,7 @@ void Zombie::CatapultDeath(unsigned int theDamageFlags)
         mApp->AddTodParticle(mPosX + 29.0f, mPosY + 114.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_ZAMBONI_TIRE);
         mVelX = 0.0f;
 
-        AddAttachedParticle(47, 77, ParticleEffect::PARTICLE_ZAMBONI_SMOKE, 0);
+        AddAttachedParticle(47, 77, ParticleEffect::PARTICLE_ZAMBONI_SMOKE);
         mPhaseCounter = 280;
         PlayZombieReanim("anim_bounce", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 10, 12.0f);
     }
@@ -9704,6 +9708,8 @@ void Zombie::BungeeDie()
 //0x530510
 void Zombie::DieNoLoot()
 {
+    if (mZombiePhase == PHASE_BONE_PILE) mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
+
     StopZombieSound();
     AttachmentDie(mAttachmentID);
     mApp->RemoveReanimation(mBodyReanimID);
@@ -10271,7 +10277,7 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
             {
                 aBodyReanim->SetImageOverride("Zombie_zamboni_1", IMAGE_REANIM_ZOMBIE_ZAMBONI_1_DAMAGE2);
                 aBodyReanim->SetImageOverride("Zombie_zamboni_2", IMAGE_REANIM_ZOMBIE_ZAMBONI_2_DAMAGE2);
-                AddAttachedParticle(27, 72, ParticleEffect::PARTICLE_ZAMBONI_SMOKE, 0);
+                AddAttachedParticle(27, 72, ParticleEffect::PARTICLE_ZAMBONI_SMOKE);
             }
         }
     }
@@ -10291,7 +10297,7 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
             }
             else if (aDamageIndexAfterDamage == 2)
             {
-                AddAttachedParticle(47, 77, ParticleEffect::PARTICLE_ZAMBONI_SMOKE, 0);
+                AddAttachedParticle(47, 77, ParticleEffect::PARTICLE_ZAMBONI_SMOKE);
             }
         }
     }
@@ -10947,7 +10953,7 @@ Rect Zombie::GetZombieAttackRect()
 }
 
 //0x5321F0
-TodParticleSystem* Zombie::AddAttachedParticle(int thePosX, int thePosY, ParticleEffect theEffect, int color)
+TodParticleSystem* Zombie::AddAttachedParticle(int thePosX, int thePosY, ParticleEffect theEffect)
 {
     if (mDead)
         return nullptr;
@@ -10958,7 +10964,7 @@ TodParticleSystem* Zombie::AddAttachedParticle(int thePosX, int thePosY, Particl
     TodParticleSystem* aParticle = mApp->AddTodParticle(mX + thePosX, mY + thePosY, 0, theEffect);
     if (aParticle)
     {
-        if (color == 1) aParticle->OverrideColor(nullptr, Color(255, 150, 255, 255));
+        //aParticle->OverrideColor(nullptr, Color(255, 150, 255, 255));
         AttachParticle(mAttachmentID, aParticle, thePosX, thePosY);
     }
 
@@ -11660,7 +11666,7 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
 
     if (mIceTrapCounter > 0)
     {
-        AddAttachedParticle(75, 106, ParticleEffect::PARTICLE_ICE_TRAP_RELEASE, 0);
+        AddAttachedParticle(75, 106, ParticleEffect::PARTICLE_ICE_TRAP_RELEASE);
         mIceTrapCounter = 0;
     }
     if (mButteredCounter > 0)

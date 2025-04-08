@@ -694,14 +694,14 @@ void AlmanacDialog::GetSeedPosition(SeedType theSeedType, int& x, int& y)
 
 		for (int i = 0; i <= (SEED_ECACTUS - SEED_GATLINGPEA); i++)
 		{
-			int yHeight = i < 8 ? 5 : 2;
+			int yHeight = 5;
 			if (theSeedType == SeedType::SEED_GATLINGPEA + i)
 				x = 26 + 52 * (i % 8), y = 78 * yHeight + 92;
 		}
 
 		for (int i = 0; i <= (SEED_SHOOTINGSTAR - SEED_FLAMEPEA); i++)
 		{
-			int yHeight = i < 8 ? 0 : 1;
+			int yHeight = i < 8 ? 0 : 5;
 			if (theSeedType == SeedType::SEED_FLAMEPEA + i)
 				x = 26 + 52 * (i % 8), y = 78 * yHeight + 92;
 		}

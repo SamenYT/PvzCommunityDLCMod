@@ -129,6 +129,10 @@ ParticleParams gLawnParticleArray[(int)ParticleEffect::NUM_PARTICLES] = {
 	{ ParticleEffect::PARTICLE_LAWNMOWER_EXPLOSION_TRICKED_OUT, "particles\\LawnmowerExplosion.xml" },
 	{ ParticleEffect::PARTICLE_BUSH, "particles\\BushesParticles.xml" },
 	{ ParticleEffect::PARTICLE_ZOMBIE_BUSH, "particles\\Zombie_bushes.xml" },
+	{ ParticleEffect::PARTICLE_FROSTCLOUD, "particles\\IcyFumeCloud.xml" },
+	{ ParticleEffect::PARTICLE_SKELETON_DEATH, "particles\\SkeletonDeath.xml" },
+	{ ParticleEffect::PARTICLE_ZOMBIE_ICE_HEAD, "particles\\ZombieIceHead.xml" },
+	{ ParticleEffect::PARTICLE_BLOOD_SPLASH, "particles\\BloodSplash.xml" },
 };  // 0x6A0FF0
 
 //0x515640 : (ecx = *theParticleFileName, *theParticleDef)  //esp -= 4

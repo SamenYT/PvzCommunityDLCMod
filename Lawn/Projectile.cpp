@@ -1305,8 +1305,6 @@ void Projectile::DoImpactGridItem(GridItem* theGridItem)
 //0x46E000
 void Projectile::DoImpact(Zombie* theZombie, bool isSilent)
 {
-	int colorNumber = 0;
-
 	if (theZombie)
 	{
 		bool aIsBushSquare =
@@ -1445,7 +1443,6 @@ void Projectile::DoImpact(Zombie* theZombie, bool isSilent)
 	else if (mProjectileType == ProjectileType::PROJECTILE_SEASTAR)
 	{
 		aEffect = ParticleEffect::PARTICLE_STAR_SPLAT;
-		colorNumber = 1;
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{
@@ -1490,7 +1487,7 @@ void Projectile::DoImpact(Zombie* theZombie, bool isSilent)
 			}
 
 			aPosY = ClampFloat(aPosY, 20.0f, 100.0f);
-			theZombie->AddAttachedParticle(aPosX, aPosY, aEffect, colorNumber);
+			theZombie->AddAttachedParticle(aPosX, aPosY, aEffect);
 		}
 		else
 		{
