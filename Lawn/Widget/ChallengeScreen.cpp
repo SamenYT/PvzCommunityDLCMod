@@ -127,6 +127,7 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  2,  _S("[I_ZOMBIE_18]") },
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  3,  _S("[I_ZOMBIE_19]") },
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20,                   11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      7,  4,  _S("[I_ZOMBIE_20]") },
+	{ GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC,			   11,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   10, 0,  _S("[RHYTHM_GARLIC]") },
 	{ GameMode::GAMEMODE_CHALLENGE_GLITCH,				       48,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  0,  _S("[MINIGAME_GLITCH]") },
 	{ GameMode::GAMEMODE_CHALLENGE_FLIPPED,				       49,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  1,  _S("[MINIGAME_FLIPPED]") },
 	{ GameMode::GAMEMODE_CHALLENGE_GIGA,				       50,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   8,  2,  _S("[MINIGAME_GIGA]") },

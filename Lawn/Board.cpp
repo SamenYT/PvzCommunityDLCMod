@@ -1303,6 +1303,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15:
 	case GameMode::GAMEMODE_CHALLENGE_ECLIPSE:
 	case GameMode::GAMEMODE_CHALLENGE_VERSUS_MOON:
+	case GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC:
 		mBackground = BackgroundType::BACKGROUND_6_BOSS;
 		break;
 
