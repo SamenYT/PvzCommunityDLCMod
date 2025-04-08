@@ -20,7 +20,7 @@ Deals heavy damage anywhere except from up close
 Blood Orange
 
 [BLOOD_ORANGE_TOOLTIP]
-Blows up all zombies in an area but boosts surviving zombies
+Blows up zombies and boosts survivors
 
 [LIGHTNING_REED]
 Lightning Reed
@@ -4359,10 +4359,10 @@ Hurrikales blow a chilling wind that push back zombies in a lane.
 {FLAVOR}Hurrikale always dreamed of being a soliloquist. "To blow, or not to blow, let's not pretend it was ever a question," he formulates. However, he can't be taken seriously as he's known for accidentally blowing away the scenario curtains whenever he gets too emotional.
 
 [BLOOD_ORANGE_TOOLTIP]
-Blows up all zombies in an area but boosts surviving zombies
+Blows up zombies and boosts survivors
 
 [BLOOD_ORANGE_DESCRIPTION]
-Blood Oranges blow up all zombies in an area but benefit the ones that remain.
+Blood Oranges blow up all zombies in an area and boost the ones that survive.
 {SHORTLINE}
 {KEYWORD}Damage:{STAT} massive
 {KEYWORD}Range:{STAT} all zombies in a medium area
