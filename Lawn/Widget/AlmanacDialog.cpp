@@ -686,14 +686,6 @@ void AlmanacDialog::GetSeedPosition(SeedType theSeedType, int& x, int& y)
 	{
 		x = 20, y = 23;
 	}
-	else if (theSeedType == SeedType::SEED_PLASMAPEA)
-	{
-		x = 0, y = 1000;
-	}
-	else if (theSeedType == SeedType::SEED_FLAMEPEA)
-	{
-		x = 0, y = 1000;
-	}
 	else
 	{
 		int aFinalSeedType = mIndexedPage == 0 ? theSeedType : theSeedType - 40;
@@ -704,6 +696,13 @@ void AlmanacDialog::GetSeedPosition(SeedType theSeedType, int& x, int& y)
 		{
 			int yHeight = i < 8 ? 5 : 2;
 			if (theSeedType == SeedType::SEED_GATLINGPEA + i)
+				x = 26 + 52 * (i % 8), y = 78 * yHeight + 92;
+		}
+
+		for (int i = 0; i <= (SEED_SHOOTINGSTAR - SEED_FLAMEPEA); i++)
+		{
+			int yHeight = i < 8 ? 0 : 1;
+			if (theSeedType == SeedType::SEED_FLAMEPEA + i)
 				x = 26 + 52 * (i % 8), y = 78 * yHeight + 92;
 		}
 	}
@@ -861,7 +860,7 @@ void AlmanacDialog::MouseUp(int x, int y, int theClickCount)
 		mIndexedPage = 0;
 		SetPage(ALMANAC_PAGE_ZOMBIES);
 	}
-	else if (mNextButton->IsMouseOver() && ((mOpenPage == AlmanacPage::ALMANAC_PAGE_PLANTS && mIndexedPage != 1) || mOpenPage == AlmanacPage::ALMANAC_PAGE_ZOMBIES)) mIndexedPage++;
+	else if (mNextButton->IsMouseOver() && ((mOpenPage == AlmanacPage::ALMANAC_PAGE_PLANTS && mIndexedPage != 2) || mOpenPage == AlmanacPage::ALMANAC_PAGE_ZOMBIES)) mIndexedPage++;
 	else if (mLastButton->IsMouseOver()) mIndexedPage--;
 	else if (mCloseButton->IsMouseOver())	mApp->KillAlmanacDialog();
 	else if (mIndexButton->IsMouseOver())	SetPage(ALMANAC_PAGE_INDEX);
