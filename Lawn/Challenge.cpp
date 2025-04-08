@@ -5822,7 +5822,7 @@ void Challenge::IZombieInitLevel()
 		IZombiePlacePlants(SEED_CABBAGEPULT, 4, -1);
 		IZombiePlacePlants(SEED_KERNELPULT, 2, -1);
 		break;
-	/*case GAMEMODE_PUZZLE_I_ZOMBIE_16:
+	case GAMEMODE_PUZZLE_I_ZOMBIE_16:
 		IZombiePlacePlantInSquare(SEED_GARLIC, 4, 1);
 		IZombiePlacePlantInSquare(SEED_GARLIC, 4, 3);
 		IZombiePlacePlants(SEED_SUNFLOWER, 3, 1);
@@ -5871,7 +5871,7 @@ void Challenge::IZombieInitLevel()
 		IZombiePlacePlants(SEED_SPLITPEA, 1, 4);
 		IZombiePlacePlants(SEED_MAGNETSHROOM, 1, 4);
 		break;
-	/*case GAMEMODE_PUZZLE_I_ZOMBIE_20:
+	case GAMEMODE_PUZZLE_I_ZOMBIE_20:
 		IZombiePlacePlantInSquare(SEED_TALLNUT, 5, 1);
 		IZombiePlacePlantInSquare(SEED_TORCHWOOD, 5, 3);
 		IZombiePlacePlants(SEED_POTATOMINE, 4, 0);
@@ -5891,7 +5891,7 @@ void Challenge::IZombieInitLevel()
 		IZombiePlacePlants(SEED_STARFRUIT, 1, 4);
 		IZombiePlacePlants(SEED_SPLITPEA, 1, 4);
 		IZombiePlacePlants(SEED_MAGNETSHROOM, 1, 4);
-		break;*/
+		break;
 	default:
 		TOD_ASSERT();
 	}

@@ -1232,11 +1232,11 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_11:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_12:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_13:
-	/*case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16:
+	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_19:
-	//case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20:*/
+	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20:
 	case GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4:
 	case GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_3:
 	case GameMode::GAMEMODE_CHALLENGE_GLADIANTUAR:
@@ -2157,7 +2157,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_ZOMBIE_PAIL);
 		mSeedBank->mSeedPackets[3].SetPacketType(SeedType::SEED_ZOMBIE_ZOMBOSS);
 		}
-	/*else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16)
+	else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16)
 	{
 		TOD_ASSERT(mSeedBank->mNumPackets == 4);
 		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_ZOMBIE_NORMAL);
@@ -2195,7 +2195,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[6].SetPacketType(SeedType::SEED_ZOMBIE_LADDER);
 		mSeedBank->mSeedPackets[7].SetPacketType(SeedType::SEED_ZOMBIE_FOOTBALL);
 		}
-	/*else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20)
+	else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20)
 	{
 		TOD_ASSERT(mSeedBank->mNumPackets == 8);
 		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_ZOMBIE_IMP);
@@ -2206,7 +2206,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[5].SetPacketType(SeedType::SEED_ZOMBIE_DIGGER);
 		mSeedBank->mSeedPackets[6].SetPacketType(SeedType::SEED_ZOMBIE_LADDER);
 		mSeedBank->mSeedPackets[7].SetPacketType(SeedType::SEED_ZOMBIE_FOOTBALL);
-		}*/
+		}
 	else if (mApp->IsScaryPotterLevel())
 	{
 		TOD_ASSERT(mSeedBank->mNumPackets == 1);
@@ -11116,12 +11116,12 @@ int Board::GetNumSeedsInBank()
 	{
 		return 5;
 	}
-	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_13 || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15)
-		// || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16)// ||mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17)
+	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_13 || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_15
+		 || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_16 ||mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_17)
 	{
 		return 4;
 	}
-	/*if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18)
+	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_18)
 	{
 		return 6;
 	}
@@ -11129,10 +11129,10 @@ int Board::GetNumSeedsInBank()
 	{
 		return 8;
 	}
-	/*if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20)
+	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_20)
 	{
 		return 8;
-	}*/
+	}
 
 	int aNumSeeds = mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PACKET_UPGRADE] + 6;
 	int aSeedsAvailable = mApp->GetSeedsAvailable();
