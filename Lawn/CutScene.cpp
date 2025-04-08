@@ -666,7 +666,7 @@ void CutScene::PlaceLawnItems()
 	}
 	if (mApp->IsRhythmGarlicLevel())
 	{
-		mBoard->NewPlant(4, Rand(5), SeedType::SEED_FLYING_GARLIC);
+		mBoard->NewPlant(5, Rand(5), SeedType::SEED_FLYING_GARLIC);
 	}
 }
 

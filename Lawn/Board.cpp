@@ -835,6 +835,7 @@ void Board::PickZombieWaves()
 		if (mApp->IsRhythmGarlicLevel())
 		{
 			int aVampCount = aZombiePoints;
+			if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RHYTHM_GARLIC) aVampCount = min(aVampCount, 10);
 			for (int _i = 0; _i < aVampCount; _i++)
 			{
 				PutZombieInWave(ZombieType::ZOMBIE_VAMPIRE, aWave, &aZombiePicker);
