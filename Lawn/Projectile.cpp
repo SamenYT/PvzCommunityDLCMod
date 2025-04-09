@@ -1628,7 +1628,7 @@ void Projectile::DrawReedZap(Graphics* g)
 	g->SetColorizeImages(true);
 	SexyMatrix3 aMatrix;
 	aMatrix.LoadIdentity();
-	TodScaleRotateTransformMatrix(aMatrix, 0, 0, mRotation, mRadius, 1.0f);
+	TodScaleRotateTransformMatrix(aMatrix, 0, 0, mRotation, mRadius, mleft ? -1.0f: 1.0f);
 	//float aStretch = 
 	//IMAGE_PROJECTILE_ZAP->mWidth
 		//IMAGE_PROJECTILE_ZAP->mWidth
@@ -1642,6 +1642,8 @@ void Projectile::DrawReedZap(Graphics* g)
 void Projectile::TransformZap()
 {
 	mRadius = sqrtf(mWidth * mWidth + mHeight * mHeight) / IMAGE_PROJECTILE_ZAP->mWidth;
+	mleft = Rand(2);
+	if (Rand(2)) mRadius *= -1;
 	mRotation = atan2f(-mHeight,mWidth);
 	mX += mWidth / 2;
 	mY += mHeight / 2;
