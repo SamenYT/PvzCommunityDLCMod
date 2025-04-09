@@ -541,6 +541,7 @@ public:
 	/*inline*/ void				    IncreaseDummyCounter(bool theHypnotize);
 	static /*inline*/ bool		    CheckZombiePack(SeedType theSeedtype);
 	void							SpawnHypnotizedPlants();
+	static /*inline*/ bool			IsZombieTypeGiga(ZombieType theZombieType);
 };
 extern bool gShownMoreSunTutorial;
 

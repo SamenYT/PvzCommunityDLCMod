@@ -2907,15 +2907,18 @@ void Challenge::InitZombieWavesSurvival()
 		ZombieType aRandZombie = (ZombieType)aLevelRNG.Next((unsigned long)NUM_ZOMBIE_TYPES);
 		if (mBoard->mZombieAllowed[aRandZombie])																	continue;
 		if (mBoard->IsZombieTypePoolOnly(aRandZombie) && !mBoard->StageHasPool())									continue;
-		if (mBoard->StageHasRoof() && (aRandZombie == ZOMBIE_DIGGER || aRandZombie == ZOMBIE_DANCER))				continue;
+		if (mBoard->StageHasRoof() && (aRandZombie == ZOMBIE_DIGGER || aRandZombie == ZOMBIE_DANCER ||
+			aRandZombie == ZOMBIE_LUMBERJACK))	                                                                    continue;
+		if (!mBoard->StageIsNight() && aRandZombie == ZOMBIE_VAMPIRE)			                                    continue;
 		if (mBoard->StageHasGraveStones() && aRandZombie == ZOMBIE_ZOMBONI)											continue;
 		if (!mBoard->StageHasRoof() && !mApp->IsSurvivalEndless(mApp->mGameMode) && aRandZombie == ZOMBIE_BUNGEE)	continue;
 		if (mBoard->GetSurvivalFlagsCompleted() < 10 && aRandZombie == ZOMBIE_REDEYE_GARGANTUAR)								continue;
-		if (mApp->IsSurvivalNormal(mApp->mGameMode) && aRandZombie > ZOMBIE_SNORKEL)								continue;
+		if (mBoard->GetSurvivalFlagsCompleted() < 4 && (aRandZombie == ZOMBIE_GARGANTUAR || aRandZombie == ZOMBIE_ZOMBONI ||
+			aRandZombie == ZOMBIE_GLADIANTUAR || aRandZombie == ZOMBIE_GIGA_FOOTBALL))		                                    continue;
+		if (mApp->IsSurvivalNormal(mApp->mGameMode) && aRandZombie > ZOMBIE_SNORKEL)                                continue;
 		if (mBoard->IsZombieTypeSpawnedOnly(aRandZombie) || Zombie::IsZombotany(aRandZombie) ||
 			aRandZombie == ZOMBIE_DUCKY_TUBE || aRandZombie == ZOMBIE_YETI)											continue;
-		if (aRandZombie == ZOMBIE_GLITCH && mApp->mGameMode != GAMEMODE_CHALLENGE_GLITCH)							continue;
-		if (aRandZombie == ZOMBIE_VAMPIRE && !mBoard->StageIsNight())							continue;
+		(aRandZombie == ZOMBIE_GLITCH && mApp->mGameMode != GAMEMODE_CHALLENGE_GLITCH)							continue;
 
 		mBoard->mZombieAllowed[aRandZombie] = true;
 		aCapacity--;
