@@ -1071,7 +1071,7 @@ Airborne
 Nom Nom Nom
 
 [SCARY_POTTER_16]
-Tesla's  Experiment
+Tesla's Experiment
 
 [SCARY_POTTER_17]
 Shooting Star
@@ -3493,7 +3493,7 @@ To the Left
 Third Vase
 
 [SCARY_POTTER_4]
-Chain  Reaction
+Chain Reaction
 
 [SCARY_POTTER_5]
 M is for Metal
@@ -3859,7 +3859,7 @@ Can You Dig It?
 Totally Nuts
 
 [I_ZOMBIE_5]
-Dead   Zeppelin
+Dead Zeppelin
 
 [I_ZOMBIE_6]
 Me Smash!
