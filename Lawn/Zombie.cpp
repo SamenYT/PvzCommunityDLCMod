@@ -6416,7 +6416,7 @@ void Zombie::UpdatePlaying()
     if (mGroanCounter == 0 && Rand(aZombiesCount) == 0 && mHasHead && mZombieType != ZombieType::ZOMBIE_BOSS && !mBoard->HasLevelAwardDropped())
     {
         float aPitch = 0.0f;
-        if (mApp->IsLittleTroubleLevel())
+        if (mApp->IsLittleTroubleLevel() || mIsShrunken)
         {
             aPitch = RandRangeFloat(40.0f, 50.0f);
         }
@@ -6462,9 +6462,19 @@ void Zombie::UpdatePlaying()
                 {
                     DieWithLoot();
                 }
-            }              
+            }      
+            
+            // Drunkenusyy skibidi
+            if (mInPool)
+            {
+                int aDepth = -40 * mScaleZombie;
+                if (mAltitude <= aDepth)
+                {
+                    mAltitude += (aDepth - mAltitude) / 2;
+                }
+            }
         }
-        if (mInPool) mInPoolAfterShrink = true;
+        //if (mInPool) mInPoolAfterShrink = true;
     }
 
     if (mStunCounter > 0)
@@ -7359,10 +7369,10 @@ void Zombie::UpdateReanim()
         anOffsetY -= TodAnimateCurveFloat(50, 0, mMoveTimer, 0.f, 90.0f, TodCurves::CURVE_BOUNCE_SLOW_MIDDLE);
     }
 
-    if (mInPoolAfterShrink)
+   /* if (mInPoolAfterShrink)
     {
         anOffsetY -= 20;
-    }
+    }*/
 
     if (mZombieType == ZombieType::ZOMBIE_RAVEN)
     {
@@ -7784,7 +7794,7 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
     if (mIsShrinking && mShrinkCounter > 0)
     {
         int aAlpha = TodAnimateCurveFloatTime(200, 0, mShrinkCounter, 255, 0, CURVE_LINEAR);
-        aExtraAdditiveColor = Color(255, 255, 255, aAlpha);
+        aExtraAdditiveColor = Color(168, 6, 220, aAlpha);
         aEnableExtraAdditiveDraw = true;
     }
     aBodyReanim->mColorOverride = aColorOverride;

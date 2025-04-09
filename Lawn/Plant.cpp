@@ -3202,31 +3202,37 @@ void Plant::UpdateChardGuard() {
 
 void Plant::UpdateViolet()
 {
-    if (FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY))
-    {
-        if (FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY)->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING)
+    Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+    
+    if (!aBodyReanim) return;
+
+    if (IsInPlay() && mState == PlantState::STATE_NOTREADY)   {
+        Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
+        if (aZombie)
         {
             if (mSeedType == SeedType::SEED_SHRINK && !mStopAnimation)
             {
-                Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
                 aBodyReanim->SetImageOverride("Shrinking_violet_big_petal1", IMAGE_VIOLET_PADDLE);
                 aBodyReanim->SetImageOverride("Shrinking_violet_big_petal_copy2", IMAGE_VIOLET_PADDLE);
                 aBodyReanim->SetImageOverride("Shrinking_violet_big_petal3", IMAGE_VIOLET_PADDLE);
                 aBodyReanim->SetImageOverride("Shrinking_violet_big_petal4", IMAGE_VIOLET_PADDLE);
                 aBodyReanim->SetImageOverride("Shrinking_violet_big_petal5", IMAGE_VIOLET_PADDLE);
 
-                if (IsInPlay())
-                {
-                    mDoSpecialCountdown = 100;
-
-                    aBodyReanim->SetFramesForLayer("anim_bloom");
-                    aBodyReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
-
-                    mApp->PlayFoley(FoleyType::FOLEY_VIOLET);
-                }
+                aBodyReanim->SetFramesForLayer("anim_bloom");
+                aBodyReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
+                mState = PlantState::STATE_SHRINKINGVIOLET_EXPLODING;
+                mApp->PlayFoley(FoleyType::FOLEY_VIOLET);
                 mStopAnimation = true;
             }
         }
+
+    }
+    else if (mState == PlantState::STATE_SHRINKINGVIOLET_EXPLODING && aBodyReanim->ShouldTriggerTimedEvent(0.5f)) {
+        mBoard->ShrinkAllZombiesInRadius(mRow, mX + mWidth / 2, mY + mHeight / 2, 115, 1, true, GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY), 0);
+        mState = PlantState::STATE_SHRINKINGVIOLET_EXPLODED;
+    }
+    else if (mState == PlantState::STATE_SHRINKINGVIOLET_EXPLODED && aBodyReanim->mLoopCount > 0) {
+        Die();
     }
 }
 
@@ -3926,7 +3932,7 @@ void Plant::Squish()
     {
         if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_PICKLEPEPPER ||
             mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM || mSeedType == SeedType::SEED_CHILLYPEPPER ||
-            mSeedType == SeedType::SEED_SHRINK || mSeedType == SeedType::SEED_LEMON_NADE || mSeedType == SeedType::SEED_BLOODORANGE)
+            mSeedType == SeedType::SEED_LEMON_NADE || mSeedType == SeedType::SEED_BLOODORANGE)
         {
             DoSpecial();
             return;
@@ -4421,6 +4427,12 @@ void Plant::UpdateReanimColor()
         aExtraAdditiveColor = ColorAdd(Color(255, 255, 255, anAlpha), aExtraAdditiveColor);
         aEnableExtraAdditiveDraw = true;
     }
+    else if (mSeedType == SeedType::SEED_SHRINK && mState == PlantState::STATE_SHRINKINGVIOLET_EXPLODING)
+    {
+        int anAlpha = TodAnimateCurveFloatTime(0.1f, 0.3f, aBodyReanim->mAnimTime, 255, 0, TodCurves::CURVE_LINEAR);
+        aExtraAdditiveColor = Color(255, 255, 255, anAlpha);
+        aEnableExtraAdditiveDraw = true;
+    }
     else if (mBoostCounter > 0)
     {
         int anAlpha = TodAnimateCurve(50, 0, mBoard->mMainCounter % 50, 0, 64, TodCurves::CURVE_BOUNCE);
@@ -4729,11 +4741,8 @@ void Plant::Update()
     if (mDeathCounter > 0 && !mIsAsleep)
     {
         mDeathCounter--;
-        if (mDeathCounter == 50)
-        {
-            mApp->AddTodParticle(mX + 40, mY + 40, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_IMITATER_MORPH);
-        }
-        else if (mDeathCounter == 0)
+
+        if (mDeathCounter == 0)
         {
             Die();
         }
@@ -4838,8 +4847,29 @@ void Plant::Update()
             }
         }
     }
-    UpdateAmpliflower();
+
+    if (mSeedType == SeedType::SEED_AMPLI_FLOWER)
+    {
+        UpdateAmpliflower();
+    }
     mPlantAge++;
+
+    if (IsInPlay()  && (mSeedType == SeedType::SEED_FUMESHROOM || mSeedType == SeedType::SEED_ICYFUME) && mBoard->StageHasRoof() && mPlantCol <= 4) {
+        TodParticleSystem* aParticle = mApp->ParticleTryToGet(mParticleID);
+        if (aParticle) {
+            for (TodListNode<ParticleEmitterID>* aNode = aParticle->mEmitterList.mHead; aNode != nullptr; aNode = aNode->mNext)
+            {
+                TodParticleEmitter* aEmitter = aParticle->mParticleHolder->mEmitters.DataArrayGet((unsigned int)aNode->mValue);
+                for (TodListNode<ParticleID>* aNode = aEmitter->mParticleList.mHead; aNode != nullptr; aNode = aNode->mNext)
+                {
+                    TodParticle* aParti = aEmitter->mParticleSystem->mParticleHolder->mParticles.DataArrayGet((unsigned int)aNode->mValue);
+                    float aSlopeHeightChange = mBoard->GetPosYBasedOnRow(aParti->mPosition.x, mRow) + 47.f - aEmitter->mSystemCenter.y;
+                    aParti->mPosition.y += aSlopeHeightChange;
+                    aParti->mVelocity.y = -aSlopeHeightChange;
+                }
+            }
+        }
+    }
 }
 
 void Plant::FreezePlant()
@@ -6086,6 +6116,14 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
 
     if (mIsPreview)  return; // Preview plants don't have shadows... we use beghauled shadow
 
+    if (IsInPlay() && mSeedType == SeedType::SEED_SHRINK && mState == PlantState::STATE_SHRINKINGVIOLET_EXPLODED)
+    {
+        Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+        if (aBodyReanim && aBodyReanim->mAnimTime >= 0.5f) {
+            return;
+        }
+    }
+
     int aShadowType = 0;
     float aShadowOffsetX = -3.0f;
     float aShadowOffsetY = 51.0f;
@@ -6778,14 +6816,6 @@ void Plant::DoSpecial()
         Reanimation* aBloodReanim = mApp->AddReanimation(aPosX - 50, aPosY - 20, aRenderOrder, ReanimationType::REANIM_BLOODSPLASH);
 
         Die();
-        break;
-    }
-    case SeedType::SEED_SHRINK:
-    {
-        mBoard->ShrinkAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags, 0);
-
-        mDeathCounter = 150;
-        mShrinkCounter = 200;
         break;
     }
     case SeedType::SEED_DOOMSHROOM:
@@ -7586,6 +7616,11 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
 
             if ((mSeedType == SeedType::SEED_EXPLODE_O_NUT && aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT) ||
                 (mSeedType == SeedType::SEED_ICENUT && aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT))
+            {
+                continue;
+            }
+
+            if (mSeedType == SeedType::SEED_SHRINK && aZombie->mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING)
             {
                 continue;
             }
