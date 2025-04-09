@@ -8270,6 +8270,12 @@ void Board::DrawGameObjects(Graphics* g)
 		}
 	}
 	{
+		RenderItem& aRenderItem = aRenderList[aRenderItemCount];
+		aRenderItem.mRenderObjectType = RenderObjectType::RENDER_ITEM_VERSUS_SHOVEL;
+		aRenderItem.mZPos = MakeRenderOrder(RenderLayer::RENDER_LAYER_LAWN_MOWER, 6, 0);
+		aRenderItemCount++;
+	}
+	{
 		TodParticleSystem* aParticle = nullptr;
 		while (IterateParticles(aParticle))
 		{
@@ -8441,6 +8447,12 @@ void Board::DrawGameObjects(Graphics* g)
 		{
 			LawnMower* aLawnMower = aRenderItem.mMower;
 			aLawnMower->Draw(g);
+			break;
+		}
+
+		case RenderObjectType::RENDER_ITEM_VERSUS_SHOVEL:
+		{
+			DrawShovel(g);
 			break;
 		}
 
@@ -9584,7 +9596,8 @@ void Board::DrawUIBottom(Graphics* g)
 		}
 	}
 	UpdateToolTipP2();
-	DrawShovel(g);
+	if (!mApp->IsVersusLevel())
+		DrawShovel(g);
 	if (!StageHasFog())
 	{
 		DrawTopRightUI(g);
