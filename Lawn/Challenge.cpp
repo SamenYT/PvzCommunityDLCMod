@@ -2918,7 +2918,7 @@ void Challenge::InitZombieWavesSurvival()
 		if (mApp->IsSurvivalNormal(mApp->mGameMode) && aRandZombie > ZOMBIE_SNORKEL)                                continue;
 		if (mBoard->IsZombieTypeSpawnedOnly(aRandZombie) || Zombie::IsZombotany(aRandZombie) ||
 			aRandZombie == ZOMBIE_DUCKY_TUBE || aRandZombie == ZOMBIE_YETI)											continue;
-		(aRandZombie == ZOMBIE_GLITCH && mApp->mGameMode != GAMEMODE_CHALLENGE_GLITCH)							continue;
+		if (aRandZombie == ZOMBIE_GLITCH && mApp->mGameMode != GAMEMODE_CHALLENGE_GLITCH)							continue;
 
 		mBoard->mZombieAllowed[aRandZombie] = true;
 		aCapacity--;
