@@ -710,6 +710,22 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         
         break;
     }
+    case SeedType::SEED_LUMESHROOM:
+    {
+        mStateCountdown = 50;
+        mDeathCounter = 1000;
+
+        if (!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
+        {
+            AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
+        }
+        if (IsInPlay())
+        {
+            mApp->PlaySample(Sexy::SOUND_PLANTERN);
+        }
+
+        break;
+    }
     case SeedType::SEED_TORCHWOOD:
     case SeedType::SEED_FLAMEWOOD:
         break;
@@ -4542,7 +4558,7 @@ void Plant::UpdateReanim()
         aOffsetX += 10.0f;
         aOffsetY += 15.0f;
 
-        if (mDeathCounter > 0)
+        /*if (mDeathCounter > 0)
         {
             float aShrinkNumber = (float)mShrinkCounter;
 
@@ -4553,7 +4569,7 @@ void Plant::UpdateReanim()
                 mY += 1.0f;
                 mX += 1.0f;
             }
-        }
+        }*/
     }
     if (mSeedType == SeedType::SEED_CHARD_GUARD)
     {
@@ -4702,7 +4718,14 @@ void Plant::Update()
     if (mDeathCounter > 0)
     {
         mDeathCounter--;
-        if (mDeathCounter == 0) Die();
+        if (mDeathCounter == 50)
+        {
+            mApp->AddTodParticle(mX + 40, mY + 40, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_IMITATER_MORPH);
+        }
+        else if (mDeathCounter == 0)
+        {
+            Die();
+        }
     }
 
     if (mGridItemCounter > 0)
@@ -5629,6 +5652,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_BONKCHOY:
     case SeedType::SEED_SUPERCHOMP:
     case SeedType::SEED_PLANTERN:
+    case SeedType::SEED_LUMESHROOM:
         aHeightOffset -= 5.0f;
         break;
     case SeedType::SEED_SCAREDYSHROOM:
@@ -6068,13 +6092,13 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
         }
         aShadowOffsetY += 5.0f;
     }
-    else if (mSeedType == SeedType::SEED_SHRINK)
+    /*else if (mSeedType == SeedType::SEED_SHRINK)
     {
         if (mDeathCounter > 0)
         {
             aScale = 0.0f;
         }
-    }
+    }*/
     else if (mSeedType == SeedType::SEED_PUFFSHROOM || mSeedType == SeedType::SEED_PULTSHROOM || mSeedType == SeedType::SEED_REVERSE_PUFFSHROOM)
     {
         aScale = 0.5f;
@@ -6732,7 +6756,7 @@ void Plant::DoSpecial()
     {
         mBoard->ShrinkAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags, 0);
 
-        mDeathCounter = 300;
+        mDeathCounter = 150;
         mShrinkCounter = 200;
         break;
     }
@@ -7615,7 +7639,7 @@ int Plant::DistanceToClosestZombie()
 //0x4679B0
 void Plant::Die()
 {
-    if (mSeedType == SEED_EXPLODE_O_NUT)
+    if (mSeedType == SEED_EXPLODE_O_NUT && !mApp->IsWallnutBowlingLevel())
     {
         mApp->PlayFoley(FoleyType::FOLEY_CHERRYBOMB);
         mApp->PlayFoley(FoleyType::FOLEY_JUICY);
@@ -7624,6 +7648,14 @@ void Plant::Die()
 
         mApp->AddTodParticle(mX + 50, mY + 30, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
         mBoard->ShakeBoard(3, -4);
+    }
+    if (mSeedType == SEED_LUMESHROOM && mBoard)
+    {
+        Zombie* aZombie = nullptr;
+        while (mBoard->IterateZombies(aZombie))
+        {
+            aZombie->mIsLumed = false;
+        }
     }
     if (mSeedType == SEED_DUMMY && mBoard)
     {

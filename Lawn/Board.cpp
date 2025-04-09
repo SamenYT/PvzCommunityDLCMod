@@ -7650,6 +7650,7 @@ void Board::Update()
 		UpdateFwoosh();
 		UpdateGame();
 		UpdateFog();
+		UpdateLume();
 		mChallenge->Update();
 	}
 
@@ -7719,6 +7720,7 @@ void Board::Update()
 	*/
 	//else mApp->mHardmodeIsOn = true;
 	UpdateFog();
+	UpdateLume();
 	mChallenge->Update();
 	UpdateLevelEndSequence();
 	mPrevMouseX = mApp->mWidgetManager->mLastMouseX;
@@ -9735,10 +9737,29 @@ void Board::UpdateFog()
 		{
 			ClearFogAroundPlant(aPlant, 4);
 		}
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM)
+		{
+			ClearFogAroundPlant(aPlant, 3);
+		}
 		else if (aPlant->mSeedType == SeedType::SEED_TORCHWOOD || aPlant->mSeedType == SeedType::SEED_FLAMEPEA || aPlant->mSeedType == SeedType::SEED_REED || aPlant->mSeedType == SeedType::SEED_EPEA ||
 				 aPlant->mSeedType == SeedType::SEED_FIRESHROOM)
 		{
 			ClearFogAroundPlant(aPlant, 1);
+		}
+	}
+}
+
+void Board::UpdateLume()
+{
+	Plant* aPlant = nullptr;
+	while (IteratePlants(aPlant))
+	{
+		if (aPlant->NotOnGround())
+			continue;
+
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM)
+		{
+			FindLumeTarget(aPlant->mX, aPlant->mY, aPlant->mRow);
 		}
 	}
 }
@@ -12093,6 +12114,26 @@ Plant* Board::FindAmpliflower(int theGridX, int theGridY)
 		}
 	}
 	return nullptr;
+}
+
+void Board::FindLumeTarget(int theX, int theY, int theRow)
+{
+	Zombie* aZombie = nullptr;
+
+	while (IterateZombies(aZombie))
+	{
+		Rect aZombieRect = aZombie->GetZombieRect();
+		int aRowDist = aZombie->mRow - theRow;
+
+		if (aRowDist <= 3 && aRowDist >= -3 && GetCircleRectOverlap(theX, theY, 250, aZombieRect))
+		{
+			aZombie->mRageCounter = 0;
+			aZombie->UpdateAnimSpeed();
+			aZombie->mIsLumed = true;
+			
+			if (aZombie->mJustGotShotCounter <= 0) aZombie->mJustGotShotCounter = 25;
+		}
+	}
 }
 
 //0x41D450

@@ -214,6 +214,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     mIsThrown = false;
     mBoneHealth = 0;
     mRespawnCounter = 0;
+    mIsLumed = false;
     TodParticleSystem* aParticle;
     for (int i = 0; i < MAX_ZOMBIE_FOLLOWERS; i++)
     {
@@ -6518,7 +6519,7 @@ void Zombie::UpdatePlaying()
     }
     if (mHurCounter > 0) mHurCounter--;
 
-    if (mBoard->mBloodCounterCooldown > 0 && mZombieType != ZOMBIE_GLADIANTUAR)
+    if (mBoard->mBloodCounterCooldown > 0 && mZombieType != ZOMBIE_GLADIANTUAR && mRageCounter > 0)
     {
         mRageCounter = mBoard->mBloodCounterCooldown;
         UpdateAnimSpeed();
@@ -7732,7 +7733,7 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }*/
-    else if (mBoard && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
+    else if (mBoard && mRageCounter > 0 && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
     {
         int invertRageCounter = 1000 - mBoard->mRageDelay;
         int invertBloodCounter = 100 - mBoard->mBloodCounterCooldown;
@@ -9708,7 +9709,16 @@ void Zombie::BungeeDie()
 //0x530510
 void Zombie::DieNoLoot()
 {
-    if (mZombiePhase == PHASE_BONE_PILE) mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
+    if (IsOnBoard() && mIsLumed)
+    {
+        Rect aZombieRect = GetZombieRect();
+        int aCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
+        int aCenterY = aZombieRect.mY + aZombieRect.mHeight / 4;
+        mApp->PlayFoley(FOLEY_SUN);
+        mBoard->AddCoin(aCenterX - 20, aCenterY, CoinType::COIN_SMALLSUN, CoinMotion::COIN_MOTION_COIN);
+    }
+    if (mZombiePhase == PHASE_BONE_PILE && mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED) 
+        mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
 
     StopZombieSound();
     AttachmentDie(mAttachmentID);

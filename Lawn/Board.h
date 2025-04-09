@@ -399,6 +399,7 @@ public:
 	void							DrawFog(Graphics* g);
 	void							DrawDarkness(Graphics* g);
 	void							UpdateFog();
+	void							UpdateLume();
 	/*inline*/ int					LeftFogColumn();
 	static /*inline*/ bool			IsZombieTypePoolOnly(ZombieType theZombieType);
 	void							DropLootPiece(int thePosX, int thePosY, int theDropFactor);
@@ -416,6 +417,7 @@ public:
 	Plant*							FindAloePlant(int theGridX, int theGridY);
 	Plant*							FindFirePlant(int theGridX, int theGridY);
 	Plant*							FindAmpliflower(int theGridX, int theGridY);
+	void							FindLumeTarget(int theX, int theY, int theRow);
 	void							SetTutorialState(TutorialState theTutorialState);
 	void							DoFwoosh(int theRow);
 	void							DoFwooshChillyPepper(int theRow);
