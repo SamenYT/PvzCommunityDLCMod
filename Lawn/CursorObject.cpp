@@ -188,11 +188,11 @@ void CursorObject::Draw(Graphics* g)
         }
         aOffsetY -= 15.0f;
         SeedType aPlantingSeedType = mBoard->GetSeedTypeInCursor();
-        if (mApp->IsIZombieLevel() || mApp->IsVersusLevel())
+        if (mApp->IsIZombieLevel())
         {
             aOffsetX -= 55.0f;
             aOffsetY -= 70.0f;
-            if (mType == SeedType::SEED_ZOMBIE_BUNGEE || mType == SeedType::SEED_VERSUS_BUNGEE)
+            if (mType == SeedType::SEED_ZOMBIE_BUNGEE)
             {
                 aOffsetY -= 600;
             }
@@ -221,6 +221,10 @@ void CursorObject::Draw(Graphics* g)
             aOffsetX -= 50.0f;
             aOffsetY -= 50.0f;
             //g->mColor = Color(128, 0, 192, 255);
+            if (mType == SeedType::SEED_VERSUS_BUNGEE)
+            {
+                aOffsetY -= 600;
+            }
         }
 
         Plant::DrawSeedType(&seedG, mType, mImitaterType, DrawVariation::VARIATION_NORMAL, aOffsetX, aOffsetY);
@@ -346,7 +350,8 @@ void CursorPreview::Draw(Graphics* g)
     else
     {
         float aOffsetX, aOffsetY;
-        if (mApp->IsIZombieLevel() || mApp->IsVersusLevel())
+
+        if (mApp->IsIZombieLevel())
         {
             float aHeight = PlantDrawHeightOffset(mBoard, nullptr, aSeedType, mGridX, mGridY);
             if (aSeedType == SeedType::SEED_ZOMBIE_GARGANTUAR)
@@ -361,7 +366,7 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 16.0f;
             }
-            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE || aSeedType == SeedType::SEED_VERSUS_BUNGEE)
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
             {
                 aHeight -= 600;
             }
@@ -392,7 +397,7 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 16.0f;
             }
-            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE || aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE || aSeedType == SeedType::SEED_VERSUS_BUNGEE)
             {
                 aHeight -= 600;
             }
@@ -419,6 +424,13 @@ void CursorPreview::Draw(Graphics* g)
 
             aOffsetY = aHeight - 78.0f;
             aOffsetX = -50.0f;
+
+            if (aSeedType == SeedType::SEED_VERSUS_BUNGEE)
+            {
+                float aHeight = PlantDrawHeightOffset(mBoard, nullptr, aSeedType, mGridX, mGridY);
+                aHeight -= 600;
+                aOffsetY = aHeight - 78.0f;
+            }
         }
         else
         {
