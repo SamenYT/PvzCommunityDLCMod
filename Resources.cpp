@@ -2194,6 +2194,7 @@ int Sexy::SOUND_SKELETON_REVIVE;
 int Sexy::SOUND_BUSH_DESTROYED1;
 int Sexy::SOUND_BUSH_DESTROYED2;
 int Sexy::SOUND_BUSH_DESTROYED3;
+int Sexy::SOUND_BLOOD_EXPLOSION;
 
 bool Sexy::ExtractLoadingSoundsResources(ResourceManager *theManager)
 {
@@ -2403,6 +2404,7 @@ bool Sexy::ExtractLoadingSoundsResources(ResourceManager *theManager)
 		SOUND_BUSH_DESTROYED1 = aMgr.GetSoundThrow("SOUND_BUSH_DESTROYED1");
 		SOUND_BUSH_DESTROYED2 = aMgr.GetSoundThrow("SOUND_BUSH_DESTROYED2");
 		SOUND_BUSH_DESTROYED3 = aMgr.GetSoundThrow("SOUND_BUSH_DESTROYED3");
+		SOUND_BLOOD_EXPLOSION = aMgr.GetSoundThrow("SOUND_BLOOD_EXPLOSION");
 	}
 	catch(ResourceManagerException&)
 	{
@@ -3097,6 +3099,7 @@ static void* gResources[] =
 	&SOUND_BUSH_DESTROYED1,
 	&SOUND_BUSH_DESTROYED2,
 	&SOUND_BUSH_DESTROYED3,
+	&SOUND_BLOOD_EXPLOSION,
 	&SOUND_PUFF,
 	&SOUND_FUME,
 	&SOUND_HUGE_WAVE,
@@ -4087,6 +4090,7 @@ const char* Sexy::GetStringIdById(int theId)
 		case SOUND_HUNTER_SHOOT_ID: return "SOUND_HUNTER_SHOOT";
 		case SOUND_SKELETON_DIE_ID: return "SOUND_SKELETON_DIE";
 		case SOUND_SKELETON_REVIVE_ID: return "SOUND_SKELETON_REVIVE";
+		case SOUND_BLOOD_EXPLOSION_ID: return "SOUND_BLOOD_EXPLOSION";
 		case SOUND_BUSH_DESTROYED1_ID: return "SOUND_BUSH_DESTROYED1";
 		case SOUND_PUFF_ID: return "SOUND_PUFF";
 		case SOUND_FUME_ID: return "SOUND_FUME";

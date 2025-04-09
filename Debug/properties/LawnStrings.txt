@@ -4368,7 +4368,7 @@ Blood Oranges blow up all zombies in an area and boost the ones that survive.
 {KEYWORD}Damage:{STAT} massive
 {KEYWORD}Range:{STAT} all zombies in a medium area
 {KEYWORD}Usage:{STAT} single use, instant
-{KEYWORD}Special:{STAT} boosts surviving zombies
+{KEYWORD}Special:{STAT} boosts zombies, can fly
 {SHORTLINE}
 {FLAVOR}Blood Orange lives for scares, always rolling up with a wicked grin and a juicy splatter. "Whoa, is that blood?! Kidding! It's just juice!", he cackles as another plant screams in terror. He thinks this never gets old. Everyone else disagrees.
 

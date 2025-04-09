@@ -864,6 +864,7 @@
 <Sound id="HUNTER_SHOOT" path="hunter_shoot" />
 <Sound id="SKELETON_DIE" path="skeleton_die" />
 <Sound id="SKELETON_REVIVE" path="skeleton_revive" />
+<Sound id="BLOOD_EXPLOSION" path="bloodexplosion" />
 </Resources>
 
 <Resources id="DelayLoad_Background1">

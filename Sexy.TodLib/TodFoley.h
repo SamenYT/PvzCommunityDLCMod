@@ -5,7 +5,7 @@
 #include "../SexyAppFramework/DSoundInstance.h"
 using namespace Sexy;
 
-#define MAX_FOLEY_TYPES 140
+#define MAX_FOLEY_TYPES 141
 #define MAX_FOLEY_INSTANCES 8
 
 // ######################################################################################################################################################
@@ -162,6 +162,7 @@ enum FoleyType
     FOLEY_HUNTER_SHOOT,
     FOLEY_SKELETON_DIE,
     FOLEY_SKELETON_REVIVE,
+    FOLEY_BLOOD_EXPLOSION,
     NUM_FOLEY
 };
 

@@ -7727,13 +7727,7 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }
-    /*else if (mRageCounter > 0)
-    {
-        //aColorOverride = Color(222, 62, 88, 255); // 150 150 150 255
-        aExtraAdditiveColor = aColorOverride;
-        aEnableExtraAdditiveDraw = true;
-    }*/
-    else if (mBoard && mRageCounter > 0 && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
+    else if (mBoard && !mIsLumed && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
     {
         int invertRageCounter = 1000 - mBoard->mRageDelay;
         int invertBloodCounter = 100 - mBoard->mBloodCounterCooldown;
@@ -7743,9 +7737,15 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
 
-        SexyString aDebugText = to_string((int)mBoard->mBloodCounterCooldown); //debug text
+        /*SexyString aDebugText = to_string((int)mBoard->mBloodCounterCooldown); //debug text
         const char* aCharDebugText = aDebugText.c_str();
-        TodTraceWithoutSpamming(aCharDebugText);
+        TodTraceWithoutSpamming(aCharDebugText);*/
+    }
+    else if (mRageCounter > 0 && mZombieType != ZOMBIE_GLADIANTUAR && mZombieType != ZOMBIE_GLADIANTUAR_GIGA)
+    {
+        aColorOverride = Color(222, 62, 88, 255); // 150 150 150 255
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mHealCounter > 0)
     {
@@ -8450,7 +8450,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
 
     if (theAttackType == ZombieAttackType::ATTACKTYPE_DRIVE_OVER)
     {
-        if (thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || thePlant->mSeedType == SeedType::SEED_JALAPENO || thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER || 
+        if (thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || thePlant->mSeedType == SeedType::SEED_JALAPENO || thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER || thePlant->mSeedType == SeedType::SEED_BLOODORANGE ||
             thePlant->mSeedType == SeedType::SEED_PICKLEPEPPER || thePlant->mSeedType == SeedType::SEED_BLOVER || thePlant->mSeedType == SeedType::SEED_SQUASH || 
             thePlant->mSeedType == SeedType::SEED_HURIKALE || thePlant->mSeedType == SeedType::SEED_SHRINK || thePlant->mSeedType == SeedType::SEED_LEMON_NADE)
         {
@@ -9263,6 +9263,7 @@ void Zombie::EatPlant(Plant* thePlant)
         thePlant->mSeedType == SeedType::SEED_PICKLEPEPPER ||
         thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER ||
         thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || 
+        thePlant->mSeedType == SeedType::SEED_BLOODORANGE || 
         (thePlant->mSeedType == SeedType::SEED_SHRINK && thePlant->mStopAnimation) ||
         thePlant->mSeedType == SeedType::SEED_DOOMSHROOM ||
         thePlant->mSeedType == SeedType::SEED_ICESHROOM || 

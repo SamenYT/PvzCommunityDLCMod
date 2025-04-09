@@ -3674,7 +3674,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	Plant* aPumpkinPlant = aPlantOnLawn.mPumpkinPlant;
 	if (aGridSquare == GridSquareType::GRIDSQUARE_POOL && !aHasLilypad && theSeedType != SeedType::SEED_CATTAIL && theSeedType != SeedType::SEED_GRAVE)
 	{
-		if ((!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || theSeedType != SeedType::SEED_PUMPKINSHELL) && theSeedType != SeedType::SEED_SHOOTINGSTAR)
+		if ((!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || theSeedType != SeedType::SEED_PUMPKINSHELL) && theSeedType != SeedType::SEED_SHOOTINGSTAR && !Plant::IsHovering(theSeedType))
 		{
 			return PlantingReason::PLANTING_NOT_ON_WATER;
 		}
@@ -3689,7 +3689,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	{
 		return (aNormalPlant || aUnderPlant || aPumpkinPlant) ? PlantingReason::PLANTING_NOT_HERE : PlantingReason::PLANTING_OK;
 	}
-	if ((StageHasRoof() && (!aHasFlowerPot && !aHasLilypad) && (!aNormalPlant || aNormalPlant->mSeedType != SEED_CATTAIL)))
+	if ((StageHasRoof() && (!aHasFlowerPot && !aHasLilypad) && (!aNormalPlant || aNormalPlant->mSeedType != SEED_CATTAIL)) && theSeedType != SeedType::SEED_MORTARSHROOM && !Plant::IsHovering(theSeedType))
 	{
 		return PlantingReason::PLANTING_NEEDS_POT;
 	}
@@ -12388,6 +12388,27 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 				aZombie->mIsShrunken = true;
 				aZombie->mIsShrinking = true;
 				aZombie->ApplyAnimRate(0.0f);
+			}
+		}
+	}
+}
+
+void Board::DamageAllZombiesInRadius(int theRow, int theX, int theY, int theRadius, int theRowRange, int theDamage)
+{
+	Zombie* aZombie = nullptr;
+	while (IterateZombies(aZombie))
+	{
+		if (aZombie->mZombieType != ZOMBIE_TARGET && aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING)
+		{
+			Rect aZombieRect = aZombie->GetZombieRect();
+			int aRowDist = aZombie->mRow - theRow;
+
+			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
+			{
+				aZombie->TakeDamage(theDamage, 0U);
+
+				aZombie->mRageCounter = 600;
+				aZombie->UpdateAnimSpeed();
 			}
 		}
 	}

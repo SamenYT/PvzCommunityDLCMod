@@ -2487,7 +2487,7 @@ int LawnApp::GetSeedsAvailable()
 //0x453B20
 bool LawnApp::HasSeedType(SeedType theSeedType)
 {
-	if (theSeedType > SEED_IMITATER && theSeedType != SEED_FLAMEPEA && theSeedType != SEED_PEPPER && theSeedType != SEED_CHILLYPEPPER && theSeedType != SEED_PLASMAPEA && theSeedType != SEED_SHOOTINGSTAR)
+	if (theSeedType > SEED_IMITATER && !(theSeedType >= SEED_FLAMEPEA && theSeedType <= SEED_SHOOTINGSTAR))
 		return true;
 	if (IsTrialStageLocked() && theSeedType >= SeedType::SEED_JALAPENO)
 		return false;
@@ -2567,6 +2567,26 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	if (theSeedType == SeedType::SEED_CHILLYPEPPER)
 	{
 		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_CHILLYPEPPER] > 0;
+	}
+	if (theSeedType == SeedType::SEED_WATERPOT)
+	{
+		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_WATERPOT] > 0;
+	}
+	if (theSeedType == SeedType::SEED_FIRESHROOM)
+	{
+		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_FIRESHROOM] > 0;
+	}
+	if (theSeedType == SeedType::SEED_PINKSTAR)
+	{
+		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_SEASTAR] > 0;
+	}
+	if (theSeedType == SeedType::SEED_PICKLEPEPPER)
+	{
+		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_PICKLEDPEPPER] > 0;
+	}
+	if (theSeedType == SeedType::SEED_EPEA)
+	{
+		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_EPEA] > 0;
 	}
 	if (theSeedType == SeedType::SEED_PLASMAPEA)
 	{

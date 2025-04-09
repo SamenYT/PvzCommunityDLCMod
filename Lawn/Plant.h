@@ -263,6 +263,7 @@ public:
     static /*inline*/ bool  IsNocturnal(SeedType theSeedtype);
     static /*inline*/ bool  IsAquatic(SeedType theSeedType);
     static /*inline*/ bool  IsFlying(SeedType theSeedtype);
+    static /*inline*/ bool  IsHovering(SeedType theSeedtype);
     static /*inline*/ bool  IsUpgrade(SeedType theSeedtype);
     void                    UpdateAbilities();
     void                    UpdateFlyingGarlic();

@@ -30,11 +30,11 @@ static StoreItem gStoreItemSpots[NUM_STORE_PAGES][MAX_PAGE_SPOTS] =
     { STORE_ITEM_POTTED_MARIGOLD_1,     STORE_ITEM_POTTED_MARIGOLD_2,   STORE_ITEM_POTTED_MARIGOLD_3,   STORE_ITEM_GOLD_WATERINGCAN,
       STORE_ITEM_FERTILIZER,            STORE_ITEM_BUG_SPRAY,           STORE_ITEM_PHONOGRAPH,          STORE_ITEM_GARDENING_GLOVE },
     { STORE_ITEM_MUSHROOM_GARDEN,       STORE_ITEM_AQUARIUM_GARDEN,     STORE_ITEM_WHEEL_BARROW,        STORE_ITEM_STINKY_THE_SNAIL,
-      STORE_ITEM_TREE_OF_WISDOM,        STORE_ITEM_TREE_FOOD,           STORE_ITEM_INVALID,             STORE_ITEM_INVALID },
+      STORE_ITEM_TREE_OF_WISDOM,        STORE_ITEM_TREE_FOOD,           STORE_ITEM_PLANT_PLASMAPEA,     STORE_ITEM_PLANT_SHOOTINGSTAR },
     { STORE_ITEM_PLANT_ICYFUME,         STORE_ITEM_PLANT_SUPERCHOMP,    STORE_ITEM_PLANT_FLAMEWOOD,     STORE_ITEM_PLANT_ICEQUEEN,
       STORE_ITEM_PLANT_VINENUT,         STORE_ITEM_PLANT_THORNMOSS,     STORE_ITEM_PLANT_BRAVESHROOM,   STORE_ITEM_PLANT_ECACTUS },
-    { STORE_ITEM_PLANT_FIRE_PEASHOOTER, STORE_ITEM_PLANT_CHILLYPEPPER,  STORE_ITEM_PLANT_PEPPERPULT,    STORE_ITEM_PLANT_PLASMAPEA,
-      STORE_ITEM_PLANT_SHOOTINGSTAR,    STORE_ITEM_INVALID,             STORE_ITEM_INVALID,             STORE_ITEM_INVALID }
+    { STORE_ITEM_PLANT_FIRE_PEASHOOTER, STORE_ITEM_PLANT_CHILLYPEPPER,  STORE_ITEM_PLANT_PEPPERPULT,    STORE_ITEM_PLANT_WATERPOT,
+      STORE_ITEM_PLANT_FIRESHROOM,      STORE_ITEM_PLANT_SEASTAR,       STORE_ITEM_PLANT_PICKLEDPEPPER, STORE_ITEM_PLANT_EPEA }
 };
 
 StoreScreenOverlay::StoreScreenOverlay(StoreScreen* theParent)
@@ -311,8 +311,8 @@ bool StoreScreen::IsItemUnavailable(StoreItem theStoreItem)
     {
         return !mApp->HasFinishedAdventure() && mApp->mPlayerInfo->GetLevel() < 65;
     }
-    if (theStoreItem == STORE_ITEM_PLANT_WINTERMELON || theStoreItem == STORE_ITEM_PLANT_COBCANNON || theStoreItem == STORE_ITEM_PLANT_PEPPERPULT || theStoreItem == STORE_ITEM_PLANT_CHILLYPEPPER || theStoreItem == STORE_ITEM_PLANT_PLASMAPEA || theStoreItem == STORE_ITEM_PLANT_SHOOTINGSTAR ||
-        theStoreItem == STORE_ITEM_PLANT_IMITATER || theStoreItem == STORE_ITEM_PLANT_FIRE_PEASHOOTER || theStoreItem == STORE_ITEM_FIRSTAID)
+    if (theStoreItem == STORE_ITEM_PLANT_WINTERMELON || theStoreItem == STORE_ITEM_PLANT_COBCANNON || (theStoreItem >= STORE_ITEM_PLANT_FIRE_PEASHOOTER && theStoreItem <= STORE_ITEM_PLANT_SHOOTINGSTAR) ||
+        theStoreItem == STORE_ITEM_PLANT_IMITATER || theStoreItem == STORE_ITEM_FIRSTAID)
     {
         //return !mApp->HasFinishedAdventure();
         return !mApp->HasFinishedAdventure() && mApp->mPlayerInfo->GetLevel() < 51;
@@ -448,6 +448,11 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
         if (theItemType == STORE_ITEM_PLANT_FIRE_PEASHOOTER) DrawSeedPacket(g, aPosX, aPosY, SEED_FLAMEPEA, SEED_NONE, 0, 255, false, false);
         else if (theItemType == STORE_ITEM_PLANT_PEPPERPULT) DrawSeedPacket(g, aPosX, aPosY, SEED_PEPPER, SEED_NONE, 0, 255, false, false);
         else if (theItemType == STORE_ITEM_PLANT_CHILLYPEPPER) DrawSeedPacket(g, aPosX, aPosY, SEED_CHILLYPEPPER, SEED_NONE, 0, 255, false, false);
+        else if (theItemType == STORE_ITEM_PLANT_WATERPOT) DrawSeedPacket(g, aPosX, aPosY, SEED_WATERPOT, SEED_NONE, 0, 255, false, false);
+        else if (theItemType == STORE_ITEM_PLANT_FIRESHROOM) DrawSeedPacket(g, aPosX, aPosY, SEED_FIRESHROOM, SEED_NONE, 0, 255, false, false);
+        else if (theItemType == STORE_ITEM_PLANT_SEASTAR) DrawSeedPacket(g, aPosX, aPosY, SEED_PINKSTAR, SEED_NONE, 0, 255, false, false);
+        else if (theItemType == STORE_ITEM_PLANT_PICKLEDPEPPER) DrawSeedPacket(g, aPosX, aPosY, SEED_PICKLEPEPPER, SEED_NONE, 0, 255, false, false);
+        else if (theItemType == STORE_ITEM_PLANT_EPEA) DrawSeedPacket(g, aPosX, aPosY, SEED_EPEA, SEED_NONE, 0, 255, false, false);
         else if (theItemType == STORE_ITEM_PLANT_PLASMAPEA) DrawSeedPacket(g, aPosX, aPosY, SEED_PLASMAPEA, SEED_NONE, 0, 255, false, false);
         else if (theItemType == STORE_ITEM_PLANT_SHOOTINGSTAR) DrawSeedPacket(g, aPosX, aPosY, SEED_SHOOTINGSTAR, SEED_NONE, 0, 255, false, false);
         else DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + 56), SEED_NONE, 0, 255, false, false); //teleport shop item order
@@ -638,6 +643,11 @@ void StoreScreen::UpdateMouse()
                 case STORE_ITEM_PLANT_FIRE_PEASHOOTER:  aMessageIndex = 2043;                           break;
                 case STORE_ITEM_PLANT_PEPPERPULT:       aMessageIndex = 2044;                           break;
                 case STORE_ITEM_PLANT_CHILLYPEPPER:     aMessageIndex = 2045;                           break;
+                case STORE_ITEM_PLANT_WATERPOT:         aMessageIndex = 2051;                           break;
+                case STORE_ITEM_PLANT_FIRESHROOM:       aMessageIndex = 2052;                           break;
+                case STORE_ITEM_PLANT_SEASTAR:          aMessageIndex = 2053;                           break;
+                case STORE_ITEM_PLANT_PICKLEDPEPPER:    aMessageIndex = 2054;                           break;
+                case STORE_ITEM_PLANT_EPEA:             aMessageIndex = 2055;                           break;
                 case STORE_ITEM_PLANT_PLASMAPEA:        aMessageIndex = 2048;                           break;
                 case STORE_ITEM_PLANT_SHOOTINGSTAR:     aMessageIndex = 2049;                           break;
                 case STORE_ITEM_BONUS_LAWN_MOWER:       aMessageIndex = 2009;                           break;
@@ -975,9 +985,14 @@ int StoreScreen::GetItemCost(StoreItem theStoreItem)
     case STORE_ITEM_PLANT_PLASMAPEA:                    return 500;
     case STORE_ITEM_PLANT_SHOOTINGSTAR:                 return 5000;
     case STORE_ITEM_PLANT_IMITATER:                     return 3000;
-    case STORE_ITEM_PLANT_FIRE_PEASHOOTER:              return 500;
-    case STORE_ITEM_PLANT_PEPPERPULT:                   return 500;
-    case STORE_ITEM_PLANT_CHILLYPEPPER:                 return 300;
+    case STORE_ITEM_PLANT_FIRE_PEASHOOTER:              
+    case STORE_ITEM_PLANT_PEPPERPULT:                  
+    case STORE_ITEM_PLANT_CHILLYPEPPER:                 
+    case STORE_ITEM_PLANT_WATERPOT:                
+    case STORE_ITEM_PLANT_FIRESHROOM:                
+    case STORE_ITEM_PLANT_SEASTAR:                
+    case STORE_ITEM_PLANT_PICKLEDPEPPER:                 
+    case STORE_ITEM_PLANT_EPEA:                         return 300;
     case STORE_ITEM_POTTED_MARIGOLD_1:                  return 250;
     case STORE_ITEM_POTTED_MARIGOLD_2:                  return 250;
     case STORE_ITEM_POTTED_MARIGOLD_3:                  return 250;
