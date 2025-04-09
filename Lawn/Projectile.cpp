@@ -15,6 +15,9 @@
 #include "../Sexy.TodLib/TodCommon.h"
 #include "../Sexy.TodLib/TodParticle.h"
 
+#include "../Sexy.TodLib/EffectSystem.h"
+#include "../Sexy.TodLib/Trail.h"
+
 ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_PEA,            0,  20  },
 	{ ProjectileType::PROJECTILE_SNOWPEA,        0,  20  },
@@ -102,6 +105,13 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	{
 		mRotation = -2 * PI / 5;  // DEG_TO_RAD(-72.0f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
+
+		Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_ICE);
+		if (aTrail) 
+			AttachTrail(mAttachmentID, aTrail, 20.0f, 20.0f);
+		
+		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+		AttachParticle(mAttachmentID, aParticle, 18.0f, 23.0f);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
 	{
@@ -110,19 +120,31 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_SNOWPEA)
 	{
+		Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_ICE);
+		if (aTrail)
+			AttachTrail(mAttachmentID, aTrail, 8.0f, 13.0f);
+
 		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
 		AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_ICEQUEEN)
 	{
+		Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_ICE);
+		if (aTrail)
+			AttachTrail(mAttachmentID, aTrail, 8.0f, 13.0f);
+
 		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
 		AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
 
-		aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
-		AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
+		{
+			aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+			AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
+		}
 
-		aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
-		AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
+		{
+			aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+			AttachParticle(mAttachmentID, aParticle, 8.0f, 13.0f);
+		}
 
 	}
 	else if (mProjectileType == PROJECTILE_SHOOTING_STAR)
