@@ -12406,6 +12406,7 @@ void Board::DamageAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
 			{
 				aZombie->TakeDamage(theDamage, 0U);
+				aZombie->RemoveColdEffects();
 
 				aZombie->mRageCounter = 600;
 				aZombie->UpdateAnimSpeed();

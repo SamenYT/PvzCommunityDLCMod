@@ -441,14 +441,6 @@ Lightning Reeds deal light electrical damage to multiple zombies and crows.
 {SHORTLINE}
 {FLAVOR}This may come as a shock, but Lightning Reed has a serious passion for ham radio. His call sign is El3ctric H1ccup. You can tune in every Tuesday to hear him read the classics to elderly plants. This week: Seeds and Sensibility.
 
-[HURRIKALE_DESCRIPTION]
-Hurrikales blow a chilling wind that pushes back zombies and balloon zombies in a lane.
-{SHORTLINE}
-{KEYWORD}Usage:{STAT} single use, instant
-{KEYWORD}Special:{STAT} pushes and freezes zombies away
-{SHORTLINE}
-{FLAVOR}Some say Hurrikale is a "super blow hard" in the truest sense of the phrase. He is the first chair trombonist in the Biennial Philharmonic Orchestra whilst being proficient in the trumpet. But man, you should really see him on the flugelhorn.
-
 [FIRE_SHROOM_DESCRIPTION]
 Fire-shrooms heavily burn zombies that eat it.
 {SHORTLINE}
@@ -4352,11 +4344,11 @@ Blows a chilling wind that pushes back zombies in a lane
 
 [HURRIKALE_DESCRIPTION]
 Hurrikales blow a chilling wind that push back zombies in a lane.
-{SHORTLINE}
+{EXTRASHORTLINE}
 {KEYWORD}Range:{STAT} all zombies in a lane
 {KEYWORD}Usage:{STAT} single use, instant
 {KEYWORD}Special:{STAT} pushes and chills zombies
-{SHORTLINE}
+{EXTRASHORTLINE}
 {FLAVOR}Hurrikale always dreamed of being a soliloquist. "To blow, or not to blow, let's not pretend it was ever a question," he formulates. However, he can't be taken seriously as he's known for accidentally blowing away the scenario curtains whenever he gets too emotional.
 
 [BLOOD_ORANGE_TOOLTIP]
@@ -4364,12 +4356,12 @@ Blows up zombies and boosts survivors
 
 [BLOOD_ORANGE_DESCRIPTION]
 Blood Oranges blow up all zombies in an area and boost the ones that survive.
-{SHORTLINE}
+{EXTRASHORTLINE}
 {KEYWORD}Damage:{STAT} massive
 {KEYWORD}Range:{STAT} all zombies in a medium area
 {KEYWORD}Usage:{STAT} single use, instant
 {KEYWORD}Special:{STAT} boosts zombies, can fly
-{SHORTLINE}
+{EXTRASHORTLINE}
 {FLAVOR}Blood Orange lives for scares, always rolling up with a wicked grin and a juicy splatter. "Whoa, is that blood?! Kidding! It's just juice!", he cackles as another plant screams in terror. He thinks this never gets old. Everyone else disagrees.
 
 [VOLT_SHROOM_TOOLTIP]

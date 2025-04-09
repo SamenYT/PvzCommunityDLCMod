@@ -6788,7 +6788,7 @@ void Zombie::AnimateChewSound()
         if (aPlant->mSeedType == SeedType::SEED_VINENUT)
         {
             mApp->PlayFoley(FoleyType::FOLEY_THROW);
-            //mApp->PlayFoley(FoleyType::FOLEY_CHOMP);
+            mApp->PlayFoley(FoleyType::FOLEY_CHOMP);
             if (mZombieType == ZOMBIE_NEWSPAPER || mZombieType == ZOMBIE_SCREENDOOR || mZombieType == ZOMBIE_TRASHCAN) TakeBodyDamage(20, 0U);
             else TakeDamage(20, 0U);
         }

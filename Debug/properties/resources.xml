@@ -974,6 +974,7 @@
 <Image id="ALMANAC_GROUNDPOOL" path="Almanac_GroundPool" />
 <Image id="ALMANAC_GROUNDNIGHTPOOL" path="Almanac_GroundNightPool" />
 <Image id="ALMANAC_GROUNDROOF" path="Almanac_GroundRoof" />
+<Image id="ALMANAC_GROUNDNIGHTROOF" path="Almanac_GroundNightRoof" />
 <Image id="ALMANAC_GROUNDICE" path="Almanac_GroundIce" />
 <Image id="ALMANAC_GROUNDFOREST" path="Almanac_GroundForest" />
 <Image id="ALMANAC_CLOSEBUTTON" path="Almanac_CloseButton" />

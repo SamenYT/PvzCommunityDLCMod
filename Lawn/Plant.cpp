@@ -6768,6 +6768,10 @@ void Plant::DoSpecial()
         mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_BLOOD_SPLASH);
         mBoard->ShakeBoard(3, -4);
 
+        int aRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 1);
+
+        Reanimation* aBloodReanim = mApp->AddReanimation(aPosX - 50, aPosY - 20, aRenderOrder, ReanimationType::REANIM_BLOODSPLASH);
+
         Die();
         break;
     }
@@ -7658,7 +7662,7 @@ int Plant::DistanceToClosestZombie()
 //0x4679B0
 void Plant::Die()
 {
-    if (mSeedType == SEED_EXPLODE_O_NUT && !mApp->IsWallnutBowlingLevel())
+    if (mSeedType == SEED_EXPLODE_O_NUT)
     {
         mApp->PlayFoley(FoleyType::FOLEY_CHERRYBOMB);
         mApp->PlayFoley(FoleyType::FOLEY_JUICY);
