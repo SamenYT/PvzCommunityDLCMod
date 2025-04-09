@@ -261,7 +261,7 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 		Graphics aSeedG(*g);
 		aSeedG.mScaleX = theScale * g->mScaleX;
 		aSeedG.mScaleY = theScale * g->mScaleY;
-		if (theSeedType == SEED_ZOMBIE_BUNGEE)
+		if (theSeedType == SEED_ZOMBIE_BUNGEE || theSeedType == SEED_VERSUS_BUNGEE)
 		{
 			aSeedG.mClipRect.mY = y + theOffsetY + 10;
 			y -= 180;

@@ -146,13 +146,13 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4,             46,  ChallengePage::CHALLENGE_PAGE_CHALLENGE3,  9,  0,  _S("[WAR_AND_PEAS_4]") },
 	{ GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_5,			   53,  ChallengePage::CHALLENGE_PAGE_CHALLENGE3,  9,  0,  _S("[MINIGAME_WAR_AND_PEAS_5]") },
 	{ GameMode::GAMEMODE_CHALLENGE_VERSUS,					   0,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   0,  0,  _S("[VERSUSMODE_DAY]") },
-	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_FOREST,			   5,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  2,  _S("[VERSUSMODE_FOREST]") },
+	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_FOREST,			   5,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  1,  _S("[VERSUSMODE_FOREST]") },
 	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_POOL,			       2,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   0,  2,  _S("[VERSUSMODE_POOL]") },
 	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_NIGHT,		       1,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   0,  1,  _S("[VERSUSMODE_NIGHT]") },
 	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_FOG,			       3,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   0,  3,  _S("[VERSUSMODE_FOG]") },
-	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_ROOF,			       4,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  0,  _S("[VERSUSMODE_ROOF]") }, 
-	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_MOON,			       6,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  1,  _S("[VERSUSMODE_MOON]") },
-	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_OLD,			       0,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  3,  _S("[VERSUSMODE_OLD]") },
+	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_ROOF,			       4,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   0,  4,  _S("[VERSUSMODE_ROOF]") }, 
+	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_MOON,			       6,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  0,  _S("[VERSUSMODE_MOON]") },
+	{ GameMode::GAMEMODE_CHALLENGE_VERSUS_OLD,			       0,   ChallengePage::CHALLENGE_PAGE_VERSUS,	   1,  2,  _S("[VERSUSMODE_OLD]") },
 };
 
 Rect challengeClipRect = Rect(10, 92, 778, 475);
@@ -213,7 +213,7 @@ ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
 		Sexy::IMAGE_MULTIPLAYER_OPTION_HIGHLIGHT
 	);
 	aXadjustment = -5000;
-	if (mPageIndex == CHALLENGE_PAGE_VERSUS) aXadjustment = 0;
+	if (mPageIndex == CHALLENGE_PAGE_VERSUS) aXadjustment = 5000;
 	mOptionButton->Resize(23 + aXadjustment, 510, 100, 100);
 	mOptionButton->mMouseVisible = false;
 	mOptionButton->mClip = false;
@@ -297,11 +297,11 @@ ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
 		aChallengeButton->mDoFinger = true;
 		aChallengeButton->mFrameNoDraw = true;
 		if (aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE || aChlDef.mPage == CHALLENGE_PAGE_LIMBO || aChlDef.mPage == CHALLENGE_PAGE_PUZZLE || aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE2 ||
-			aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE3 || aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE4 || aChlDef.mPage == CHALLENGE_PAGE_PUZZLE2 ||
+			aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE3 || aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE4 || aChlDef.mPage == CHALLENGE_PAGE_PUZZLE2 || aChlDef.mPage == CHALLENGE_PAGE_VERSUS ||
 			aChlDef.mPage == CHALLENGE_PAGE_PUZZLE3) //teleport spaceing
 			aChallengeButton->Resize(38 + aChlDef.mCol * 155, 93 + aChlDef.mRow * 119, 104, 115);
-		else if (aChlDef.mPage == CHALLENGE_PAGE_VERSUS)
-			aChallengeButton->Resize(140 + aChlDef.mCol * 140, 200 + aChlDef.mRow * 119, 104, 115);
+		//else if (aChlDef.mPage == CHALLENGE_PAGE_VERSUS)
+			//aChallengeButton->Resize(140 + aChlDef.mCol * 140, 200 + aChlDef.mRow * 119, 104, 115);
 		else
 			aChallengeButton->Resize(38 + aChlDef.mCol * 155, 125 + aChlDef.mRow * 145, 104, 115);
 
@@ -800,7 +800,7 @@ void ChallengeScreen::Draw(Graphics* g)
 
 	SexyString aTitleString = 
 		mPageIndex == CHALLENGE_PAGE_SURVIVAL || mPageIndex == CHALLENGE_PAGE_SURVIVAL2 ? _S("[PICK_AREA]") :
-		mPageIndex == CHALLENGE_PAGE_PUZZLE || mPageIndex ==  CHALLENGE_PAGE_PUZZLE2 || mPageIndex == CHALLENGE_PAGE_PUZZLE3 ? _S("[SCARY_POTTER]") : mPageIndex == CHALLENGE_PAGE_VERSUS ? _S("") : _S("[PICK_CHALLENGE]");
+		mPageIndex == CHALLENGE_PAGE_PUZZLE || mPageIndex ==  CHALLENGE_PAGE_PUZZLE2 || mPageIndex == CHALLENGE_PAGE_PUZZLE3 ? _S("[SCARY_POTTER]") : mPageIndex == CHALLENGE_PAGE_VERSUS ? _S("[PICK_VERSUS]") : _S("[PICK_CHALLENGE]");
 	TodDrawString(g, aTitleString, 400, 58, Sexy::FONT_HOUSEOFTERROR28, Color(220, 220, 220), DS_ALIGN_CENTER);
 
 	if (mPageIndex == CHALLENGE_PAGE_CREDITS)

@@ -70,7 +70,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("MORTAR_SHROOM"),1 },
     { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("BLOOD_ORANGE"), 1 },
     { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  225,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("VOLT_SHROOM"),1},
-    { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     450,    _S("GHOST_PEPPER"),1},
+    { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_GHOSTPEPPER,     5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     450,    _S("GHOST_PEPPER"),1},
 
     { SeedType::SEED_BEE_SHOOTER,       nullptr, ReanimationType::REANIM_BEESHOOTER,      5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("BEESHOOTER"),1},
     { SeedType::SEED_CHARD_GUARD,       nullptr, ReanimationType::REANIM_CHARDGUARD,      5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHARD_GUARD"),1},
@@ -161,7 +161,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_VERSUS_HUNTER,          nullptr, ReanimationType::REANIM_HUNTER,               2,  150,    3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("HUNTER"),1 },
     { SeedType::SEED_VERSUS_ICE,             nullptr, ReanimationType::REANIM_ICE_ZOMBIE,           2,  175,    6000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("ICE"),1 },
 
-    { SeedType::SEED_VERSUS_GLADIANTUAR_GIGA,nullptr, ReanimationType::REANIM_GLADIANTUAR,          2,  900,    18000,  PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("GIGA_GLADIANTUAR"),1 },
+    { SeedType::SEED_VERSUS_GLADIANTUAR_GIGA,nullptr, ReanimationType::REANIM_GLADIANTUAR,          2,  900,    18000,  PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("GIGA_GLADIANTUAR"),2 },
 
     { SeedType::SEED_REVERSE_PEASHOOTER,     nullptr, ReanimationType::REANIM_PEASHOOTER,    0,   100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PEASHOOTER"),-1 },
     { SeedType::SEED_REVERSE_SNOWPEA,        nullptr, ReanimationType::REANIM_SNOWPEA,       4,   175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA"),-1 },
