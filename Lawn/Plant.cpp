@@ -3008,7 +3008,7 @@ void Plant::UpdateChomper()
             else if (!aZombie->IsImmobilizied())
             {
                 if (aZombie->IsBouncingPogo() ||
-                    aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT || aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_PRE_VAULT)
+                    aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT || (aZombie->mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_PRE_VAULT && mSeedType == SeedType::SEED_CHOMPER))
                 {
                     doMiss = true;
                 }
