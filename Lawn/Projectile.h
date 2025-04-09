@@ -96,6 +96,8 @@ public:
     bool                    PeaAboutToHitTorchwood();
     void                    RotatePepper();
     void                    RotateBee();
+    void                    DrawReedZap(Graphics* g);
+    void                    TransformZap();
 
 };
 

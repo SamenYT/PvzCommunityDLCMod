@@ -1504,7 +1504,12 @@ void Projectile::Update()
 	mProjectileAge++;
 	if (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mBoard->mCutScene->ShouldRunUpsellBoard())
 		return;
-
+	if (mProjectileType == ProjectileType::PROJECTILE_REED_ZAP)
+	{
+		if (mProjectileAge > 50)
+			Die();
+		return;
+	}
 	int aTime = 20;
 	if (mProjectileType == ProjectileType::PROJECTILE_PEA || 
 		mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || 
@@ -1617,9 +1622,39 @@ void Projectile::RotateBee()
 	}
 }
 
+void Projectile::DrawReedZap(Graphics* g)
+{
+	g->SetColor(Color(255,255,255, TodAnimateCurve(0,50,mProjectileAge, 255, 0, CURVE_LINEAR)));
+	g->SetColorizeImages(true);
+	SexyMatrix3 aMatrix;
+	aMatrix.LoadIdentity();
+	TodScaleRotateTransformMatrix(aMatrix, 0, 0, mRotation, mRadius, 1.0f);
+	//float aStretch = 
+	//IMAGE_PROJECTILE_ZAP->mWidth
+		//IMAGE_PROJECTILE_ZAP->mWidth
+	//Center left of image aligns with mPos, Center right aligns with mPos + mWidth/Height
+
+	g->DrawImageMatrix(IMAGE_PROJECTILE_ZAP, aMatrix);
+	//g->DrawImage(IMAGE_PROJECTILE_ZAP, 0, 0);
+	g->SetColorizeImages(false);
+}
+
+void Projectile::TransformZap()
+{
+	mRadius = sqrtf(mWidth * mWidth + mHeight * mHeight) / IMAGE_PROJECTILE_ZAP->mWidth;
+	mRotation = atan2f(-mHeight,mWidth);
+	mX += mWidth / 2;
+	mY += mHeight / 2;
+}
+
 //0x46E540
 void Projectile::Draw(Graphics* g)
 {
+	if (mProjectileType == ProjectileType::PROJECTILE_REED_ZAP)
+	{
+		DrawReedZap(g);
+		return;
+	}
 	//g->SetColorizeImages(true);
 	//g->SetColor(Color(255, 0, 0));
 	const ProjectileDefinition& aProjectileDef = GetProjectileDef();
@@ -1760,6 +1795,7 @@ void Projectile::Draw(Graphics* g)
 //0x46E8C0
 void Projectile::DrawShadow(Graphics* g)
 {
+	if (mProjectileType == ProjectileType::PROJECTILE_REED_ZAP) return;
 	int aCelCol = 0;
 	float aScale = 1.0f;
 	float aStretch = 1.0f;

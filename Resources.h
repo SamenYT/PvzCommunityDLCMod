@@ -810,6 +810,7 @@ namespace Sexy
 	extern Image* IMAGE_STONEBUTTON_LEFT;
 	extern Image* IMAGE_STONEBUTTON_LEFT_HOVER;
 	extern Image* IMAGE_RHYTHM_NUMBERGRID;
+	extern Image* IMAGE_PROJECTILE_ZAP;
 
 	// LoadingSounds Resources
 	bool ExtractLoadingSoundsResources(ResourceManager *theMgr);
@@ -1928,6 +1929,8 @@ namespace Sexy
 		IMAGE_REANIM_CREDITS_FOGMACHINE_ID,
 		IMAGE_CREDITS_ZOMBIENOTE_ID,
 		IMAGE_CREDITS_PLAYBUTTON_ID,
+		IMAGE_RHYTHM_GRID_ID,
+		IMAGE_PROJECTILE_ZAP_ID,
 		RESOURCE_ID_MAX
 	};
 

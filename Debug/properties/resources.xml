@@ -212,6 +212,7 @@
 <Image id="MELONPULT_PARTICLES" path="Melonpult_particles" cols="9" />
 <Image id="WINTERMELON_PARTICLES" path="WinterMelon_particles" cols="9" />
 <Image id="PROJECTILE_STAR" path="Projectile_star" />
+<Image id="PROJECTILE_ZAP" path="ProjectileElec" />
 <Image id="DOLPHIN_ARM" path="Projectile_star" />
 
 <!-- Background -->

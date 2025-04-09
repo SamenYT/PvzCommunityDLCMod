@@ -913,7 +913,8 @@ enum ProjectileType
     PROJECTILE_ARROW = 21,
     PROJECTILE_BEE = 22,
     PROJECTILE_SHOOTING_STAR = 23,
-    NUM_PROJECTILES = 24
+    NUM_PROJECTILES = 24,
+    PROJECTILE_REED_ZAP
 };
 enum ReanimationType
 {
