@@ -7684,6 +7684,7 @@ void Plant::Die()
         while (mBoard->IterateZombies(aZombie))
         {
             aZombie->mIsLumed = false;
+            aZombie->StartWalkAnim(0);
         }
     }
     if (mSeedType == SEED_DUMMY && mBoard)

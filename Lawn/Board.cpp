@@ -12127,6 +12127,11 @@ void Board::FindLumeTarget(int theX, int theY, int theRow)
 
 		if (aRowDist <= 3 && aRowDist >= -3 && GetCircleRectOverlap(theX, theY, 250, aZombieRect))
 		{
+			Reanimation* aBodyReanim = mApp->ReanimationGet(aZombie->mBodyReanimID);
+			if (aBodyReanim->mLoopCount > 0)
+			{
+				aZombie->PlayZombieReanim("anim_blind", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 10.0f);
+			}
 			aZombie->mRageCounter = 0;
 			aZombie->UpdateAnimSpeed();
 			aZombie->mIsLumed = true;
