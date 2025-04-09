@@ -7472,6 +7472,8 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
     Zombie* aZombie = nullptr;
     while (mBoard->IterateZombies(aZombie))
     {
+        if (mSeedType == SEED_REED && aZombie->mZombieType == ZOMBIE_BALLOON) continue;
+
         int aRowDeviation = aZombie->mRow - theRow;
         if (aZombie->mZombieType == ZombieType::ZOMBIE_BOSS)
         {
@@ -8238,7 +8240,7 @@ void Plant::LightningReedFire()
     Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
     if (!aZombie) return;
 
-    aZombie->TakeDamage(aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 3 : 10, 1U);
+    aZombie->TakeDamage(/*aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 1 : */10, 1U);
     mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
     Zombie* aZombies[3]{ aZombie, nullptr, nullptr };
     unsigned aRangeFlags = GetDamageRangeFlags(WEAPON_PRIMARY);
