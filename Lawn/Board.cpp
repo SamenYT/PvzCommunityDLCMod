@@ -12594,6 +12594,12 @@ bool Board::IsZombieTypeSpawnedOnly(ZombieType theZombieType)
 	return (theZombieType == ZombieType::ZOMBIE_BACKUP_DANCER || theZombieType == ZombieType::ZOMBIE_BOBSLED || theZombieType == ZombieType::ZOMBIE_IMP);
 }
 
+bool Board::IsZombieTypeGiga(ZombieType theZombieType)
+{
+	return (theZombieType == ZombieType::ZOMBIE_GIGA_BASIC || theZombieType == ZombieType::ZOMBIE_GIGA_CONEHEAD || theZombieType == ZombieType::ZOMBIE_GIGA_BUCKETHEAD ||
+		theZombieType == ZombieType::ZOMBIE_GIGA_POLEVAULTER);
+}
+
 void Board::IncreaseTargetCounter()
 {
 	mTargetCounter++;

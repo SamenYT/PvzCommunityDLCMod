@@ -61,7 +61,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_GLADIANTUAR_GIGA,  REANIM_GLADIANTUAR,         99,     99,     1,      0,      _S("GIGA_GLADIANTUAR"),2 },
     { ZOMBIE_ICE,               REANIM_ICE_ZOMBIE,          8,      99,     10,     2000,   _S("ICE"),-1 },
     { ZOMBIE_TARGET,            REANIM_TARGET,              1,      65,     1,      0,      _S("TARGET"),2 },
-    { ZOMBIE_TRASHCAN,          REANIM_ZOMBIE,              2,      99,     5,      0,      _S("TRASHCAN_ZOMBIE"),2 },
+    { ZOMBIE_TRASHCAN,          REANIM_ZOMBIE,              2,      99,     5,      1000,   _S("TRASHCAN_ZOMBIE"),2 },
     { ZOMBIE_GLITCH,            REANIM_GLITCH,              1,      99,     1,      2000,   _S("GLITCH"),2 },
 
     { ZOMBIE_PEA_HEAD,          REANIM_ZOMBIE,              1,      99,     1,      4000,   _S("PEA_ZOMBIE"),3 },
