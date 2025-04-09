@@ -3674,7 +3674,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	Plant* aPumpkinPlant = aPlantOnLawn.mPumpkinPlant;
 	if (aGridSquare == GridSquareType::GRIDSQUARE_POOL && !aHasLilypad && theSeedType != SeedType::SEED_CATTAIL && theSeedType != SeedType::SEED_GRAVE)
 	{
-		if ((!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || theSeedType != SeedType::SEED_PUMPKINSHELL) && theSeedType != SeedType::SEED_SHOOTINGSTAR)
+		if ((!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || theSeedType != SeedType::SEED_PUMPKINSHELL) && theSeedType != SeedType::SEED_SHOOTINGSTAR && !Plant::IsHovering(theSeedType))
 		{
 			return PlantingReason::PLANTING_NOT_ON_WATER;
 		}
@@ -3689,7 +3689,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	{
 		return (aNormalPlant || aUnderPlant || aPumpkinPlant) ? PlantingReason::PLANTING_NOT_HERE : PlantingReason::PLANTING_OK;
 	}
-	if ((StageHasRoof() && (!aHasFlowerPot && !aHasLilypad) && (!aNormalPlant || aNormalPlant->mSeedType != SEED_CATTAIL)))
+	if ((StageHasRoof() && (!aHasFlowerPot && !aHasLilypad) && (!aNormalPlant || aNormalPlant->mSeedType != SEED_CATTAIL)) && theSeedType != SeedType::SEED_MORTARSHROOM && !Plant::IsHovering(theSeedType))
 	{
 		return PlantingReason::PLANTING_NEEDS_POT;
 	}
@@ -7650,6 +7650,7 @@ void Board::Update()
 		UpdateFwoosh();
 		UpdateGame();
 		UpdateFog();
+		UpdateLume();
 		mChallenge->Update();
 	}
 
@@ -7719,6 +7720,7 @@ void Board::Update()
 	*/
 	//else mApp->mHardmodeIsOn = true;
 	UpdateFog();
+	UpdateLume();
 	mChallenge->Update();
 	UpdateLevelEndSequence();
 	mPrevMouseX = mApp->mWidgetManager->mLastMouseX;
@@ -9735,10 +9737,29 @@ void Board::UpdateFog()
 		{
 			ClearFogAroundPlant(aPlant, 4);
 		}
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM && !aPlant->mIsAsleep)
+		{
+			ClearFogAroundPlant(aPlant, 3);
+		}
 		else if (aPlant->mSeedType == SeedType::SEED_TORCHWOOD || aPlant->mSeedType == SeedType::SEED_FLAMEPEA || aPlant->mSeedType == SeedType::SEED_REED || aPlant->mSeedType == SeedType::SEED_EPEA ||
 				 aPlant->mSeedType == SeedType::SEED_FIRESHROOM)
 		{
 			ClearFogAroundPlant(aPlant, 1);
+		}
+	}
+}
+
+void Board::UpdateLume()
+{
+	Plant* aPlant = nullptr;
+	while (IteratePlants(aPlant))
+	{
+		if (aPlant->NotOnGround())
+			continue;
+
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM && !aPlant->mIsAsleep)
+		{
+			FindLumeTarget(aPlant->mX, aPlant->mY, aPlant->mRow);
 		}
 	}
 }
@@ -12095,6 +12116,26 @@ Plant* Board::FindAmpliflower(int theGridX, int theGridY)
 	return nullptr;
 }
 
+void Board::FindLumeTarget(int theX, int theY, int theRow)
+{
+	Zombie* aZombie = nullptr;
+
+	while (IterateZombies(aZombie))
+	{
+		Rect aZombieRect = aZombie->GetZombieRect();
+		int aRowDist = aZombie->mRow - theRow;
+
+		if (aRowDist <= 3 && aRowDist >= -3 && GetCircleRectOverlap(theX, theY, 250, aZombieRect))
+		{
+			aZombie->mRageCounter = 0;
+			aZombie->UpdateAnimSpeed();
+			aZombie->mIsLumed = true;
+			
+			if (aZombie->mJustGotShotCounter <= 0) aZombie->mJustGotShotCounter = 25;
+		}
+	}
+}
+
 //0x41D450
 void Board::DoFwoosh(int theRow)
 {
@@ -12347,6 +12388,28 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 				aZombie->mIsShrunken = true;
 				aZombie->mIsShrinking = true;
 				aZombie->ApplyAnimRate(0.0f);
+			}
+		}
+	}
+}
+
+void Board::DamageAllZombiesInRadius(int theRow, int theX, int theY, int theRadius, int theRowRange, int theDamage)
+{
+	Zombie* aZombie = nullptr;
+	while (IterateZombies(aZombie))
+	{
+		if (aZombie->mZombieType != ZOMBIE_TARGET && aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING)
+		{
+			Rect aZombieRect = aZombie->GetZombieRect();
+			int aRowDist = aZombie->mRow - theRow;
+
+			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
+			{
+				aZombie->TakeDamage(theDamage, 0U);
+				aZombie->RemoveColdEffects();
+
+				aZombie->mRageCounter = 600;
+				aZombie->UpdateAnimSpeed();
 			}
 		}
 	}

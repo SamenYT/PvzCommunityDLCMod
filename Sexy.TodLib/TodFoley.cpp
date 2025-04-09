@@ -145,7 +145,8 @@ FoleyParams gLawnFoleyParamArray[(int)FoleyType::NUM_FOLEY] = {  //0x69FAD0
 	{ FoleyType::FOLEY_BUSH_DESTROYED3,			0.0f,	{ &Sexy::SOUND_BUSH_RUSTLING3 }, 0U },
 	{ FoleyType::FOLEY_HUNTER_SHOOT,			0.0f,	{ &Sexy::SOUND_HUNTER_SHOOT }, 0U },
 	{ FoleyType::FOLEY_SKELETON_DIE,			0.0f,	{ &Sexy::SOUND_SKELETON_DIE }, 0U },
-	{ FoleyType::FOLEY_SKELETON_REVIVE,			0.0f,	{ &Sexy::SOUND_SKELETON_REVIVE }, 0U }
+	{ FoleyType::FOLEY_SKELETON_REVIVE,			0.0f,	{ &Sexy::SOUND_SKELETON_REVIVE }, 0U },
+	{ FoleyType::FOLEY_BLOOD_EXPLOSION,			0.0f,	{ &Sexy::SOUND_BLOOD_EXPLOSION }, 0U }
 };
 
 FoleyInstance::FoleyInstance()

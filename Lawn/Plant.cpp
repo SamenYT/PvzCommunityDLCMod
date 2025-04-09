@@ -67,10 +67,10 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_LUMESHROOM,        nullptr, ReanimationType::REANIM_LUMESHROOM,      5,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LUME_SHROOM"), 1 },
     { SeedType::SEED_REED,              nullptr, ReanimationType::REANIM_REED,            5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("LIGHTNING_REED"),1 },
     { SeedType::SEED_HURIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,        5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
-    { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("MORTAR_SHROOM"),1 },
-    { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("BLOOD_ORANGE"), 1 },
-    { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  225,    5000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("VOLT_SHROOM"),1},
-    { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    450,    _S("GHOST_PEPPER"),1},
+    { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("MORTAR_SHROOM"),1 },
+    { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("BLOOD_ORANGE"), 1 },
+    { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  225,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("VOLT_SHROOM"),1},
+    { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     450,    _S("GHOST_PEPPER"),1},
 
     { SeedType::SEED_BEE_SHOOTER,       nullptr, ReanimationType::REANIM_BEESHOOTER,      5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("BEESHOOTER"),1},
     { SeedType::SEED_CHARD_GUARD,       nullptr, ReanimationType::REANIM_CHARDGUARD,      5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHARD_GUARD"),1},
@@ -592,6 +592,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_JALAPENO:
     case SeedType::SEED_PICKLEPEPPER:
     case SeedType::SEED_CHILLYPEPPER:
+    case SeedType::SEED_BLOODORANGE:
     {
         TOD_ASSERT(aBodyReanim);
 
@@ -708,6 +709,21 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
             mApp->PlaySample(Sexy::SOUND_PLANTERN);
         }
         
+        break;
+    }
+    case SeedType::SEED_LUMESHROOM:
+    {
+        mDeathCounter = 1000;
+
+        if ((!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN) && !mIsAsleep)
+        {
+            AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
+        }
+        if (IsInPlay() && !mIsAsleep)
+        {
+            mApp->PlaySample(Sexy::SOUND_PLANTERN);
+        }
+
         break;
     }
     case SeedType::SEED_TORCHWOOD:
@@ -932,6 +948,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_DOOMSHROOM:
     case SeedType::SEED_SHRINK:
     case SeedType::SEED_LEMON_NADE:
+    case SeedType::SEED_BLOODORANGE:
         return 127;
     case SeedType::SEED_MELONPULT:
     case SeedType::SEED_PEPPER:
@@ -3909,7 +3926,7 @@ void Plant::Squish()
     {
         if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_PICKLEPEPPER ||
             mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM || mSeedType == SeedType::SEED_CHILLYPEPPER ||
-            mSeedType == SeedType::SEED_SHRINK || mSeedType == SeedType::SEED_LEMON_NADE)
+            mSeedType == SeedType::SEED_SHRINK || mSeedType == SeedType::SEED_LEMON_NADE || mSeedType == SeedType::SEED_BLOODORANGE)
         {
             DoSpecial();
             return;
@@ -4147,6 +4164,11 @@ void Plant::UpdateAbilities()
         if (mWakeUpCounter == 60)
         {
             mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
+            if (mSeedType == SEED_LUMESHROOM)
+            {
+                AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
+                mApp->PlaySample(Sexy::SOUND_PLANTERN);
+            }
         }
         if (mWakeUpCounter == 0)
         {
@@ -4547,7 +4569,7 @@ void Plant::UpdateReanim()
         aOffsetX += 10.0f;
         aOffsetY += 15.0f;
 
-        if (mDeathCounter > 0)
+        /*if (mDeathCounter > 0)
         {
             float aShrinkNumber = (float)mShrinkCounter;
 
@@ -4558,7 +4580,7 @@ void Plant::UpdateReanim()
                 mY += 1.0f;
                 mX += 1.0f;
             }
-        }
+        }*/
     }
     if (mSeedType == SeedType::SEED_CHARD_GUARD)
     {
@@ -4704,10 +4726,17 @@ void Plant::Update()
         if (mSoundCounter == 0) mApp->PlayFoley(FOLEY_THUMP);
     }
 
-    if (mDeathCounter > 0)
+    if (mDeathCounter > 0 && !mIsAsleep)
     {
         mDeathCounter--;
-        if (mDeathCounter == 0) Die();
+        if (mDeathCounter == 50)
+        {
+            mApp->AddTodParticle(mX + 40, mY + 40, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_IMITATER_MORPH);
+        }
+        else if (mDeathCounter == 0)
+        {
+            Die();
+        }
     }
 
     if (mGridItemCounter > 0)
@@ -5540,7 +5569,7 @@ void Plant::UpdateShooting()
 //0x464DB0
 void Plant::Animate()
 {
-    if ((mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_PICKLEPEPPER || mSeedType == SeedType::SEED_CHILLYPEPPER || mSeedType == SeedType::SEED_LEMON_NADE)
+    if ((mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_PICKLEPEPPER || mSeedType == SeedType::SEED_CHILLYPEPPER || mSeedType == SeedType::SEED_LEMON_NADE || mSeedType == SeedType::SEED_BLOODORANGE)
         && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
     {
         mShakeOffsetX = RandRangeFloat(-1.0f, 1.0f);
@@ -5634,6 +5663,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_BONKCHOY:
     case SeedType::SEED_SUPERCHOMP:
     case SeedType::SEED_PLANTERN:
+    case SeedType::SEED_LUMESHROOM:
         aHeightOffset -= 5.0f;
         break;
     case SeedType::SEED_SCAREDYSHROOM:
@@ -6073,13 +6103,13 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
         }
         aShadowOffsetY += 5.0f;
     }
-    else if (mSeedType == SeedType::SEED_SHRINK)
+    /*else if (mSeedType == SeedType::SEED_SHRINK)
     {
         if (mDeathCounter > 0)
         {
             aScale = 0.0f;
         }
-    }
+    }*/
     else if (mSeedType == SeedType::SEED_PUFFSHROOM || mSeedType == SeedType::SEED_PULTSHROOM || mSeedType == SeedType::SEED_REVERSE_PUFFSHROOM)
     {
         aScale = 0.5f;
@@ -6733,11 +6763,28 @@ void Plant::DoSpecial()
         Die();
         break;
     }
+    case SeedType::SEED_BLOODORANGE:
+    {
+        mApp->PlayFoley(FoleyType::FOLEY_BLOOD_EXPLOSION);
+        mApp->PlayFoley(FoleyType::FOLEY_JUICY);
+
+        mBoard->DamageAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, 900);
+
+        mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_BLOOD_SPLASH);
+        mBoard->ShakeBoard(3, -4);
+
+        int aRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 1);
+
+        Reanimation* aBloodReanim = mApp->AddReanimation(aPosX - 50, aPosY - 20, aRenderOrder, ReanimationType::REANIM_BLOODSPLASH);
+
+        Die();
+        break;
+    }
     case SeedType::SEED_SHRINK:
     {
         mBoard->ShrinkAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags, 0);
 
-        mDeathCounter = 300;
+        mDeathCounter = 150;
         mShrinkCounter = 200;
         break;
     }
@@ -7631,6 +7678,14 @@ void Plant::Die()
         mApp->AddTodParticle(mX + 50, mY + 30, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
         mBoard->ShakeBoard(3, -4);
     }
+    if (mSeedType == SEED_LUMESHROOM && mBoard && !mIsAsleep)
+    {
+        Zombie* aZombie = nullptr;
+        while (mBoard->IterateZombies(aZombie))
+        {
+            aZombie->mIsLumed = false;
+        }
+    }
     if (mSeedType == SEED_DUMMY && mBoard)
     {
         mBoard->IncreaseDummyCounter(mHypnotized);
@@ -7917,6 +7972,9 @@ bool Plant::IsNocturnal(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_BRAVESHROOM ||
         theSeedtype == SeedType::SEED_GLOOMSHROOM ||
         theSeedtype == SeedType::SEED_ICYFUME ||
+        theSeedtype == SeedType::SEED_LUMESHROOM ||
+        theSeedtype == SeedType::SEED_MORTARSHROOM ||
+        theSeedtype == SeedType::SEED_VOLTSHROOM ||
         theSeedtype == SeedType::SEED_FIRESHROOM;
 }
 
@@ -7934,6 +7992,11 @@ bool Plant::IsAquatic(SeedType theSeedType)
 bool Plant::IsFlying(SeedType theSeedtype)
 {
     return theSeedtype == SeedType::SEED_INSTANT_COFFEE || theSeedtype == SeedType::SEED_FLYING_GARLIC;
+}
+
+bool Plant::IsHovering(SeedType theSeedtype)
+{
+    return theSeedtype == SeedType::SEED_BLOODORANGE;
 }
 
 //0x467EC0
@@ -8050,6 +8113,10 @@ void Plant::PreloadPlantResources(SeedType theSeedType)
     else if (theSeedType == SeedType::SEED_JALAPENO)
     {
         ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_JALAPENO_FIRE, true);
+    }
+    else if (theSeedType == SeedType::SEED_BLOODORANGE)
+    {
+        ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE_CHARRED, true);
     }
     else if (theSeedType == SeedType::SEED_PICKLEPEPPER)
     {

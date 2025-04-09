@@ -366,8 +366,8 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	else
 	{
 		g->DrawImage(
-			Plant::IsNocturnal(mSelectedSeed) || mSelectedSeed == SeedType::SEED_GRAVEBUSTER || mSelectedSeed == SeedType::SEED_PLANTERN ? Sexy::IMAGE_ALMANAC_GROUNDNIGHT : (mSelectedSeed == SeedType::SEED_BEE_SHOOTER || mSelectedSeed == SeedType::SEED_OAK_ARCHER) ? Sexy::IMAGE_ALMANAC_GROUNDFOREST :
-			mSelectedSeed == SeedType::SEED_FLOWERPOT || mSelectedSeed == SeedType::SEED_WATERPOT ? Sexy::IMAGE_ALMANAC_GROUNDROOF : Sexy::IMAGE_ALMANAC_GROUNDDAY,
+			mSelectedSeed == SeedType::SEED_MORTARSHROOM ? Sexy::IMAGE_ALMANAC_GROUNDNIGHTROOF : Plant::IsNocturnal(mSelectedSeed) || mSelectedSeed == SeedType::SEED_GRAVEBUSTER || mSelectedSeed == SeedType::SEED_PLANTERN ? Sexy::IMAGE_ALMANAC_GROUNDNIGHT : 
+			(mSelectedSeed == SeedType::SEED_BEE_SHOOTER || mSelectedSeed == SeedType::SEED_OAK_ARCHER) ? Sexy::IMAGE_ALMANAC_GROUNDFOREST : mSelectedSeed == SeedType::SEED_FLOWERPOT || mSelectedSeed == SeedType::SEED_WATERPOT || mSelectedSeed == SeedType::SEED_BLOODORANGE ? Sexy::IMAGE_ALMANAC_GROUNDROOF : Sexy::IMAGE_ALMANAC_GROUNDDAY,
 			521, 107
 		);
 	}

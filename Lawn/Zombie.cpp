@@ -214,6 +214,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     mIsThrown = false;
     mBoneHealth = 0;
     mRespawnCounter = 0;
+    mIsLumed = false;
     TodParticleSystem* aParticle;
     for (int i = 0; i < MAX_ZOMBIE_FOLLOWERS; i++)
     {
@@ -6518,7 +6519,7 @@ void Zombie::UpdatePlaying()
     }
     if (mHurCounter > 0) mHurCounter--;
 
-    if (mBoard->mBloodCounterCooldown > 0 && mZombieType != ZOMBIE_GLADIANTUAR)
+    if (mBoard->mBloodCounterCooldown > 0 && mZombieType != ZOMBIE_GLADIANTUAR && mRageCounter > 0)
     {
         mRageCounter = mBoard->mBloodCounterCooldown;
         UpdateAnimSpeed();
@@ -6787,7 +6788,7 @@ void Zombie::AnimateChewSound()
         if (aPlant->mSeedType == SeedType::SEED_VINENUT)
         {
             mApp->PlayFoley(FoleyType::FOLEY_THROW);
-            //mApp->PlayFoley(FoleyType::FOLEY_CHOMP);
+            mApp->PlayFoley(FoleyType::FOLEY_CHOMP);
             if (mZombieType == ZOMBIE_NEWSPAPER || mZombieType == ZOMBIE_SCREENDOOR || mZombieType == ZOMBIE_TRASHCAN) TakeBodyDamage(20, 0U);
             else TakeDamage(20, 0U);
         }
@@ -7726,13 +7727,7 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }
-    /*else if (mRageCounter > 0)
-    {
-        //aColorOverride = Color(222, 62, 88, 255); // 150 150 150 255
-        aExtraAdditiveColor = aColorOverride;
-        aEnableExtraAdditiveDraw = true;
-    }*/
-    else if (mBoard && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
+    else if (mBoard && !mIsLumed && (mBoard->mRageDelay > 0 || mBoard->mBloodCounterCooldown > 0) && mZombieType != ZOMBIE_GLADIANTUAR)
     {
         int invertRageCounter = 1000 - mBoard->mRageDelay;
         int invertBloodCounter = 100 - mBoard->mBloodCounterCooldown;
@@ -7742,9 +7737,15 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
 
-        SexyString aDebugText = to_string((int)mBoard->mBloodCounterCooldown); //debug text
+        /*SexyString aDebugText = to_string((int)mBoard->mBloodCounterCooldown); //debug text
         const char* aCharDebugText = aDebugText.c_str();
-        TodTraceWithoutSpamming(aCharDebugText);
+        TodTraceWithoutSpamming(aCharDebugText);*/
+    }
+    else if (mRageCounter > 0 && mZombieType != ZOMBIE_GLADIANTUAR && mZombieType != ZOMBIE_GLADIANTUAR_GIGA)
+    {
+        aColorOverride = Color(222, 62, 88, 255); // 150 150 150 255
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
     }
     else if (mHealCounter > 0)
     {
@@ -8449,7 +8450,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
 
     if (theAttackType == ZombieAttackType::ATTACKTYPE_DRIVE_OVER)
     {
-        if (thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || thePlant->mSeedType == SeedType::SEED_JALAPENO || thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER || 
+        if (thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || thePlant->mSeedType == SeedType::SEED_JALAPENO || thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER || thePlant->mSeedType == SeedType::SEED_BLOODORANGE ||
             thePlant->mSeedType == SeedType::SEED_PICKLEPEPPER || thePlant->mSeedType == SeedType::SEED_BLOVER || thePlant->mSeedType == SeedType::SEED_SQUASH || 
             thePlant->mSeedType == SeedType::SEED_HURIKALE || thePlant->mSeedType == SeedType::SEED_SHRINK || thePlant->mSeedType == SeedType::SEED_LEMON_NADE)
         {
@@ -9262,6 +9263,7 @@ void Zombie::EatPlant(Plant* thePlant)
         thePlant->mSeedType == SeedType::SEED_PICKLEPEPPER ||
         thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER ||
         thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || 
+        thePlant->mSeedType == SeedType::SEED_BLOODORANGE || 
         (thePlant->mSeedType == SeedType::SEED_SHRINK && thePlant->mStopAnimation) ||
         thePlant->mSeedType == SeedType::SEED_DOOMSHROOM ||
         thePlant->mSeedType == SeedType::SEED_ICESHROOM || 
@@ -9708,7 +9710,16 @@ void Zombie::BungeeDie()
 //0x530510
 void Zombie::DieNoLoot()
 {
-    if (mZombiePhase == PHASE_BONE_PILE) mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
+    if (IsOnBoard() && mIsLumed)
+    {
+        Rect aZombieRect = GetZombieRect();
+        int aCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
+        int aCenterY = aZombieRect.mY + aZombieRect.mHeight / 4;
+        mApp->PlayFoley(FOLEY_SUN);
+        mBoard->AddCoin(aCenterX - 20, aCenterY, CoinType::COIN_SMALLSUN, CoinMotion::COIN_MOTION_COIN);
+    }
+    if (mZombiePhase == PHASE_BONE_PILE && mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED) 
+        mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
 
     StopZombieSound();
     AttachmentDie(mAttachmentID);

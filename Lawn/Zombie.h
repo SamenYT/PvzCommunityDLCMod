@@ -187,6 +187,7 @@ public:
     int                             mBoneHealth;
     int                             mRespawnCounter;
     bool                            mIsShrinking;
+    bool                            mIsLumed;
 
 public:
     Zombie();
