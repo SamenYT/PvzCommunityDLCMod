@@ -3017,17 +3017,20 @@ void Zombie::UpdateGladiantuarBoss()
     {
         if (doScream == 0)
         {
+            int prevRow = mRow;
+
             mApp->PlayFoleyPitch(FoleyType::FOLEY_LOW_GROAN, -4.0f);
             int randomRow = Rand(3);
             if (randomRow == 2) randomRow = -1;
             if (mRow == 0) mRow = 1;
             else if (mRow == 4) mRow = 3;
             else mRow += randomRow;
+           
             SetRow(mRow);
             mZombiePhase = ZombiePhase::PHASE_GIGA_GLAD_MOVING;
 
             Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
-            if (aBodyReanim)  
+            if (prevRow != mRow && aBodyReanim)
                 aBodyReanim->PlayReanim("anim_walk", ReanimLoopType::REANIM_LOOP, 20, 15.0f);
         }
         if (doAbility == 0)
