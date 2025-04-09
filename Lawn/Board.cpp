@@ -697,9 +697,12 @@ void Board::PutZombieInWave(ZombieType theZombieType, int theWaveNumber, ZombieP
 	{
 		mZombiesInWave[theWaveNumber][theZombiePicker->mZombieCount] = ZombieType::ZOMBIE_INVALID;
 	}
-	theZombiePicker->mZombiePoints -= GetZombieDefinition(theZombieType).mZombieValue;
-	theZombiePicker->mZombieTypeCount[theZombieType]++;
-	theZombiePicker->mAllWavesZombieTypeCount[theZombieType]++;
+	if (theZombieType != ZombieType::ZOMBIE_INVALID)
+	{
+		theZombiePicker->mZombiePoints -= GetZombieDefinition(theZombieType).mZombieValue;
+		theZombiePicker->mZombieTypeCount[theZombieType]++;
+		theZombiePicker->mAllWavesZombieTypeCount[theZombieType]++;
+	}
 }
 
 //0x409290
@@ -819,10 +822,8 @@ void Board::PickZombieWaves()
 		{
 			int aPlainZombiesNum = min(aZombiePoints, 8);
 			aZombiePoints *= 2.5f;
-
-			if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 &&
-				mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GIGA && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GLITCH
-				&& !mApp->IsRhythmGarlicLevel())
+			//mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 &&mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_3 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_4 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_SMASH && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GIGA && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_GLITCH && !mApp->IsRhythmGarlicLevel()
+			if (mZombieAllowed[ZombieType::ZOMBIE_BASIC])
 			{
 				for (int _i = 0; _i < aPlainZombiesNum; _i++)
 				{
@@ -841,6 +842,11 @@ void Board::PickZombieWaves()
 				PutZombieInWave(ZombieType::ZOMBIE_VAMPIRE, aWave, &aZombiePicker);
 			}
 			continue;
+		}
+
+		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SMASH)
+		{
+			aZombiePoints *= 2.5f;
 		}
 
 		// 部分关卡的多倍出怪
@@ -3199,6 +3205,9 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 	for (int aZombieType = ZombieType::ZOMBIE_BASIC; aZombieType < ZombieType::NUM_ZOMBIE_TYPES; aZombieType++)
 	{
 		if (!mZombieAllowed[aZombieType])
+			continue;
+
+		if (aZombieType == ZOMBIE_YETI && !mZombieAllowed[ZOMBIE_BASIC])
 			continue;
 
 		const ZombieDefinition& aZombieDef = GetZombieDefinition((ZombieType)aZombieType);
@@ -6746,7 +6755,9 @@ void Board::UpdateProgressMeter()
 		Zombie* aBoss = GetBossZombie();
 		if (aBoss && !aBoss->IsDeadOrDying())
 		{
-			mProgressMeterWidth = 150 * (aBoss->mBodyMaxHealth - aBoss->mBodyHealth) / aBoss->mBodyMaxHealth;
+			int fullHP = aBoss->mBodyMaxHealth + aBoss->mHelmMaxHealth + aBoss->mShieldMaxHealth;
+			int curHP = aBoss->mBodyHealth + aBoss->mHelmHealth + aBoss->mShieldHealth;
+			mProgressMeterWidth = (int)ceil(150 * (fullHP - curHP) / fullHP);
 		}
 		else
 		{
@@ -8269,6 +8280,7 @@ void Board::DrawGameObjects(Graphics* g)
 			aRenderItemCount++;
 		}
 	}
+	if (mApp->IsVersusLevel())
 	{
 		RenderItem& aRenderItem = aRenderList[aRenderItemCount];
 		aRenderItem.mRenderObjectType = RenderObjectType::RENDER_ITEM_VERSUS_SHOVEL;
@@ -8730,7 +8742,7 @@ bool Board::HasProgressMeter()
 {
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST || 
-		mApp->IsFinalBossLevel() || 
+		mApp->IsFinalBossLevel() || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_GLADIANTUAR ||  
 		mApp->IsSlotMachineLevel() || 
 		mApp->IsSquirrelLevel() || 
 		mApp->IsIZombieLevel())
@@ -12386,7 +12398,7 @@ void Board::ShrinkAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
-		if (aZombie->mIsShrunken)
+		if (aZombie->mIsShrunken || aZombie->IsDeadOrDying() || !aZombie->mHasHead)
 			continue;
 
 		if (aZombie->EffectedByDamage(theDamageRangeFlags) && (aZombie->mZombieType != ZOMBIE_GLADIANTUAR_GIGA && aZombie->mZombieType != ZOMBIE_GLADIANTUAR) && aZombie->mZombieType != ZOMBIE_TARGET && aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING)

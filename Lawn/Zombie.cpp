@@ -61,7 +61,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_GLADIANTUAR_GIGA,  REANIM_GLADIANTUAR,         99,     99,     1,      0,      _S("GIGA_GLADIANTUAR"),2 },
     { ZOMBIE_ICE,               REANIM_ICE_ZOMBIE,          8,      99,     10,     2000,   _S("ICE"),-1 },
     { ZOMBIE_TARGET,            REANIM_TARGET,              1,      65,     1,      0,      _S("TARGET"),2 },
-    { ZOMBIE_TRASHCAN,          REANIM_ZOMBIE,              2,      99,     5,      0,      _S("TRASHCAN_ZOMBIE"),2 },
+    { ZOMBIE_TRASHCAN,          REANIM_ZOMBIE,              2,      99,     5,      3500,      _S("TRASHCAN_ZOMBIE"),2 },
     { ZOMBIE_GLITCH,            REANIM_GLITCH,              1,      99,     1,      2000,   _S("GLITCH"),2 },
 
     { ZOMBIE_PEA_HEAD,          REANIM_ZOMBIE,              1,      99,     1,      4000,   _S("PEA_ZOMBIE"),3 },
@@ -647,6 +647,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mHelmHealth = mApp->IsVersusLevel() ? 1500 : 6000;
         mAnimTicksPerFrame = 6;
         mVariant = false;
+        mZombiePhase = ZombiePhase::PHASE_GIGA_GLAD_STATIONARY;
 
         int aPoleHit = Rand(10);
         int aPoleVariant;
@@ -3011,99 +3012,125 @@ void Zombie::UpdateGladiantuarBoss()
     int doScream = mZombieAge % 500;
     int randomAbility = Rand(100);
     int abilityNumber = randomAbility < 10 ? 1 : randomAbility < 35 ? 2 : 3;
-    if (doScream == 0)
+
+    if (mZombiePhase == ZombiePhase::PHASE_GIGA_GLAD_STATIONARY)
     {
-        mApp->PlayFoleyPitch(FoleyType::FOLEY_LOW_GROAN, -4.0f);
-        int randomRow = Rand(3);
-        if (randomRow == 2) randomRow = -1;
-        if (mRow == 0) mRow = 1;
-        else if (mRow == 4) mRow = 3;
-        else mRow += randomRow;
-        SetRow(mRow);
-    }
-    if (doAbility == 0)
-    {
-        if (abilityNumber == 1)// && mZombieAge > 7500)
+        if (doScream == 0)
         {
-            PlayZombieReanim("anim_throw", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
-            mSummonCounter = 175;
-            mAttackType = 1;
+            mApp->PlayFoleyPitch(FoleyType::FOLEY_LOW_GROAN, -4.0f);
+            int randomRow = Rand(3);
+            if (randomRow == 2) randomRow = -1;
+            if (mRow == 0) mRow = 1;
+            else if (mRow == 4) mRow = 3;
+            else mRow += randomRow;
+            SetRow(mRow);
+            mZombiePhase = ZombiePhase::PHASE_GIGA_GLAD_MOVING;
+
+            Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+            if (aBodyReanim)  
+                aBodyReanim->PlayReanim("anim_walk", ReanimLoopType::REANIM_LOOP, 20, 15.0f);
         }
-        else if (abilityNumber == 2)// && mZombieAge > 5000)
+        if (doAbility == 0)
         {
-            PlayZombieReanim("anim_throw2", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);      
-            mSummonCounter = 175;   
-            mAttackType = 2;
-        }
-        else
-        {
-            PlayZombieReanim("anim_stomp", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
-            for (int i = 0; i < 5; i++)
+            if (abilityNumber == 1)// && mZombieAge > 7500)
             {
+                PlayZombieReanim("anim_throw", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
+                mSummonCounter = 175;
+                mAttackType = 1;
+            }
+            else if (abilityNumber == 2)// && mZombieAge > 5000)
+            {
+                PlayZombieReanim("anim_throw2", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
+                mSummonCounter = 175;
+                mAttackType = 2;
+            }
+            else
+            {
+                PlayZombieReanim("anim_stomp", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
+                for (int i = 0; i < 5; i++)
+                {
+                    ZombieType aZombieType;
+                    if (mZombieAge < 5000) aZombieType = ZombieType::ZOMBIE_BASIC;
+                    else
+                    {
+                        int randomZombie = Rand(100);
+                        aZombieType = randomZombie < 10 ? ZombieType::ZOMBIE_BUCKETHEAD : randomZombie < 35 ? ZombieType::ZOMBIE_CONEHEAD : ZombieType::ZOMBIE_BASIC;
+                    }
+                    Zombie* aZombie = mBoard->AddZombie(aZombieType, Zombie::ZOMBIE_WAVE_DEBUG);
+                    aZombie->mPosX = 380.0f;
+                    aZombie->mPosY = 450.0f - 100.0f * i;
+                    aZombie->SetRow(i);
+                    aZombie->RiseFromGrave(5, i);
+                }
+            }
+        }
+        if (mSummonCounter == 1)
+        {
+
+            if (mAttackType == 2)
+            {
+                mApp->PlayFoley(FoleyType::FOLEY_SWING);
+                mApp->PlayFoley(FoleyType::FOLEY_VASE_BREAKING);
+
                 ZombieType aZombieType;
-                if (mZombieAge < 5000) aZombieType = ZombieType::ZOMBIE_BASIC;
+                if (mZombieAge < 5000)
+                {
+                    aZombieType = ZombieType::ZOMBIE_BASIC;
+                }
                 else
                 {
                     int randomZombie = Rand(100);
-                    aZombieType = randomZombie < 10 ? ZombieType::ZOMBIE_BUCKETHEAD : randomZombie < 35 ? ZombieType::ZOMBIE_CONEHEAD : ZombieType::ZOMBIE_BASIC;
+                    aZombieType = randomZombie < 10 ? ZombieType::ZOMBIE_ICE : randomZombie < 20 ? ZombieType::ZOMBIE_CATAPULT : randomZombie < 30 ? ZombieType::ZOMBIE_FOOTBALL :
+                        randomZombie < 40 ? ZombieType::ZOMBIE_DANCER : randomZombie < 50 ? ZombieType::ZOMBIE_POLEVAULTER : randomZombie < 60 ? ZombieType::ZOMBIE_GARGANTUAR :
+                        randomZombie < 70 ? ZombieType::ZOMBIE_GIGA_FOOTBALL : randomZombie < 80 ? ZombieType::ZOMBIE_POGO : randomZombie < 90 ? ZombieType::ZOMBIE_VAMPIRE : ZombieType::ZOMBIE_SCARECROW;
                 }
+
                 Zombie* aZombie = mBoard->AddZombie(aZombieType, Zombie::ZOMBIE_WAVE_DEBUG);
                 aZombie->mPosX = 380.0f;
-                aZombie->mPosY = 450.0f - 100.0f * i;
-                aZombie->SetRow(i);
-                aZombie->RiseFromGrave(5, i);
+                aZombie->mPosY = mRow * 100.0f + 25.0f;
+                aZombie->SetRow(mRow);
             }
-        }     
-    }
-    if (mSummonCounter == 1)
-    {
-        if (mAttackType == 2)
-        {
-        mApp->PlayFoley(FoleyType::FOLEY_SWING);
-        mApp->PlayFoley(FoleyType::FOLEY_VASE_BREAKING);
-
-        ZombieType aZombieType;
-        if (mZombieAge < 5000) aZombieType = ZombieType::ZOMBIE_BASIC;
-        else
-        {
-            int randomZombie = Rand(100);
-            aZombieType = randomZombie < 10 ? ZombieType::ZOMBIE_ICE : randomZombie < 20 ? ZombieType::ZOMBIE_CATAPULT : randomZombie < 30 ? ZombieType::ZOMBIE_FOOTBALL :
-            randomZombie < 40 ? ZombieType::ZOMBIE_DANCER : randomZombie < 50 ? ZombieType::ZOMBIE_POLEVAULTER : randomZombie < 60 ? ZombieType::ZOMBIE_GARGANTUAR :
-            randomZombie < 70 ? ZombieType::ZOMBIE_GIGA_FOOTBALL : randomZombie < 80 ? ZombieType::ZOMBIE_POGO : randomZombie < 90 ? ZombieType::ZOMBIE_VAMPIRE : ZombieType::ZOMBIE_SCARECROW;
-        }
-        Zombie* aZombie = mBoard->AddZombie(aZombieType, Zombie::ZOMBIE_WAVE_DEBUG);
-        aZombie->mPosX = 380.0f;
-        aZombie->mPosY = mRow * 100.0f + 25.0f;
-        aZombie->SetRow(mRow);
-        }
-        else if (mAttackType == 1)
-        {
-            mApp->PlayFoley(FoleyType::FOLEY_SWING);
-
-            Plant* targetPlant = nullptr;
-            Plant* aPlant = nullptr;
-            while (mBoard->IteratePlants(aPlant))
+            else if (mAttackType == 1)
             {
-                if (targetPlant == NULL && mRow == aPlant->mRow && aPlant->mSeedType != SEED_GRAVE) targetPlant = aPlant;
-                if (targetPlant) if ((mRow == aPlant->mRow && aPlant->mX > targetPlant->mX) && aPlant->mSeedType != SEED_GRAVE) targetPlant = aPlant;
-            }
-            if (targetPlant)
-            {
-                mApp->AddTodParticle(targetPlant->mX + 40.0f, targetPlant->mY + 40.0f, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
-                mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
-                aPlant = nullptr;
+                mApp->PlayFoley(FoleyType::FOLEY_SWING);
+
+                Plant* targetPlant = nullptr;
+                Plant* aPlant = nullptr;
                 while (mBoard->IteratePlants(aPlant))
                 {
-                    if ((aPlant->mPlantCol == targetPlant->mPlantCol - 1 || aPlant->mPlantCol == targetPlant->mPlantCol || aPlant->mPlantCol == targetPlant->mPlantCol + 1) &&
-                        (aPlant->mRow == targetPlant->mRow - 1 || aPlant->mRow == targetPlant->mRow || aPlant->mRow == targetPlant->mRow + 1) && aPlant->mSeedType != SEED_GRAVE) aPlant->Die();
+                    if (targetPlant == NULL && mRow == aPlant->mRow && aPlant->mSeedType != SEED_GRAVE) targetPlant = aPlant;
+                    if (targetPlant) if ((mRow == aPlant->mRow && aPlant->mX > targetPlant->mX) && aPlant->mSeedType != SEED_GRAVE) targetPlant = aPlant;
+                }
+                if (targetPlant)
+                {
+                    mApp->AddTodParticle(targetPlant->mX + 40.0f, targetPlant->mY + 40.0f, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
+                    mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
+                    aPlant = nullptr;
+                    while (mBoard->IteratePlants(aPlant))
+                    {
+                        if ((aPlant->mPlantCol == targetPlant->mPlantCol - 1 || aPlant->mPlantCol == targetPlant->mPlantCol || aPlant->mPlantCol == targetPlant->mPlantCol + 1) &&
+                            (aPlant->mRow == targetPlant->mRow - 1 || aPlant->mRow == targetPlant->mRow || aPlant->mRow == targetPlant->mRow + 1) && aPlant->mSeedType != SEED_GRAVE) aPlant->Die();
+                    }
                 }
             }
-        }  
-    }
-    if (mSummonCounter > 0) mSummonCounter--;
+        }
 
-    Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
-    if (aBodyReanim->ShouldTriggerTimedEvent(0.99f)) aBodyReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        if (mSummonCounter > 0) 
+            mSummonCounter--;
+
+    }
+
+    Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+    if (!aBodyReanim)   return;
+
+    if (mZombiePhase == ZombiePhase::PHASE_GIGA_GLAD_MOVING && FloatApproxEqual(GetPosYBasedOnRow(mRow), mPosY))
+    {
+        mZombiePhase = ZombiePhase::PHASE_GIGA_GLAD_STATIONARY;
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_GIGA_GLAD_STATIONARY && aBodyReanim->mLoopCount > 0)
+    {
+        aBodyReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 20, 15.0f);
+    }
 }
 
 void Zombie::UpdateZombieTarget()
@@ -5801,14 +5828,18 @@ void Zombie::UpdateZombieWalking()
             }
         }
 
-        if (IsWalkingBackwards() || !mMindControlled  && mZombiePhase == ZombiePhase::PHASE_DANCER_DANCING_IN)
+        if (mZombieType != ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
         {
-            mPosX += aSpeed;
+            if (IsWalkingBackwards() || !mMindControlled && mZombiePhase == ZombiePhase::PHASE_DANCER_DANCING_IN)
+            {
+                mPosX += aSpeed;
+            }
+            else
+            {
+                mPosX -= aSpeed;
+            }
         }
-        else
-        {
-            mPosX -= aSpeed;
-        }
+        
 
         if ((mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL) && mFromWave != Zombie::ZOMBIE_WAVE_WINNER)
         {

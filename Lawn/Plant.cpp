@@ -5779,7 +5779,7 @@ float PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedTy
 
     bool highFloating = false;
 
-    if (thePlant && thePlant->mSeedType == SEED_SHOOTINGSTAR)
+    if (thePlant && thePlant->mSeedType == SEED_SHOOTINGSTAR && !thePlant->mSquished)
     {
         highFloating = true;
         doFloating = true;
