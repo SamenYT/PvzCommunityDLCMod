@@ -141,6 +141,10 @@ void PlayerController::Draw(Graphics* g) {
 						mPlayerY -= 78.0f;
 						mPlayerX -= 49.0f;
 					}
+					if (seedType == SEED_VERSUS_BUNGEE || seedType == SEED_ZOMBIE_BUNGEE)
+					{
+						seedG.mTransY -= 600;
+					}
 				}
 				if (!mBoard->CanPlantAt(gridX, gridY, mBoard->mSeedBank->mSeedPackets[mBoard->mPlayer2->mSeedBankIndex].mPacketType) && (mApp->IsVersusLevel() || !mApp->mPlayerInfo->mIsNotCoop))
 				{
