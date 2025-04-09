@@ -3408,6 +3408,9 @@ Survival
 [PICK_CHALLENGE]
 Mini-Games
 
+[PICK_VERSUS]
+Multiplayer
+
 [ONE_MORE_CHALLENGE_TOOLTIP]
 Complete 1 more mini-game to unlock
 

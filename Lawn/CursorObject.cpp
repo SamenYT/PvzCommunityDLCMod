@@ -188,11 +188,11 @@ void CursorObject::Draw(Graphics* g)
         }
         aOffsetY -= 15.0f;
         SeedType aPlantingSeedType = mBoard->GetSeedTypeInCursor();
-        if (mApp->IsIZombieLevel())
+        if (mApp->IsIZombieLevel() || mApp->IsVersusLevel())
         {
             aOffsetX -= 55.0f;
             aOffsetY -= 70.0f;
-            if (mType == SeedType::SEED_ZOMBIE_BUNGEE)
+            if (mType == SeedType::SEED_ZOMBIE_BUNGEE || mType == SeedType::SEED_VERSUS_BUNGEE)
             {
                 aOffsetY -= 600;
             }
@@ -346,7 +346,7 @@ void CursorPreview::Draw(Graphics* g)
     else
     {
         float aOffsetX, aOffsetY;
-        if (mApp->IsIZombieLevel())
+        if (mApp->IsIZombieLevel() || mApp->IsVersusLevel())
         {
             float aHeight = PlantDrawHeightOffset(mBoard, nullptr, aSeedType, mGridX, mGridY);
             if (aSeedType == SeedType::SEED_ZOMBIE_GARGANTUAR)
@@ -361,7 +361,7 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 16.0f;
             }
-            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE || aSeedType == SeedType::SEED_VERSUS_BUNGEE)
             {
                 aHeight -= 600;
             }
@@ -392,7 +392,7 @@ void CursorPreview::Draw(Graphics* g)
             {
                 aHeight -= 16.0f;
             }
-            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
+            else if (aSeedType == SeedType::SEED_ZOMBIE_BUNGEE || aSeedType == SeedType::SEED_ZOMBIE_BUNGEE)
             {
                 aHeight -= 600;
             }

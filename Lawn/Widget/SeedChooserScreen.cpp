@@ -545,7 +545,7 @@ void SeedChooserScreen::GetSeedPositionInChooser(int theIndex, int& x, int& y, S
 			if (theSeedType == SEED_VERSUS_LEAFBLOWER + i && mPageP2 == 1) { x = (i % 5) * 53 + 483; y = (i / 5) * 70 + 123; }
 		}
 
-		if ((theSeedType == SEED_VERSUS_GLADIANTUAR_GIGA) && mPageP2 == 1) { x = 0 * 53 + 483; y = 1 * 70 + 123; }
+		if ((theSeedType == SEED_VERSUS_GLADIANTUAR_GIGA) && mPageP2 == 2) { x = 0 * 53 + 483; y = 0 * 70 + 123; }
 	}
 	else
 	{
