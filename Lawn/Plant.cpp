@@ -715,11 +715,11 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mStateCountdown = 50;
         mDeathCounter = 1000;
 
-        if (!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
+        if ((!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN) && !mIsAsleep)
         {
             AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
         }
-        if (IsInPlay())
+        if (IsInPlay() && !mIsAsleep)
         {
             mApp->PlaySample(Sexy::SOUND_PLANTERN);
         }
@@ -4158,6 +4158,11 @@ void Plant::UpdateAbilities()
         if (mWakeUpCounter == 60)
         {
             mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
+            if (mSeedType == SEED_LUMESHROOM)
+            {
+                AddAttachedParticle(mX + 40, mY + 40, (int)RenderLayer::RENDER_LAYER_FOG + 1, ParticleEffect::PARTICLE_LANTERN_SHINE);
+                mApp->PlaySample(Sexy::SOUND_PLANTERN);
+            }
         }
         if (mWakeUpCounter == 0)
         {
@@ -4715,7 +4720,7 @@ void Plant::Update()
         if (mSoundCounter == 0) mApp->PlayFoley(FOLEY_THUMP);
     }
 
-    if (mDeathCounter > 0)
+    if (mDeathCounter > 0 && !mIsAsleep)
     {
         mDeathCounter--;
         if (mDeathCounter == 50)
@@ -7649,7 +7654,7 @@ void Plant::Die()
         mApp->AddTodParticle(mX + 50, mY + 30, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
         mBoard->ShakeBoard(3, -4);
     }
-    if (mSeedType == SEED_LUMESHROOM && mBoard)
+    if (mSeedType == SEED_LUMESHROOM && mBoard && !mIsAsleep)
     {
         Zombie* aZombie = nullptr;
         while (mBoard->IterateZombies(aZombie))
@@ -7943,6 +7948,9 @@ bool Plant::IsNocturnal(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_BRAVESHROOM ||
         theSeedtype == SeedType::SEED_GLOOMSHROOM ||
         theSeedtype == SeedType::SEED_ICYFUME ||
+        theSeedtype == SeedType::SEED_LUMESHROOM ||
+        theSeedtype == SeedType::SEED_MORTARSHROOM ||
+        theSeedtype == SeedType::SEED_VOLTSHROOM ||
         theSeedtype == SeedType::SEED_FIRESHROOM;
 }
 

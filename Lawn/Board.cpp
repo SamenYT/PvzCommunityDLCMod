@@ -9737,7 +9737,7 @@ void Board::UpdateFog()
 		{
 			ClearFogAroundPlant(aPlant, 4);
 		}
-		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM)
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM && !aPlant->mIsAsleep)
 		{
 			ClearFogAroundPlant(aPlant, 3);
 		}
@@ -9757,7 +9757,7 @@ void Board::UpdateLume()
 		if (aPlant->NotOnGround())
 			continue;
 
-		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM)
+		if (aPlant->mSeedType == SeedType::SEED_LUMESHROOM && !aPlant->mIsAsleep)
 		{
 			FindLumeTarget(aPlant->mX, aPlant->mY, aPlant->mRow);
 		}

@@ -4320,20 +4320,21 @@ Removes boosts from zombies and produces sun
 
 [LUME_SHROOM_DESCRIPTION]
 Lume-shrooms take benefits from zombies and give you sun.
-{SHORTLINE}
+{EXTRASHORTLINE}
 {KEYWORD}Range:{STAT} all zombies in a medium area
-{KEYWORD}Special:{STAT} removes boosts from zombies
-{KEYWORD}Sun production:{STAT} Zombies killed around it produce sun
-{SHORTLINE}
-{FLAVOR}"Plantern and I go way back," Lume-shroom says. "We have a bit of a friendly rivalry, Plantern gets a little jealous of the intense glow I make, although I try comforting him by telling him I can't maintain it for as long as he does."
+{KEYWORD}Special:{STAT} removes boosts from zombies, zombies killed around it produce sun
+{NOCTURNAL}Sleeps during the day
+{EXTRASHORTLINE}
+{FLAVOR}"Plantern and I go way back," Lume-shroom says. "We have a bit of a friendly rivalry, Plantern gets jealous of the intense glow I make, although I try comforting him by telling him I can't maintain it for as long as he does."
 
 [MORTAR_SHROOM_DESCRIPTION]
 Mortar-shrooms deal heavy damage to zombies anywhere except around themselves.
-{SHORLINE}
+{EXTRASHORTLINE}
 {KEYWORD}Damage:{STAT} heavy
 {KEYWORD}Range:{STAT} lobbed
-{KEYWORD}Special:{STAT} can be planted on the roof without a flower pot
-{SHORTLINE}
+{KEYWORD}Special:{STAT} can be planted on the roof
+{NOCTURNAL}Sleeps during the day
+{EXTRASHORTLINE}
 {FLAVOR}Mortar-shroom has a 3-step plan to kill zombies: locate the target, calibrate coordinates, shoot. Although, he always seems to forget to account for wind. If only he hadn't slept through physics class. 
 
 [LIGHTNING_REED_TOOLTIP]
@@ -4376,11 +4377,12 @@ Electrifies various zombies nearby
 
 [VOLT_SHROOM_DESCRIPTION]
 Volt-shrooms conduct electricity to multiple zombies nearby.
-{SHORTLINE}
+{EXTRASHORTLINE}
 {KEYWORD}Damage:{STAT} high
 {KEYWORD}Range:{STAT} all zombies nearby
 {KEYWORD}Special:{STAT} evenly distributes damage across zombies in range
-{SHORTLINE}
+{NOCTURNAL}Sleeps during the day
+{EXTRASHORTLINE}
 {FLAVOR}Volt-shroom seeks out all that goes zap and glows. From kettles, to toothbrushes, to night lights, to hijacking the breaker unit at the Lawn of Doom festival every Halloween.
 
 [GHOST_PEPPER_TOOLTIP]
