@@ -344,9 +344,15 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	bool aDrawSeedInMiddle = true;
 	float aOffsetX = 5.0f;
 	float aOffsetY = 8.0f;
+	//andreko is gorgeous, this comment is to indicate that it's the up to date file since it somehow got reverted in previous builds? 
 	switch (aSeedType)
 	{
 	case SeedType::SEED_TALLNUT:
+		aScale = 0.3f;
+		aOffsetX = 12.0f;
+		aOffsetY = 22.0f;
+		break;
+
 	case SeedType::SEED_VINENUT:
 		aScale = 0.3f;
 		aOffsetX = 13.0f;
