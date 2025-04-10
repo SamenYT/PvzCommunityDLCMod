@@ -3212,11 +3212,11 @@ void Plant::UpdateViolet()
         {
             if (mSeedType == SeedType::SEED_SHRINK && !mStopAnimation)
             {
-                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal1", IMAGE_VIOLET_PADDLE);
-                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal_copy2", IMAGE_VIOLET_PADDLE);
-                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal3", IMAGE_VIOLET_PADDLE);
-                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal4", IMAGE_VIOLET_PADDLE);
-                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal5", IMAGE_VIOLET_PADDLE);
+                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal1", IMAGE_REANIM_VIOLET_PADDLE);
+                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal_copy2", IMAGE_REANIM_VIOLET_PADDLE);
+                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal3", IMAGE_REANIM_VIOLET_PADDLE);
+                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal4", IMAGE_REANIM_VIOLET_PADDLE);
+                aBodyReanim->SetImageOverride("Shrinking_violet_big_petal5", IMAGE_REANIM_VIOLET_PADDLE);
 
                 aBodyReanim->SetFramesForLayer("anim_bloom");
                 aBodyReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;

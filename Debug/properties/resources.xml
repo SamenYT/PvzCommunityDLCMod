@@ -329,7 +329,6 @@
 <Image id="DISCLAIMER_BTN2" path="disclaimerbutton2" /> 
 <Image id="CROW1" path="crow1" /> 
 <Image id="CROW2" path="crow2" /> 
-<Image id="VIOLET_PADDLE" path="Shrinking_violet_big_petal2" />
 <Image id="FOREST_OBJECTS" path="background7_layer" />
 <Image id="LOG1" path="log1" />
 <Image id="LOG2" path="log2" />
@@ -658,6 +657,7 @@
 <Image id="ZOMBIE_POLEVAULTER6_GIGA" path="Zombie_polevaulter_outerleg_foot_giga" />
 <Image id="ZOMBIE_POLEVAULTER7_GIGA" path="Zombie_polevaulter_outerleg_lower_giga" />
 <Image id="ZOMBIE_POLEVAULTER8_GIGA" path="Zombie_polevaulter_outerleg_toe_giga" />
+<Image id="VIOLET_PADDLE" path="Shrinking_violet_big_petal2" />
 
 </Resources>
 
