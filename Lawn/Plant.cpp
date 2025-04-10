@@ -7477,7 +7477,9 @@ Plant* Plant::FindTargetPlant(int theRow, PlantWeapon thePlantWeapon)
     Plant* aBestPlant = nullptr;
     while (mBoard->IteratePlants(aPlant))
     {        
-        if ((aPlant->mSeedType == SEED_GRAVE || aPlant->mHypnotized) && theRow == aPlant->mRow && (thePlantWeapon == WEAPON_PRIMARY || mSeedType == SEED_KERNELPULT))
+        if ((aPlant->mSeedType == SEED_GRAVE || aPlant->mHypnotized) && 
+            (abs(theRow - aPlant->mRow) <= GetAttackRowRange()) && 
+            (thePlantWeapon == WEAPON_PRIMARY || mSeedType == SEED_KERNELPULT))
         { 
             if (aBestPlant == nullptr)
             {
@@ -7501,7 +7503,8 @@ GridItem* Plant::FindTargetGridItem(int theRow)
     GridItem* aGridItem = nullptr;
     while (mBoard->IterateGridItems(aGridItem))
     {
-        if (theRow == aGridItem->mGridY && aGridItem->mGridItemType == GRIDITEM_WOOD_LOG) return aGridItem;
+        if (abs(theRow - aGridItem->mGridY) <= GetAttackRowRange() && 
+            aGridItem->mGridItemType == GRIDITEM_WOOD_LOG) return aGridItem;
     }
     return nullptr;
 }
@@ -7517,7 +7520,8 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
     Zombie* aZombie = nullptr;
     while (mBoard->IterateZombies(aZombie))
     {
-        if (mSeedType == SEED_REED && aZombie->mZombieType == ZOMBIE_BALLOON) continue;
+        if (mSeedType == SEED_REED && aZombie->mZombiePhase == ZombiePhase::PHASE_BALLOON_FLYING) continue;
+        //lame
 
         int aRowDeviation = aZombie->mRow - theRow;
         if (aZombie->mZombieType == ZombieType::ZOMBIE_BOSS)
@@ -8288,18 +8292,242 @@ float Plant::PlantTargetLeadX(float theTime)
 
 void Plant::LightningReedFire()
 {
-    Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
-    if (!aZombie) return;
+    //I hope you guys dont mind me experimenting :3
+    Zombie* aZombie = nullptr;
+    GridItem* aGI = nullptr;
+    Plant* aPlant = nullptr;
+    /*if (aTarget = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY))
+    {
+        //lol
+    }
+    else if (aTarget = FindTargetGridItem(mRow))
+    {
+        aType1 = 1;
+    }
+    else if (aTarget = FindTargetPlant(mRow))
+    {
+        aType1 = 2;
+    }*/
+    aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
+    aGI = FindTargetGridItem(mRow);
+    aPlant = FindTargetPlant(mRow);
+    if (!(aZombie || aGI || aPlant)) return;
+    int aZWeight, aGWeight, aPWeight;
 
-    aZombie->TakeDamage(/*aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 1 : */10, 1U);
+    aZWeight = aZombie ? -aZombie->GetZombieRect().mX : 0;
+    aGWeight = aGI ? -aGI->GetGridItemRect().mX : 0;
+    aPWeight = aPlant ? -aPlant->GetPlantRect().mX : 0;
+    /*char aType = aZWeight > aGWeight ?
+        aZWeight > aPWeight ? */
+    mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
+    unsigned aRangeFlags = GetDamageRangeFlags(WEAPON_PRIMARY);
+    int aHitRow;
+    int aHitCol;
+    Rect aTargetRect;
+    SexyVector2 aCenterPoint;
+    //int aType = help(aZWeight, aGWeight, aPWeight);
+    int aType = 3;
+    int aBestWeight = 1;
+    //brutforcing it here for fucks sake
+    if (aZombie)
+    {
+        aType = 0;
+        aBestWeight = aZWeight;
+    }
+    if (aGI)
+    {
+        if (aGWeight > aBestWeight || aBestWeight == 1)
+        {
+            aType = 1;
+            aBestWeight = aGWeight;
+        }
+    }
+    if (aPlant)
+    {
+        if (aPWeight > aBestWeight || aBestWeight == 1)
+        {
+            aType = 2;
+        }
+    }
+
+    void* aHits[3] = { nullptr, nullptr, nullptr };
+    switch (aType)
+    {
+    case 0:
+    {
+        aZombie->TakeDamage(aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 2 : 10, 1U);
+        aTargetRect = aZombie->GetZombieRect();
+        aHitRow = aZombie->mRow;
+        aHitCol = mBoard->PixelToGridXKeepOnBoard(aCenterPoint.x, aCenterPoint.y);
+        aHits[0] = aZombie;
+        break;
+    }
+    case 1:
+    {
+        aGI->mJustGotShotCounter = 25;
+        aGI->mHealth -= 10;
+        aHitRow = aGI->mGridY;
+        aHitCol = aGI->mGridX;
+        aTargetRect = aGI->GetGridItemRect();
+        aHits[0] = aGI;
+        break;
+    }
+    case 2:
+    {
+        aPlant->mPlantHealth -= 10;
+        aPlant->mEatenFlashCountdown = max(aPlant->mEatenFlashCountdown, 25);
+        aHitRow = aPlant->mRow;
+        aHitCol = aPlant->mPlantCol;
+        aTargetRect = aPlant->GetPlantRect();
+        aHits[0] = aPlant;
+        break;
+    }
+    case 3:
+        return;
+    }
+    aCenterPoint = SexyVector2(aTargetRect.mX + aTargetRect.mWidth / 2, aTargetRect.mY + aTargetRect.mHeight / 2);
+    DrawChain(mX + 50, aCenterPoint.x, mY - 15, aCenterPoint.y, 0);
+    /*if (!aZombie)
+    {
+        if (!(aGI = FindTargetGridItem(mRow)))
+        {
+            if (!(aPlant = FindTargetPlant(mRow)))return;
+            else aType = 2;
+        }
+        else aType = 1;
+    }*/
+    /*aZombie->TakeDamage(/*aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 1 : 10, 1U);
     mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
     Zombie* aZombies[3]{ aZombie, nullptr, nullptr };
     unsigned aRangeFlags = GetDamageRangeFlags(WEAPON_PRIMARY);
     Rect aZombieRect = aZombie->GetZombieRect();
-    DrawChain(mX + 50, aZombieRect.mX + aZombieRect.mWidth / 2, mY - 15, aZombieRect.mY + aZombieRect.mHeight / 2, 250);
-
+    DrawChain(mX + 50, aZombieRect.mX + aZombieRect.mWidth / 2, mY - 15, aZombieRect.mY + aZombieRect.mHeight / 2, 250);*/
     for (int aHitCount = 1; aHitCount < 4; aHitCount++)
     {
+        aZombie = nullptr;
+        void* aBestTarget = nullptr;
+        int aWeight, aBestWeight = 0;
+        bool hasHit = false;
+        while (mBoard->IterateZombies(aZombie))
+        {
+            if (abs(aZombie->mRow - aHitRow) > 1)
+                continue;
+            if (!aZombie->EffectedByDamage(aRangeFlags))
+                continue;
+            bool alreadyHit = false;
+            for (int i = 0; i < aHitCount; i++)
+            {
+                if (aHits[i] == aZombie)
+                {
+                    alreadyHit = true;
+                    break;
+                }
+            }
+            if (alreadyHit) continue;
+            Rect aRangeRect = Rect(aCenterPoint.x - 120, aCenterPoint.y - 120, 240, 240);
+            Rect aZombieRect = aZombie->GetZombieRect();
+            if (GetRectOverlap(aRangeRect, aZombieRect) <= 0)
+                continue;
+            SexyVector2 aZombieCenter = SexyVector2(aZombieRect.mX + aZombieRect.mWidth / 2, aZombieRect.mY + aZombieRect.mHeight / 2);
+            aWeight = (aZombieCenter.x - aCenterPoint.x) * (aZombieCenter.x - aCenterPoint.x) + (aZombieCenter.y - aCenterPoint.y) * (aZombieCenter.y - aCenterPoint.y);
+            hasHit = true;
+            if (aWeight < aBestWeight || aBestTarget == nullptr)
+            {
+                aBestTarget = aZombie;
+                aBestWeight = aWeight;
+            }
+        }
+        if (hasHit)
+        {
+            aZombie = (Zombie*)aBestTarget;
+            aTargetRect = aZombie->GetZombieRect();
+            SexyVector2 aOldCenter = aCenterPoint;
+            aCenterPoint = SexyVector2(aTargetRect.mX + aTargetRect.mWidth / 2, aTargetRect.mY + aTargetRect.mHeight / 2);
+            aHitRow = aZombie->mRow;
+            aHitCol = mBoard->PixelToGridXKeepOnBoard(aCenterPoint.x, aCenterPoint.y);
+            //aTarget = aBestTarget;
+            DrawChain(aOldCenter.x, aCenterPoint.x, aOldCenter.y, aCenterPoint.y, 0);
+            aZombie->TakeDamage(aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 3 : 10, 1U);
+            if (aHitCount < 3)
+                aHits[aHitCount] = aZombie;
+            continue;
+        }
+        aGI = nullptr;
+        //aBestTarget = nullptr;
+        //aWeight, aBestWeight = 0;
+        while (mBoard->IterateGridItems(aGI))
+        {
+            if (aGI->mGridItemType != GRIDITEM_WOOD_LOG) continue;
+            if (abs(aGI->mGridY - aHitRow) > 1)
+                continue;
+            if (abs(aGI->mGridX - aHitCol) > 1)
+                continue;
+            bool alreadyHit = false;
+            for (int i = 0; i < aHitCount; i++)
+            {
+                if (aHits[i] == aGI)
+                {
+                    alreadyHit = true;
+                    break;
+                }
+            }
+            if (alreadyHit) continue;
+            hasHit = true;
+            break;
+        }
+        if (hasHit)
+        {
+            aTargetRect = aGI->GetGridItemRect();
+            SexyVector2 aOldCenter = aCenterPoint;
+            aCenterPoint = SexyVector2(aTargetRect.mX + aTargetRect.mWidth / 2, aTargetRect.mY + aTargetRect.mHeight / 2);
+            DrawChain(aOldCenter.x, aCenterPoint.x, aOldCenter.y, aCenterPoint.y, 0);
+            if (aHitCount < 3)
+                aHits[aHitCount] = aGI;
+            aGI->mJustGotShotCounter = 25;
+            aGI->mHealth -= 10;
+            aHitRow = aGI->mGridY;
+            aHitCol = aGI->mGridX;
+            continue;
+        }
+        aPlant = nullptr;
+        //aBestTarget = nullptr;
+        //aWeight, aBestWeight = 0;
+        while (mBoard->IteratePlants(aPlant))
+        {
+            if (mHypnotized == aPlant->mHypnotized && aPlant->mSeedType != SeedType::SEED_GRAVE)
+                continue;
+            if (abs(aPlant->mRow - aHitRow) > 1)
+                continue;
+            if (abs(aPlant->mPlantCol - aHitCol) > 1)
+                continue;
+            bool alreadyHit = false;
+            for (int i = 0; i < aHitCount; i++)
+            {
+                if (aHits[i] == aPlant)
+                {
+                    alreadyHit = true;
+                    break;
+                }
+            }
+            if (alreadyHit) continue;
+            hasHit = true;
+            break;
+        }
+        if (!hasHit)    return;
+        aTargetRect = aPlant->GetPlantRect();
+        SexyVector2 aOldCenter = aCenterPoint;
+        aCenterPoint = SexyVector2(aTargetRect.mX + aTargetRect.mWidth / 2, aTargetRect.mY + aTargetRect.mHeight / 2);
+        DrawChain(aOldCenter.x, aCenterPoint.x, aOldCenter.y, aCenterPoint.y, 0);
+        aHitRow = aPlant->mRow;
+        aHitCol = aPlant->mPlantCol;
+        if (aHitCount < 3)
+            aHits[aHitCount] = aPlant;
+        aPlant->mPlantHealth -= 10;
+        aPlant->mEatenFlashCountdown = max(aPlant->mEatenFlashCountdown, 25);
+
+        //void* aLastTarget = 
+    }
+        /*
         aZombie = nullptr;
         Zombie* aBestZombie = nullptr;
         int aWeight, aBestWeight = 0;
@@ -8343,12 +8571,6 @@ void Plant::LightningReedFire()
 
             /*
             ;
-
-            DrawChain(aZombieRect.mX + aZombieRect.mWidth / 2, aLastZombieRect.mX + aLastZombieRect.mWidth / 2, aZombieRect.mY + aZombieRect.mHeight / 2, aLastZombieRect.mY + aLastZombieRect.mHeight / 2, 10);
-            aZombie->TakeDamage(aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 3 : 10, 1U);
-            if (aHitCount < REED_MAX_CHAIN)
-                aZombies[aHitCount] = aZombie;
-            break;*/
         }
         if (!hasHit)
             return;
@@ -8359,8 +8581,7 @@ void Plant::LightningReedFire()
         DrawChain(aZombieRect.mX + aZombieRect.mWidth / 2, aLastZombieRect.mX + aLastZombieRect.mWidth / 2, aZombieRect.mY + aZombieRect.mHeight / 2, aLastZombieRect.mY + aLastZombieRect.mHeight / 2, 250);
         aZombie->TakeDamage(aZombie->mZombiePhase == PHASE_BALLOON_FLYING ? 3 : 10, 1U);
         if (aHitCount < 3)
-            aZombies[aHitCount] = aZombie;
-    }
+            aZombies[aHitCount] = aZombie; */
 }
 
 void Plant::DrawChain(int X1, int X2, int Y1, int Y2, int aPointDistance)
@@ -8376,4 +8597,19 @@ void Plant::DrawChain(int X1, int X2, int Y1, int Y2, int aPointDistance)
         int aY = TodAnimateCurve(0, aPoints, i, Y1, Y2, TodCurves::CURVE_LINEAR);
         mApp->AddTodParticle(aX, aY, RENDER_LAYER_GROUND + 1, ParticleEffect::PARTICLE_PEA_SPLAT);
     }*/
+}
+
+int Plant::GetAttackRowRange()
+{
+    switch (mSeedType)
+    {
+    case SEED_GLOOMSHROOM:
+    case SEED_REED:
+    case SEED_VOLTSHROOM:
+        return 1;
+    case SEED_CATTAIL:
+    case SEED_MORTARSHROOM:
+        return 99;
+    }
+    return 0;
 }

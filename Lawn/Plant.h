@@ -383,6 +383,7 @@ public:
     float                   PlantTargetLeadX(float theTime);
     void                    LightningReedFire();
     void                    DrawChain(int X1, int X2, int Y1, int Y2, int aPointDistance);
+    int                     GetAttackRowRange();
 };
 
 float                       PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedType, int theCol, int theRow);

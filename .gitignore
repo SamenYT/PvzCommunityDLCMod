@@ -376,3 +376,6 @@ SexyAppFramework/Debug/LawnProject.tlog/CL.read.1.tlog
 SexyAppFramework/Debug/LawnProject.tlog/CL.write.1.tlog
 SexyAppFramework/Debug/LawnProject.tlog/link.read.1.tlog
 SexyAppFramework/Debug/vc143.idb
+*.tlog
+SexyAppFramework/Debug/vc143.idb
+SexyAppFramework/Debug/PlantsVsZombies.exe.recipe
