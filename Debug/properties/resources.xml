@@ -460,6 +460,7 @@
 <Image id="GIGA_HEAD" path="ZombieHeadGiga" />
 <Image id="GIGA_POLE_HEAD" path="ZombiePoleVaulterHeadGiga" />
 <Image id="ZOMBIE_BUSHES" path="Zombie_bushes" cols="4" />
+<Image id="BIG_PUFF_PARTICLE" path="PuffShroom_puff3" />
 
 <SetDefaults path="reanim" idprefix="IMAGE_REANIM_" />
   

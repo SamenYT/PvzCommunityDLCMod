@@ -1194,7 +1194,7 @@ void SeedChooserScreen::OnStartButton()
 		}
 	}
 
-	if (FlyersAreComming() && !FlyProtectionCurrentlyPlanted() && !PickedPlantType(SEED_CATTAIL) && !PickedPlantType(SEED_ECACTUS) && !PickedPlantType(SEED_CACTUS) && !PickedPlantType(SEED_BLOVER) && !PickedPlantType(SEED_HURIKALE) &&
+	if (FlyersAreComming() && !FlyProtectionCurrentlyPlanted() && !PickedPlantType(SEED_CATTAIL) && !PickedPlantType(SEED_ECACTUS) && !PickedPlantType(SEED_CACTUS) && !PickedPlantType(SEED_BLOVER) && !PickedPlantType(SEED_HURRIKALE) &&
 	    !PickedPlantType(SEED_REED))
 	{
 		if (!DisplayRepickWarningDialog(_S("[SEED_CHOOSER_FLYER_WARNING]")))

@@ -756,7 +756,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mBodyHealth = 500;
         mAnimTicksPerFrame = 6;
 
-        int aDistance = 450 + Rand(300);
+        int aDistance = 362 + Rand(237);
         if (Rand(20) == 0) 
         {
             aDistance /= 3;
@@ -8496,7 +8496,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     {
         if (thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || thePlant->mSeedType == SeedType::SEED_JALAPENO || thePlant->mSeedType == SeedType::SEED_CHILLYPEPPER || thePlant->mSeedType == SeedType::SEED_BLOODORANGE ||
             thePlant->mSeedType == SeedType::SEED_PICKLEPEPPER || thePlant->mSeedType == SeedType::SEED_BLOVER || thePlant->mSeedType == SeedType::SEED_SQUASH || 
-            thePlant->mSeedType == SeedType::SEED_HURIKALE || thePlant->mSeedType == SeedType::SEED_SHRINK || thePlant->mSeedType == SeedType::SEED_LEMON_NADE)
+            thePlant->mSeedType == SeedType::SEED_HURRIKALE || thePlant->mSeedType == SeedType::SEED_SHRINK || thePlant->mSeedType == SeedType::SEED_LEMON_NADE)
         {
             return false;
         }
@@ -9329,7 +9329,7 @@ void Zombie::EatPlant(Plant* thePlant)
     }
 
     bool triggered = false;
-    if (thePlant->mSeedType == SeedType::SEED_BLOVER || thePlant->mSeedType == SeedType::SEED_HURIKALE)
+    if (thePlant->mSeedType == SeedType::SEED_BLOVER || thePlant->mSeedType == SeedType::SEED_HURRIKALE)
     {
         triggered = true;
     }
@@ -12464,7 +12464,7 @@ bool Zombie::IsFlying()
         while (mBoard->IteratePlants(aPlant))
         {
             if ((aPlant->mX >= mX - 20 && aPlant->mX <= mX + 20 && aPlant->mRow == mRow) && 
-                aPlant->mSeedType != SeedType::SEED_BLOVER && aPlant->mSeedType != SeedType::SEED_HURIKALE) 
+                aPlant->mSeedType != SeedType::SEED_BLOVER && aPlant->mSeedType != SeedType::SEED_HURRIKALE) 
                 isPlantInFront = true;
         }
     }

@@ -11,6 +11,7 @@ enum TrailType
 {
 	TRAIL_NONE = -1,
 	TRAIL_ICE,
+	TRAIL_PUFF,
 	NUM_TRAILS
 };
 

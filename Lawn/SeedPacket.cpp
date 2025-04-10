@@ -559,7 +559,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		aOffsetY = 12.0f;
 		break;
 
-	case SeedType::SEED_HURIKALE:
+	case SeedType::SEED_HURRIKALE:
 		aScale = 1.0f;
 		aOffsetX = 8.0f;
 		aOffsetY = 17.0f;
