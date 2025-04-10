@@ -43,7 +43,7 @@ ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_ARROW,			 0,  80  },
 	{ ProjectileType::PROJECTILE_BEE,			 0,  20  },
 	{ ProjectileType::PROJECTILE_SHOOTING_STAR,	 0,  40  },
-	{ ProjectileType::PROJECTILE_BIG_PUFF,		 0,  80  }
+	{ ProjectileType::PROJECTILE_BIG_PUFF,		 0,  100 }
 };
 
 Projectile::Projectile()
@@ -107,12 +107,15 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 		mRotation = -2 * PI / 5;  // DEG_TO_RAD(-72.0f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
 
-		Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_ICE);
-		if (aTrail) 
-			AttachTrail(mAttachmentID, aTrail, 20.0f, 20.0f);
-		
-		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
-		AttachParticle(mAttachmentID, aParticle, 18.0f, 23.0f);
+		if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+		{
+			Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_ICE);
+			if (aTrail)
+				AttachTrail(mAttachmentID, aTrail, 20.0f, 20.0f);
+
+			TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+			AttachParticle(mAttachmentID, aParticle, 18.0f, 23.0f);
+		}
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
 	{
@@ -545,7 +548,6 @@ void Projectile::CheckForCollision()
 	if (aGridItem)
 	{
 		DoImpactGridItem(aGridItem);
-		//DoImpact(aZombie);
 	}
 	Plant* aPlant = FindCollisionTargetPlant();
 	if (aPlant)
@@ -573,7 +575,6 @@ void Projectile::DoImpactPlant(Plant* thePlant)
 		aFireReanim->mAnimTime = 0.25f;
 		aFireReanim->mAnimRate = 24.0f;
 		aFireReanim->OverrideScale(0.7f, 0.4f);
-		//if (mProjectileType == ProjectileType::PROJECTILE_PLASMABALL) aFireReanim->mColorOverride = Color(0, 255, 255, 255);
 		thePlant->mChilledCounter = 0;
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_ELECTRIC)
@@ -582,7 +583,6 @@ void Projectile::DoImpactPlant(Plant* thePlant)
 		if (aRand == 0)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC);
 		else if (aRand == 1)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC2);
 		else  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC3);
-		mApp->AddTodParticle(mPosX - 3.0f, mPosY + 17.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_PEA_SPLAT);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
 	{
@@ -592,14 +592,21 @@ void Projectile::DoImpactPlant(Plant* thePlant)
 			thePlant->FreezePlant();
 		}
 		mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
-		mApp->AddTodParticle(mPosX - 3.0f, mPosY + 17.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_SNOWPEA_SPLAT);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	{
+		mApp->PlayFoley(FoleyType::FOLEY_MELONIMPACT);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_BUTTER)
+	{
+		mApp->PlayFoley(FoleyType::FOLEY_BUTTER);
 	}
 	else
 	{
 		mApp->PlayFoley(FoleyType::FOLEY_SPLAT);
-		mApp->AddTodParticle(mPosX - 3.0f, mPosY + 17.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_PEA_SPLAT);
 	}
 
+	DoImpact(nullptr);
 	Die();
 }
 
@@ -770,6 +777,10 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aProjectileRect.mWidth = 100;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
+	{
+		aProjectileRect.mWidth = 100;
+	}
 
 	int aRowDeviation = theZombie->mRow - mRow;
 	Rect aZombieRect = theZombie->GetZombieRect();
@@ -782,7 +793,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aRowDeviation = 0;
 	}
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMABALL || mProjectileType == ProjectileType::PROJECTILE_ELECTRIC)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMABALL || mProjectileType == ProjectileType::PROJECTILE_ELECTRIC || mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
 	{
 		if (aRowDeviation != 0)
 		{
@@ -1304,40 +1315,10 @@ void Projectile::DoImpactGridItem(GridItem* theGridItem)
 		}
 	}
 
-	//ParticleEffect aEffect = ParticleEffect::PARTICLE_PEA_SPLAT;
-	//mApp->PlayFoley(FOLEY_SPLAT);
 	theGridItem->mJustGotShotCounter = 25;
 	theGridItem->mHealth -= GetProjectileDef().mDamage;
-	/*if (mProjectileType == ProjectileType::PROJECTILE_PEA)
-	{
-		aEffect = ParticleEffect::PARTICLE_PEA_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
-	{
-		aEffect = ParticleEffect::PARTICLE_SNOWPEA_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_STAR)
-	{
-		aEffect = ParticleEffect::PARTICLE_STAR_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_SEASTAR)
-	{
-		aEffect = ParticleEffect::PARTICLE_STAR_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
-	{
-		aEffect = ParticleEffect::PARTICLE_PUFF_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE)
-	{
-		aEffect = ParticleEffect::PARTICLE_CABBAGE_SPLAT;
-	}
-	if (mProjectileType == ProjectileType::PROJECTILE_BUTTER)
-	{
-		aEffect = ParticleEffect::PARTICLE_BUTTER_SPLAT;
-	}
-	mApp->AddTodParticle((theGridItem->mGridX + 1) * 80.0f, mY + 20.0f, mRenderOrder + 1, aEffect);*/
-	DoImpact(nullptr, true);
+
+	DoImpact(nullptr);
 	Die();
 }
 

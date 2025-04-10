@@ -65,7 +65,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
 
     { SeedType::SEED_PULTSHROOM,        nullptr, ReanimationType::REANIM_PULTSHROOM,      13, 0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("PULT_SHROOM"),1 },
     { SeedType::SEED_LUMESHROOM,        nullptr, ReanimationType::REANIM_LUMESHROOM,      5,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LUME_SHROOM"), 1 },
-    { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("MORTAR_SHROOM"),1 },
+    { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    600,    _S("MORTAR_SHROOM"),1 },
     { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("BLOOD_ORANGE"), 1 },
     { SeedType::SEED_REED,              nullptr, ReanimationType::REANIM_REED,            5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("LIGHTNING_REED"),1 },
     { SeedType::SEED_HURRIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,        5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
@@ -299,6 +299,11 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         if (mBoard && mSeedType == SEED_GRAVE && (mBoard->mBackground == BACKGROUND_2_NIGHT || mBoard->mBackground == BACKGROUND_4_FOG))
         {
             aBodyReanim->SetImageOverride("Stone_dirt", IMAGE_GRAVESTONE_NIGHT_DIRT);
+        }
+
+        if (mBoard && mSeedType == SEED_MORTARSHROOM && ((mBoard->GetFlowerPotAt(mPlantCol, mRow) || (mBoard->mBackground != BACKGROUND_5_ROOF && mBoard->mBackground != BACKGROUND_6_BOSS))))
+        {
+            aBodyReanim->SetImageOverride("anim_body", IMAGE_REANIM_MORTAR_BODY_2);
         }
 
         if (mApp->IsWallnutBowlingLevel() && aBodyReanim->TrackExists("_ground"))
@@ -8126,6 +8131,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     case SeedType::SEED_TORCHWOOD:          aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
     case SeedType::SEED_FLAMEWOOD:          aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
     case SeedType::SEED_PULTSHROOM:         aRect = Rect(mX + 60,       mY,             500,                mHeight);               break;
+    case SeedType::SEED_MORTARSHROOM:       aRect = Rect(mX + 240,      mY,             500,                mHeight);               break;
     case SeedType::SEED_REVERSE_PUFFSHROOM: aRect = Rect(mX - 200,      mY,             230,                mHeight);               break;
     case SeedType::SEED_PUFFSHROOM:  
     case SeedType::SEED_SEASHROOM:          aRect = Rect(mX + 60,       mY,             230,                mHeight);               break;
