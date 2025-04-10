@@ -349,7 +349,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	case SeedType::SEED_TALLNUT:
 	case SeedType::SEED_VINENUT:
 		aScale = 0.3f;
-		aOffsetX = 12.0f;
+		aOffsetX = 13.0f;
 		aOffsetY = 22.0f;
 		break;
 
@@ -383,18 +383,18 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 
 	case SeedType::SEED_LEMON_NADE:
 		aScale = 0.45f;
-		aOffsetX = 5.0f;
+		aOffsetX = 6.0f;
 		aOffsetY = 13.0f;
 		break;
 
 	case SeedType::SEED_SHRINK:
-		aScale = 0.4f;
-		aOffsetX = 3.0f;
-		aOffsetY = 1.0f;
+		aScale = 0.39f;
+		aOffsetX = 4.0f;
+		aOffsetY = 2.0f;
 		break;
 
 	case SeedType::SEED_AMPLI_FLOWER:
-		aScale = 0.5f;
+		aScale = 0.48f;
 		aOffsetX = 4.0f;
 		aOffsetY = 5.0f;
 		break;
@@ -404,9 +404,9 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_CHARD_GUARD:
-		aScale = 0.35f;
-		aOffsetX = 30.0f;
-		aOffsetY = 59.0f;
+		aScale = 0.345f;
+		aOffsetX = 30.7f;
+		aOffsetY = 59.5f;
 		break;
 
 	case SeedType::SEED_ALOEVERA:
@@ -416,14 +416,20 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_BONKCHOY:
-		aScale = 0.4f;
-		aOffsetX = 8.0f;
-		aOffsetY = 23.0f;
+		aScale = 0.37f;
+		aOffsetX = 9.0f;
+		aOffsetY = 24.0f;
+		break;
+
+	case SeedType::SEED_GHOSTPEPPER:
+		aScale = 0.47f;
+		aOffsetX = 7.0f;
+		aOffsetY = 11.0f;
 		break;
 
 	case SeedType::SEED_OAK_ARCHER:
-		aScale = 0.40f;
-		aOffsetX = 2.0f;
+		aScale = 0.37f;
+		aOffsetX = 3.0f;
 		aOffsetY = 7.0f;
 		break;
 
@@ -517,15 +523,15 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_PULTSHROOM:
-		aScale = 0.45f;
-		aOffsetX = 8.0f;
+		aScale = 0.47f;
+		aOffsetX = 9.0f;
 		aOffsetY = 12.0f;
 		break;
 
 	case SeedType::SEED_LUMESHROOM:
 		aScale = 0.40f;
 		aOffsetX = 8.0f;
-		aOffsetY = 15.0f;
+		aOffsetY = 14.5f;
 		break;
 
 	case SeedType::SEED_MORTARSHROOM:
@@ -571,14 +577,14 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_REED:
-		aScale = 0.45f;
-		aOffsetX = 8.0f;
-		aOffsetY = 14.0f;
+		aScale = 0.44f;
+		aOffsetX = 8.4f;
+		aOffsetY = 13.5f;
 		break;
 
 	case SeedType::SEED_ICYFUME:
-		aScale = 0.45f;
-		aOffsetX = 6.0f;
+		aScale = 0.41f;
+		aOffsetX = 8.0f;
 		aOffsetY = 13.0f;
 		break;
 
