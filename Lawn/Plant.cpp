@@ -8424,6 +8424,10 @@ void Plant::LightningReedFire()
                 }
             }
             if (alreadyHit) continue;
+            if (mBoard->GetBushAt(mBoard->PixelToGridX(aZombie->mX + 75, aZombie->mY), mRow) &&
+                mBoard->GetBushAt(mBoard->PixelToGridX(aZombie->mX + 45, mY), aZombie->mRow) &&
+                mX < 680)
+                continue;
             Rect aRangeRect = Rect(aCenterPoint.x - 120, aCenterPoint.y - 120, 240, 240);
             Rect aZombieRect = aZombie->GetZombieRect();
             if (GetRectOverlap(aRangeRect, aZombieRect) <= 0)
