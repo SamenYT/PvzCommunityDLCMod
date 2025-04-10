@@ -42,7 +42,8 @@ ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_ZOMBIE_FLAMEPEA,0,  40  },
 	{ ProjectileType::PROJECTILE_ARROW,			 0,  80  },
 	{ ProjectileType::PROJECTILE_BEE,			 0,  20  },
-	{ ProjectileType::PROJECTILE_SHOOTING_STAR,	 0,  40  }
+	{ ProjectileType::PROJECTILE_SHOOTING_STAR,	 0,  40  },
+	{ ProjectileType::PROJECTILE_BIG_PUFF,		 0,  80  }
 };
 
 Projectile::Projectile()
@@ -111,6 +112,21 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 			AttachTrail(mAttachmentID, aTrail, 20.0f, 20.0f);
 		
 		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+		AttachParticle(mAttachmentID, aParticle, 18.0f, 23.0f);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
+	{
+		mRotation = -2 * PI / 5;
+		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
+
+		Trail* aTrail = mApp->mEffectSystem->mTrailHolder->AllocTrail(305000, TrailType::TRAIL_PUFF);
+		if (aTrail)
+		{
+			aTrail->mColorOverride = Color(249, 86, 249, 255);
+			AttachTrail(mAttachmentID, aTrail, 20.0f, 20.0f);
+		}
+
+		TodParticleSystem* aParticle = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_PUFFSHROOM_TRAIL);
 		AttachParticle(mAttachmentID, aParticle, 18.0f, 23.0f);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
@@ -662,6 +678,7 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 
 	return 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
+		mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF || 
 		mProjectileType == ProjectileType::PROJECTILE_PEPPER ||
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
@@ -872,7 +889,7 @@ void Projectile::UpdateLobMotion()
 		{
 			aMinCollisionZ = 60.0f;
 		}
-		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_PEPPER)
+		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_PEPPER || mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
 		{
 			aMinCollisionZ = -35.0f;
 		}
@@ -1427,6 +1444,10 @@ void Projectile::DoImpact(Zombie* theZombie, bool isSilent)
 	{
 		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_WINTERMELON);
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
+	{
+		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_PUFF_SPLAT);
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{
 		int aRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_GROUND, mCobTargetRow, 2);
@@ -1549,6 +1570,7 @@ void Projectile::Update()
 		mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_SNOWPEA ||
 		mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_FLAMEPEA ||
 		mProjectileType == ProjectileType::PROJECTILE_ARROW ||
+		mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF ||
 		mProjectileType == ProjectileType::PROJECTILE_SPIKE)
 	{
 		aTime = 0;
@@ -1768,6 +1790,11 @@ void Projectile::Draw(Graphics* g)
 		aImage = IMAGE_REANIM_MELONPULT_MELON;
 		aScale = 1.0f;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
+	{
+		aImage = IMAGE_BIG_PUFF_PARTICLE;
+		aScale = 1.0f;
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
 		aImage = IMAGE_REANIM_WINTERMELON_PROJECTILE;
@@ -1875,6 +1902,7 @@ void Projectile::DrawShadow(Graphics* g)
 	case ProjectileType::PROJECTILE_PEPPER:
 	case ProjectileType::PROJECTILE_WINTERMELON:
 	case ProjectileType::PROJECTILE_SHOOTING_STAR:
+	case ProjectileType::PROJECTILE_BIG_PUFF:
 		aOffsetX += 3.0f;
 		aOffsetY += 10.0f;
 		aScale = 1.6f;
@@ -1958,7 +1986,7 @@ Rect Projectile::GetProjectileRect()
 	{
 		return Rect(mX + mWidth / 2 - 115, mY + mHeight / 2 - 115, 230, 230);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_BIG_PUFF)
 	{
 		return Rect(mX + 20, mY, 60, mHeight);
 	}

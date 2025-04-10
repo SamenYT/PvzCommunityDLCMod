@@ -65,10 +65,10 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
 
     { SeedType::SEED_PULTSHROOM,        nullptr, ReanimationType::REANIM_PULTSHROOM,      13, 0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("PULT_SHROOM"),1 },
     { SeedType::SEED_LUMESHROOM,        nullptr, ReanimationType::REANIM_LUMESHROOM,      5,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LUME_SHROOM"), 1 },
-    { SeedType::SEED_REED,              nullptr, ReanimationType::REANIM_REED,            5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("LIGHTNING_REED"),1 },
-    { SeedType::SEED_HURIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,        5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
     { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("MORTAR_SHROOM"),1 },
     { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("BLOOD_ORANGE"), 1 },
+    { SeedType::SEED_REED,              nullptr, ReanimationType::REANIM_REED,            5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("LIGHTNING_REED"),1 },
+    { SeedType::SEED_HURRIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,        5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
     { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  225,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("VOLT_SHROOM"),1},
     { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_GHOSTPEPPER,     5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     450,    _S("GHOST_PEPPER"),1},
 
@@ -103,11 +103,11 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
 
     { SeedType::SEED_FLAMEPEA,          nullptr, ReanimationType::REANIM_FLAMEPEA,        5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIRE_PEASHOOTER"),2 },
     { SeedType::SEED_PEPPER,            nullptr, ReanimationType::REANIM_PEPPER,          13, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("PEPPER_PULT"), 2 },
-    { SeedType::SEED_CHILLYPEPPER,      nullptr, ReanimationType::REANIM_CHILLYPEPPER,    5,  100,    5000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("CHILLYPEPPER"),2 },
-    { SeedType::SEED_WATERPOT,          nullptr, ReanimationType::REANIM_FLOWER_POT,      33, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WATER_POT"), 2 },
-    { SeedType::SEED_FIRESHROOM,        nullptr, ReanimationType::REANIM_FIRESHROOM,      5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("FIRE_SHROOM"),2 },
-    { SeedType::SEED_PINKSTAR,          nullptr, ReanimationType::REANIM_PINKSTAR,        30, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SEASTAR"), 2 },
     { SeedType::SEED_PICKLEPEPPER,      nullptr, ReanimationType::REANIM_PICKLEPEPPER,    5,  125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("PICKLED_PEPPER"),2 },
+    { SeedType::SEED_FIRESHROOM,        nullptr, ReanimationType::REANIM_FIRESHROOM,      5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("FIRE_SHROOM"),2 },
+    { SeedType::SEED_WATERPOT,          nullptr, ReanimationType::REANIM_FLOWER_POT,      33, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WATER_POT"), 2 },
+    { SeedType::SEED_PINKSTAR,          nullptr, ReanimationType::REANIM_PINKSTAR,        30, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SEASTAR"), 2 },
+    { SeedType::SEED_CHILLYPEPPER,      nullptr, ReanimationType::REANIM_CHILLYPEPPER,    5,  100,    5000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("CHILLYPEPPER"),2 },
     { SeedType::SEED_EPEA ,             nullptr, ReanimationType::REANIM_EPEA,            5,  300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    450,    _S("ELECTRIC_PEA"),2 },
 
     { SeedType::SEED_PLASMAPEA,         nullptr, ReanimationType::REANIM_PLASMAPEA,       5,  100,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PLASMAPEA"),2 },
@@ -354,7 +354,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     }
     case SeedType::SEED_BLOVER:
-    case SeedType::SEED_HURIKALE:
+    case SeedType::SEED_HURRIKALE:
     {
         mDoSpecialCountdown = 50;
 
@@ -957,6 +957,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_WINTERMELON:
     case SeedType::SEED_PULTSHROOM:
     case SeedType::SEED_SHOOTINGSTAR:
+    case SeedType::SEED_MORTARSHROOM:
         return 13;
     case SeedType::SEED_POTATOMINE:
         return 77;
@@ -1191,6 +1192,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         case SeedType::SEED_PUFFSHROOM:     mShootingCounter = 29;  break;
         case SeedType::SEED_REVERSE_PUFFSHROOM: mShootingCounter = 29;  break;
         case SeedType::SEED_PULTSHROOM:
+        case SeedType::SEED_MORTARSHROOM:
         case SeedType::SEED_SCAREDYSHROOM:  mShootingCounter = 25;  break;
         case SeedType::SEED_BRAVESHROOM:    mShootingCounter = 25;  break;
         case SeedType::SEED_PEPPER:
@@ -4205,7 +4207,7 @@ void Plant::UpdateAbilities()
     else if (mSeedType == SeedType::SEED_CHARD_GUARD)                                           UpdateChardGuard();
     else if (mSeedType == SeedType::SEED_SUPERCHOMP)                                            UpdateSuperChomper();
     else if (mSeedType == SeedType::SEED_BLOVER)                                                UpdateBlover();
-    else if (mSeedType == SeedType::SEED_HURIKALE)                                              UpdateBlover();
+    else if (mSeedType == SeedType::SEED_HURRIKALE)                                              UpdateBlover();
     else if (mSeedType == SeedType::SEED_FLOWERPOT)                                             UpdateFlowerPot();
     else if (mSeedType == SeedType::SEED_WATERPOT)                                              UpdateFlowerPot();
     else if (mSeedType == SeedType::SEED_LILYPAD)                                               UpdateLilypad();
@@ -5464,7 +5466,7 @@ void Plant::UpdateShooting()
             Fire(nullptr, mRow, PlantWeapon::WEAPON_SECONDARY);
         }
         else if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || 
-                 mSeedType == SeedType::SEED_PEPPER || mSeedType == SeedType::SEED_PULTSHROOM)
+                 mSeedType == SeedType::SEED_PEPPER || mSeedType == SeedType::SEED_PULTSHROOM || mSeedType == SeedType::SEED_MORTARSHROOM)
         {
             PlantWeapon aPlantWeapon = PlantWeapon::WEAPON_PRIMARY;
             if (mState == PlantState::STATE_KERNELPULT_BUTTER)
@@ -5728,7 +5730,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_MELONPULT:
     case SeedType::SEED_PEPPER:
     case SeedType::SEED_BLOVER:
-    case SeedType::SEED_HURIKALE:
+    case SeedType::SEED_HURRIKALE:
     case SeedType::SEED_SPIKEWEED:
     case SeedType::SEED_THORNMOSS:
     case SeedType::SEED_AMPLI_FLOWER:
@@ -6730,7 +6732,7 @@ void Plant::BlowAwayFliers(int theX, int theRow)
         if (!aZombie->IsDeadOrDying())
         {
             Rect aZombieRect = aZombie->GetZombieRect();
-            if (aZombie->mRow == theRow && mSeedType == SeedType::SEED_HURIKALE && (aZombie->mZombieType != ZOMBIE_GLADIANTUAR && aZombie->mZombieType != ZOMBIE_GLADIANTUAR_GIGA && 
+            if (aZombie->mRow == theRow && mSeedType == SeedType::SEED_HURRIKALE && (aZombie->mZombieType != ZOMBIE_GLADIANTUAR && aZombie->mZombieType != ZOMBIE_GLADIANTUAR_GIGA && 
                 aZombie->mZombieType != ZOMBIE_ZOMBONI && aZombie->mZombieType != ZOMBIE_TARGET))
             {         
                 if (aZombie->IsFlying()) aZombie->mBlowingAway = true;
@@ -6773,7 +6775,7 @@ void Plant::DoSpecial()
     switch (mSeedType)
     {
     case SeedType::SEED_BLOVER:
-    case SeedType::SEED_HURIKALE:
+    case SeedType::SEED_HURRIKALE:
     {
         if (mState != PlantState::STATE_DOINGSPECIAL)
         {
@@ -7132,6 +7134,9 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_PULTSHROOM:
         aProjectileType = ProjectileType::PROJECTILE_PUFF;
         break;
+    case SeedType::SEED_MORTARSHROOM:
+        aProjectileType = ProjectileType::PROJECTILE_BIG_PUFF;
+        break;
     case SeedType::SEED_CACTUS:
     case SeedType::SEED_CATTAIL:
         aProjectileType = ProjectileType::PROJECTILE_SPIKE;
@@ -7221,6 +7226,11 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginY = mY - 3;
     }
     else if (mSeedType == SeedType::SEED_PULTSHROOM)
+    {
+        aOriginX = mX + 15;
+        aOriginY = mY - 12;
+    }
+    else if (mSeedType == SeedType::SEED_MORTARSHROOM)
     {
         aOriginX = mX + 15;
         aOriginY = mY - 12;
@@ -7328,7 +7338,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aProjectile->mVelX = 3.33f / 2;
     }
 
-    if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_PULTSHROOM ||
+    if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_PULTSHROOM || mSeedType == SeedType::SEED_MORTARSHROOM ||
         mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_PEPPER)
     {
         float aRangeX, aRangeY;
