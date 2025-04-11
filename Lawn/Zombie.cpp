@@ -5518,14 +5518,16 @@ void Zombie::UpdateZombieSkeleton()
     if (mRespawnCounter > 0)
     {
         mRespawnCounter--;
-        if (mRespawnCounter == 300)
+        //if (mRespawnCounter == 300)
+        if (mRespawnCounter == 250)
         {
             mApp->PlayFoley(FOLEY_SKELETON_REVIVE);
             mBoneHealth = mBodyHealth;
             mBodyHealth = mBodyMaxHealth / 2;
             //mBodyHealth = 270;
-            if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
-            else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
+            if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
+            else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
+            //12.0f
         }
         else if (mRespawnCounter == 0)
         {
@@ -9767,6 +9769,9 @@ void Zombie::DieNoLoot()
         mBoard->AddCoin(aCenterX - 20, aCenterY, CoinType::COIN_SMALLSUN, CoinMotion::COIN_MOTION_COIN);
     }
 
+    if (mZombiePhase == ZombiePhase::PHASE_BONE_PILE)
+        mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_SKELETON_DEATH);
+
     StopZombieSound();
     AttachmentDie(mAttachmentID);
     mApp->RemoveReanimation(mBodyReanimID);
@@ -10462,8 +10467,6 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
             if (mZombiePhase == PHASE_BONE_PILE)
             {
 
-                if (mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED)
-                    mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_SKELETON_DEATH);
                 DieWithLoot();
                 mBodyHealth = 0;
             }
@@ -10625,7 +10628,7 @@ bool Zombie::CanBeFrozen()
 //0x531A80
 bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
 {
-    if (!TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_DYING) && IsDeadOrDying())
+    if (!TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_DYING) && (IsDeadOrDying() || (mZombiePhase == ZombiePhase::PHASE_BONE_PILE && mApp->ReanimationGet(mBodyReanimID)->mLoopCount == 0)))
     {
         return false;
     }
@@ -12542,10 +12545,10 @@ bool Zombie::IsBobsledTeamWithSled()
 //0x534700
 bool Zombie::IsDeadOrDying()
 {
-    if (mZombiePhase == ZombiePhase::PHASE_BONE_PILE)
-    {
-        return mApp->ReanimationGet(mBodyReanimID)->mLoopCount == 0;
-    }
+    //if (mZombiePhase == ZombiePhase::PHASE_BONE_PILE)
+    //{
+    //    return mApp->ReanimationGet(mBodyReanimID)->mLoopCount == 0;
+    //}
     return 
         mDead || 
         mZombiePhase == ZombiePhase::PHASE_ZOMBIE_DYING || 
@@ -13486,6 +13489,7 @@ void Zombie::BossDie()
 
 void Zombie::SkeletonDie()
 {
+    TrySpawnLevelAward();
     RemoveButter();
     RemoveColdEffects();
     mApp->PlayFoley(FOLEY_SKELETON_DIE);
@@ -13495,8 +13499,9 @@ void Zombie::SkeletonDie()
     //mRespawnCounter = 1000;
     mVelX = 0.0f;
     UpdateAnimSpeed();
-    if (mInPool) PlayZombieReanim("anim_watercrumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
-    else PlayZombieReanim("anim_crumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
+    if (mInPool) PlayZombieReanim("anim_watercrumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
+    else PlayZombieReanim("anim_crumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
+    //should be 12.0f;
 }
 
 //0x5367F0

@@ -329,7 +329,10 @@ bool Board::AreEnemyZombiesOnScreen()
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
-		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled)
+		if (aZombie->mHasHead &&
+			!aZombie->IsDeadOrDying() &&
+			aZombie->mZombiePhase != ZombiePhase::PHASE_BONE_PILE &&
+			!aZombie->mMindControlled)
 		{
 			return true;
 		}
@@ -5679,7 +5682,7 @@ void Board::MouseDown(int x, int y, int theClickCount)
 void Board::CauseBloodMoon()
 {
 	mApp->PlayFoley(FoleyType::FOLEY_BLOOD_MOON);
-	if (mLevel == 51 && mCurrentWave == 4)
+	if (mCurrentWave == 4)
 		DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_ALMOST_THERE);
 	BloodMoonIsOn = true;
 	LoadBackgroundImages();
