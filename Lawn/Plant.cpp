@@ -4836,6 +4836,7 @@ void Plant::Update()
         if (mMushroomAge == 150)
         {            
             PlayBodyReanim("anim_end", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 12.0f);
+            mBlinkCountdown = 0;
         }
         else if (mMushroomAge == 0)
         {
