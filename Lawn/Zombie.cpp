@@ -5523,7 +5523,7 @@ void Zombie::UpdateZombieSkeleton()
         {
             mApp->PlayFoley(FOLEY_SKELETON_REVIVE);
             mBoneHealth = mBodyHealth;
-            mBodyHealth = mBodyMaxHealth / 2;
+            mBodyHealth = mBodyMaxHealth;
             //mBodyHealth = 270;
             if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
             else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
@@ -10165,6 +10165,10 @@ int Zombie::TakeHelmDamage(int theDamage, unsigned int theDamageFlags)
     {
         ApplyChill(false);
     }
+    if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_TERRIFY))
+    {
+        mRageCounter = 600;
+    }
     if (mHelmHealth == 0)
     {
         DropHelm(theDamageFlags);
@@ -13492,6 +13496,7 @@ void Zombie::BossDie()
 
 void Zombie::SkeletonDie()
 {
+    StopEating();
     RemoveButter();
     RemoveColdEffects();
     mApp->PlayFoley(FOLEY_SKELETON_DIE);
@@ -13501,7 +13506,7 @@ void Zombie::SkeletonDie()
     mRespawnCounter = 1200;
     //mRespawnCounter = 1000;
     //mVelX = 0.0f;
-    UpdateAnimSpeed();
+    //UpdateAnimSpeed();
     if (mInPool) PlayZombieReanim("anim_watercrumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
     else PlayZombieReanim("anim_crumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
     //should be 12.0f;

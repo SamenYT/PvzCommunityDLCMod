@@ -1170,7 +1170,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
     else if (mSeedType == SeedType::SEED_REED)
     {
         PlayBodyReanim("anim_attack", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 35.0f);
-        mShootingCounter = 30;
+        mShootingCounter = 20;
         int aRand = Rand(2);
         if (aRand == 0)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC);
         else if (aRand == 1)  mApp->PlayFoley(FoleyType::FOLEY_ELECTRIC2);
@@ -7055,6 +7055,11 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         StarFruitFireReverse();
         return;
     }
+    if (mSeedType == SeedType::SEED_VOLTSHROOM)
+    {
+        VoltShroomFire();
+        return;
+    }
     if (mSeedType == SeedType::SEED_SHOOTINGSTAR) {
         mApp->PlayFoley(FOLEY_SHOOTINGSTAR);
         unsigned int aDamageRangeFlags = GetDamageRangeFlags(WEAPON_SECONDARY);
@@ -8146,6 +8151,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     case SeedType::SEED_CATTAIL:            //aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     case SeedType::SEED_BEE_SHOOTER:        aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     case SeedType::SEED_REED:               aRect = Rect(mX + 60,       -BOARD_HEIGHT,  BOARD_WIDTH,        BOARD_HEIGHT * 2);      break;
+    case SeedType::SEED_VOLTSHROOM:         aRect = Rect(mX - 160,      mY - 80,        400,                240);      break;
     default:                                aRect = Rect(mX + 60,       mY,             BOARD_WIDTH,        mHeight);               break;
     }
     
@@ -8616,4 +8622,204 @@ int Plant::GetAttackRowRange()
         return 99;
     }
     return 0;
+}
+
+void Plant::VoltShroomFire()
+{
+    void*   aTargets[4]{ nullptr, nullptr, nullptr, nullptr };
+    char    aTypes[4]{ 0 };
+    int     aBestWeights[4]{ 0 };
+    Zombie* aZombie = nullptr;
+    Rect aAttackRect = GetPlantAttackRect();
+    int aHitCount = 0;
+    while (mBoard->IterateZombies(aZombie))
+    {
+
+        int aRowDiff = abs(aZombie->mRow - mRow);
+        if (aRowDiff > 1)
+            continue;
+
+        Rect aZombieRect = aZombie->GetZombieRect();
+        if (!aZombie->EffectedByDamage(GetDamageRangeFlags()))
+            continue;
+
+        if (GetRectOverlap(aAttackRect, aZombieRect) <= 0)
+            continue;
+
+        if (mBoard->GetBushAt(mBoard->PixelToGridX(aZombie->mX + 75, aZombie->mY), mRow) &&
+            mBoard->GetBushAt(mBoard->PixelToGridX(aZombie->mX + 45, mY), aZombie->mRow) &&
+            mX < 680)
+            continue;
+        int aX = aZombieRect.mX + aZombieRect.mWidth / 2;
+        int aY = aZombieRect.mY + aZombieRect.mHeight / 2;
+
+        int aWeight = (aX - mX - 40) * (aX - mX - 40) + (aRowDiff * 100) * (aRowDiff * 100);
+        if (aHitCount < 4)
+        {
+            aTargets[aHitCount] = aZombie;
+            aBestWeights[aHitCount] = aWeight;
+            ++aHitCount;
+        }
+        else
+        {
+            int aWorstWeight = aBestWeights[0];
+            int aWorstID = 0;
+            for (int i = 1; i < 4; i++)
+            {
+                if (aBestWeights[i] > aWorstWeight)
+                {
+                    aWorstID = i;
+                    aWorstWeight = aBestWeights[i];
+                }
+            }
+            if (aWeight < aWorstWeight)
+            {
+                aTargets[aWorstID] = aZombie;
+                aBestWeights[aWorstID] = aWeight;
+                aTypes[aWorstID] = 0;
+            }
+        }
+    }
+    GridItem* aGI = nullptr;
+    while (mBoard->IterateGridItems(aGI))
+    {
+        if (aGI->mGridItemType != GRIDITEM_WOOD_LOG)
+            continue;
+        int aRowDiff = abs(aGI->mGridY - mRow);
+        if (aRowDiff > 1)
+            continue;
+
+        Rect aGIRect = aGI->GetGridItemRect();
+        //if (!aZombie->EffectedByDamage(GetDamageRangeFlags()))
+            //continue;
+
+        if (GetRectOverlap(aAttackRect, aGIRect) <= 0)
+            continue;
+
+        int aX = aGIRect.mX + aGIRect.mWidth / 2;
+        int aY = aGIRect.mY + aGIRect.mHeight / 2;
+
+        int aWeight = (aX - mX - 40) * (aX - mX - 40) + (aRowDiff * 100) * (aRowDiff * 100);
+        if (aHitCount < 4)
+        {
+            aTargets[aHitCount] = aGI;
+            aBestWeights[aHitCount] = aWeight;
+            ++aHitCount;
+        }
+        else
+        {
+            int aWorstWeight = aBestWeights[0];
+            int aWorstID = 0;
+            for (int i = 1; i < 4; i++)
+            {
+                if (aBestWeights[i] > aWorstWeight)
+                {
+                    aWorstID = i;
+                    aWorstWeight = aBestWeights[i];
+                }
+            }
+            if (aWeight < aWorstWeight)
+            {
+                aTargets[aWorstID] = aGI;
+                aBestWeights[aWorstID] = aWeight;
+                aTypes[aWorstID] = 1;
+            }
+        }
+    }
+    Plant* aPlant = nullptr;
+    while (mBoard->IteratePlants(aPlant))
+    {
+        if (aPlant->mHypnotized == mHypnotized && aPlant->mSeedType != SEED_GRAVE)
+            continue;
+        int aRowDiff = abs(aPlant->mRow - mRow);
+        if (aRowDiff > 1)
+            continue;
+
+        Rect aPlantRect = aPlant->GetPlantRect();
+        //if (!aZombie->EffectedByDamage(GetDamageRangeFlags()))
+            //continue;
+
+        if (abs(mPlantCol - aPlant->mPlantCol) > 2)
+            continue;
+
+        int aX = aPlantRect.mX + aPlantRect.mWidth / 2;
+        int aY = aPlantRect.mY + aPlantRect.mHeight / 2;
+
+        int aWeight = (aX - mX - 40) * (aX - mX - 40) + (aRowDiff * 100) * (aRowDiff * 100);
+        if (aHitCount < 4)
+        {
+            aTargets[aHitCount] = aPlant;
+            aBestWeights[aHitCount] = aWeight;
+            ++aHitCount;
+        }
+        else
+        {
+            int aWorstWeight = aBestWeights[0];
+            int aWorstID = 0;
+            for (int i = 1; i < 4; i++)
+            {
+                if (aBestWeights[i] > aWorstWeight)
+                {
+                    aWorstID = i;
+                    aWorstWeight = aBestWeights[i];
+                }
+            }
+            if (aWeight < aWorstWeight)
+            {
+                aTargets[aWorstID] = aPlant;
+                aBestWeights[aWorstID] = aWeight;
+                aTypes[aWorstID] = 2;
+            }
+        }
+    }
+
+    if (aHitCount <= 0)
+        return;
+
+    mApp->PlayFoley(FOLEY_SPLAT);
+    int aDamage = 80 / aHitCount;
+    for (int i = 0; i < aHitCount; i++)
+    {
+        switch (aTypes[i])
+        {
+        case 0:
+        {
+            aZombie = (Zombie*)aTargets[i];
+            Rect aZombieRect = aZombie->GetZombieRect();
+            int aX = aZombieRect.mX + aZombieRect.mWidth / 2;
+            int aY = aZombieRect.mY + aZombieRect.mHeight / 2;
+
+            DrawChain(mX + 40, aX, mY + 40, aY, 10);
+
+            aZombie->TakeDamage(aDamage, 1U);
+            break;
+        }
+        case 1:
+        {
+            aGI = (GridItem*)aTargets[i];
+            Rect aGIRect = aGI->GetGridItemRect();
+            int aX = aGIRect.mX + aGIRect.mWidth / 2;
+            int aY = aGIRect.mY + aGIRect.mHeight / 2;
+
+            DrawChain(mX + 40, aX, mY + 40, aY, 10);
+
+            aGI->mJustGotShotCounter = 25;
+            aGI->mHealth -= aDamage;
+            break;
+        }
+        case 2:
+        {
+            aPlant = (Plant*)aTargets[i];
+            Rect aPlantRect = aPlant->GetPlantRect();
+            int aX = aPlantRect.mX + aPlantRect.mWidth / 2;
+            int aY = aPlantRect.mY + aPlantRect.mHeight / 2;
+
+            DrawChain(mX + 40, aX, mY + 40, aY, 10);
+
+            aPlant->mPlantHealth -= aDamage;
+            aPlant->mEatenFlashCountdown = max(aPlant->mEatenFlashCountdown, 25);
+            break;
+        }
+        }
+    }
 }

@@ -13112,15 +13112,3 @@ void Board::SpawnHypnotizedPlants()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
