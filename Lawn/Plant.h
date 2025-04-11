@@ -84,7 +84,9 @@ enum PlantState
     STATE_EMPTY_IDLE,
     STATE_AMPLI_DANCING,
     STATE_SHRINKINGVIOLET_EXPLODING,
-    STATE_SHRINKINGVIOLET_EXPLODED
+    STATE_SHRINKINGVIOLET_EXPLODED,
+    STATE_HAUNTING,
+    STATE_GHOST_BLOWING
 };
 
 enum PLANT_LAYER
@@ -238,6 +240,9 @@ public:
     int					    mGridItemCounter;
     bool					mHypnotized;
     int					    mSoundCounter;
+    bool					mTriggered;
+    int					    mGhostAge;
+    float					mGhostFlash;
 
 public:
     Plant();
@@ -307,6 +312,7 @@ public:
     void                    UpdateSuperChomper();
     void                    UpdateViolet();
     void                    UpdateAloe();
+    void                    UpdateGhostpepper();
     void                    DoBlink();
     void                    UpdateBlink();
     void                    PlayBodyReanim(const char* theTrackName, ReanimLoopType theLoopType, int theBlendTime, float theAnimRate);
@@ -384,6 +390,7 @@ public:
     void                    LightningReedFire();
     void                    DrawChain(int X1, int X2, int Y1, int Y2, int aPointDistance);
     int                     GetAttackRowRange();
+    void                    VoltShroomFire();
 };
 
 float                       PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedType, int theCol, int theRow);

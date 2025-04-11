@@ -810,9 +810,9 @@ void SeedChooserScreen::Draw(Graphics* g)
 		int aPlantCorrection = 0;
 		if (mApp->mIsKeyboardPlayer1 || (!mApp->mPlayerInfo->mIsNotCoop && !mApp->IsVersusLevel()))
 		{
-			if (mPlantID >= 56 && mPlantID <= 63 && mPage == 0) aPlantCorrection = 16;
-			else if (mPlantID >= 33 && mPlantID <= 37 && mPage == 1) aPlantCorrection = 1;
-			else if (mPlantID >= 24 && mPlantID <= 32 && mPage == 1) aPlantCorrection = -16;
+			if (mPlantID >= SEED_GATLINGPEA && mPlantID <= SEED_COBCANNON && mPage == 0) aPlantCorrection = 16;
+			else if (mPlantID >= SEED_ICYFUME - SEED_PULTSHROOM && mPlantID <= SEED_ECACTUS - SEED_PULTSHROOM && mPage == 1) aPlantCorrection = -16;
+			else if (mPlantID >= SEED_PLASMAPEA - SEED_FLAMEPEA && mPlantID <= SEED_SHOOTINGSTAR - SEED_FLAMEPEA && mPage == 2) aPlantCorrection = -32;
 			Image* aImage = nullptr;
 			if (mApp->IsVersusLevel())
 				aImage = IMAGE_P1_1;
@@ -1617,8 +1617,10 @@ void SeedChooserScreen::ShowToolTipP2()
 	{
 		int aPage2Zombies = 0;
 		int aPage2Plants = 0;
-		if (mPage == 1) aPage2Plants = 40;
+		if (mPage == 1) aPage2Plants = SEED_PULTSHROOM;
+		else if (mPage == 2) aPage2Plants = SEED_FLAMEPEA;
 		if (mPageP2 == 1) aPage2Zombies = 30;
+		else if (mPageP2 == 2) aPage2Zombies = 35;
 		SeedType aSeedType;
 		ChosenSeed aChosenSeed;
 		if (!mApp->IsVersusLevel() || mApp->mIsKeyboardPlayer1)
@@ -2033,9 +2035,11 @@ void SeedChooserScreen::KeyDown(KeyCode theKey)
 {
 	mBoard->DoTypingCheck(theKey);
 	int aPage2Plants = 0;
-	if (mPage == 1) aPage2Plants = 40;
+	if (mPage == 1) aPage2Plants = SEED_PULTSHROOM;
+	else if (mPage == 2) aPage2Plants = SEED_FLAMEPEA;
 	int aPage2Zombies = 0;
 	if (mPageP2 == 1) aPage2Zombies = 30;
+	else if (mPageP2 == 2) aPage2Zombies = 35;
 	if (theKey == KeyCode::KEYCODE_SPACE && mClickCooldown == 0)
 	{
 		if (mCanSwitchSides)
@@ -2065,16 +2069,18 @@ void SeedChooserScreen::KeyDown(KeyCode theKey)
 			if (!mApp->mIsKeyboardPlayer1 && !mPlantsPick && mApp->IsVersusLevel())
 			{
 				mApp->PlaySample(Sexy::SOUND_TAP);
+				if (mZombieID > 5 && mPageP2 == 1) mZombieID = 0;
+				else if (mPageP2 == 0) mZombieID = 0;
 				if (mPageP2 == 0) mPageP2 = mMaxPage;
 				else mPageP2--;
-				if (mZombieID > 5) mZombieID = 0;
 			}
 			else
 			{
 				mApp->PlaySample(Sexy::SOUND_TAP);
+				if (mPlantID > 15 && mPage == 1) mPlantID = 0;
+				else if (mPlantID > 7 && mPage == 2) mPlantID = 0;
 				if (mPage == 0) mPage = mMaxPage;
-				else mPage--;
-				if (mPlantID > 15) mPlantID = 0;
+				else mPage--;				
 			}
 			mClickCooldown = 50;
 		}
@@ -2086,15 +2092,17 @@ void SeedChooserScreen::KeyDown(KeyCode theKey)
 		{
 			if (!mApp->mIsKeyboardPlayer1 && !mPlantsPick && mApp->IsVersusLevel())
 			{
+				if (mZombieID > 5 && mPageP2 == 0) mZombieID = 0;
+				else if (mPageP2 == 1) mZombieID = 0;
 				if (mPageP2 == mMaxPage) mPageP2 = 0;
 				else mPageP2++;
-				if (mZombieID > 5) mZombieID = 0;
 			}
 			else
 			{
+				if (mPlantID > 15 && mPage == 0) mPlantID = 0;
+				else if (mPlantID > 7 && mPage == 1) mPlantID = 0;
 				if (mPage == mMaxPage) mPage = 0;
 				else mPage++;
-				if (mPlantID > 15) mPlantID = 0;
 			}
 			mApp->PlaySample(Sexy::SOUND_TAP);
 			mClickCooldown = 50;
@@ -2103,36 +2111,30 @@ void SeedChooserScreen::KeyDown(KeyCode theKey)
 	}
 	else if (theKey == GetKeyCodeFromName("d"))
 	{
-		if (((mZombieID < 29 && mPageP2 == 0) || (mZombieID < 5 && mPageP2 == 1)) && (mZombieID + 1) % 5 != 0 && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) mZombieID++;
-		else if (((mPlantID < 39 || (mPlantID >= 56 && mPlantID <= 63) && mPage == 0) || (mPlantID < 15 && mPage == 1)) && (mPlantID + 1) % 8 != 0 && (mPlantID != 37 || mPage == 0)) mPlantID++;
-		//mBoard->mPlayer2->mX += mBoard->GridToPixelX(0, 0);
+		if (((mZombieID + 1) % 5 != 0 && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) && mPageP2 != 2) mZombieID++;
+		else if (((mPlantID + 1) % 8 != 0) && !(mPage == 2 && mPlantID == SEED_SHOOTINGSTAR - SEED_FLAMEPEA)) mPlantID++;
 	}
 	else if (theKey == GetKeyCodeFromName("a"))
 	{
-		if (mZombieID > 0 && mZombieID % 5 != 0 && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) mZombieID--;
-		else if (mPlantID > 0 && mPlantID % 8 != 0 && (mPlantID != 33 || mPage == 0)) mPlantID--;
-		//mBoard->mPlayer2->mX -= mBoard->GridToPixelX(0, 0);
+		if ((mZombieID % 5 != 0 && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) && mPageP2 != 2) mZombieID--;
+		else if (mPlantID % 8 != 0) mPlantID--;
 	}
 	else if (theKey == GetKeyCodeFromName("w"))
 	{
-		if (mZombieID >= 5 && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) mZombieID -= 5;
-		else if (mPlantID >=  8 && mPlantID <= 39 && mPage == 0) mPlantID -= 8;
-		else if (mPlantID >= 56 && mPlantID <= 63 && mPage == 0) mPlantID -= 24;
-		else if (mPlantID >= 33 && mPlantID <= 37 && mPage == 1) mPlantID -= 25;
-		else if (mPlantID >= 24 && mPlantID <= 28 && mPage == 1) mPlantID += 9;
-		else if (mPlantID >= 29 && mPlantID <= 31 && mPage == 1) mPlantID -= 16;
-		else if (mPlantID >=  8 && mPlantID <= 15 && mPage == 1) mPlantID -= 8;
-		//mBoard->mPlayer2->mY -= mBoard->GridToPixelX(0, 0);
+		if (mZombieID >= SEED_VERSUS_NEWSPAPER - SEED_VERSUS_NORMAL && !mApp->mIsKeyboardPlayer1 && mApp->IsVersusLevel()) mZombieID -= 5;
+		else if (mPlantID >=  SEED_PUFFSHROOM && mPlantID <= SEED_MELONPULT && mPage == 0) mPlantID -= 8;
+		else if (mPlantID >= SEED_GATLINGPEA && mPlantID <= SEED_COBCANNON && mPage == 0) mPlantID -= SEED_GATLINGPEA - SEED_CABBAGEPULT;
+		else if (mPlantID >= SEED_BEE_SHOOTER - SEED_PULTSHROOM && mPlantID <= SEED_AMPLI_FLOWER - SEED_PULTSHROOM && mPage == 1) mPlantID -= SEED_BEE_SHOOTER - SEED_PULTSHROOM;
+		else if (mPlantID >= SEED_ICYFUME - SEED_PULTSHROOM && mPlantID <= SEED_ECACTUS - SEED_PULTSHROOM && mPage == 1) mPlantID -= SEED_ICYFUME - SEED_BEE_SHOOTER;
+		else if (mPlantID >= SEED_PLASMAPEA - SEED_FLAMEPEA && mPlantID <= SEED_SHOOTINGSTAR - SEED_FLAMEPEA && mPage == 2) mPlantID -= SEED_PLASMAPEA - SEED_FLAMEPEA;
 	}
 	else if (theKey == GetKeyCodeFromName("s"))
 	{
-		if (((mZombieID < 25 && mPageP2 == 0 && !mApp->mIsKeyboardPlayer1) || (mZombieID == 0 && mPageP2 == 1 && !mApp->mIsKeyboardPlayer1)) && mApp->IsVersusLevel()) mZombieID += 5;
-		else if ((mPlantID < 32 && mPage == 0) || (mPlantID < 8 && mPage == 1)) mPlantID += 8;
-		else if (mPlantID >= 32 && mPlantID <= 39 && mPage == 0) mPlantID += 24;
-		else if (mPlantID >=  8 && mPlantID <= 12 && mPage == 1) mPlantID += 25;
-		else if (mPlantID >= 33 && mPlantID <= 37 && mPage == 1) mPlantID -= 9;
-		else if (mPlantID >= 12 && mPlantID <= 15 && mPage == 1) mPlantID += 16;
-		//mBoard->mPlayer2->mY += mBoard->GridToPixelX(0, 0);
+		if (((mZombieID <= SEED_VERSUS_GARGANTUAR_GIGA - SEED_VERSUS_NORMAL && mPageP2 == 0 && !mApp->mIsKeyboardPlayer1)) && mApp->IsVersusLevel()) mZombieID += 5;
+		else if ((mPlantID < SEED_CABBAGEPULT && mPage == 0) || (mPlantID < SEED_BEE_SHOOTER - SEED_PULTSHROOM && mPage == 1)) mPlantID += 8;
+		else if (mPlantID >= SEED_CABBAGEPULT && mPlantID <= SEED_MELONPULT && mPage == 0) mPlantID += SEED_GATLINGPEA - SEED_CABBAGEPULT;
+		else if (mPlantID >= SEED_BEE_SHOOTER - SEED_PULTSHROOM && mPlantID <= SEED_AMPLI_FLOWER - SEED_PULTSHROOM && mPage == 1) mPlantID += SEED_ICYFUME - SEED_BEE_SHOOTER;
+		else if (mPlantID >= SEED_FLAMEPEA - SEED_FLAMEPEA && mPlantID <= SEED_PEPPER - SEED_FLAMEPEA && mPage == 2) mPlantID += SEED_PLASMAPEA - SEED_FLAMEPEA;
 	}
 	else if (theKey == GetKeyCodeFromName("j") && mClickCooldown == 0)
 	{

@@ -98,6 +98,7 @@ void MessageWidget::SetLabel(const SexyString& theNewLabel, MessageStyle theMess
 			mDuration = 250;
 			break;
 
+		case MessageStyle::MESSAGE_STYLE_BLOOD_MOON:
 		case MessageStyle::MESSAGE_STYLE_HUGE_WAVE:
 			mDuration = 750;
 			mReanimType = ReanimationType::REANIM_TEXT_FADE_ON;
@@ -286,6 +287,7 @@ Font* MessageWidget::GetFont()
 	case MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST:
 	case MessageStyle::MESSAGE_STYLE_HOUSE_NAME:
 	case MessageStyle::MESSAGE_STYLE_HUGE_WAVE:
+	case MessageStyle::MESSAGE_STYLE_BLOOD_MOON:
 	case MessageStyle::MESSAGE_STYLE_ZEN_GARDEN_LONG:
 		return Sexy::FONT_HOUSEOFTERROR28;
 
@@ -368,6 +370,10 @@ void MessageWidget::Draw(Graphics* g)
 	case MessageStyle::MESSAGE_STYLE_HUGE_WAVE:
 		aPosY = 330;
 		aColor = Color(255, 0, 0);
+		break;
+	case MessageStyle::MESSAGE_STYLE_BLOOD_MOON:
+		aPosY = 330;
+		aColor = Color(255, 35, 100);
 		break;
 
 	case MessageStyle::MESSAGE_STYLE_SLOT_MACHINE:

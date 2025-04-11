@@ -329,7 +329,10 @@ bool Board::AreEnemyZombiesOnScreen()
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
-		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled)
+		if (aZombie->mHasHead &&
+			!aZombie->IsDeadOrDying() &&
+			aZombie->mZombiePhase != ZombiePhase::PHASE_BONE_PILE &&
+			!aZombie->mMindControlled)
 		{
 			return true;
 		}
@@ -344,7 +347,8 @@ int Board::CountZombiesOnScreen()
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
-		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled && aZombie->IsOnBoard())
+		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled &&
+			aZombie->mZombiePhase != ZombiePhase::PHASE_BONE_PILE && aZombie->IsOnBoard())
 		{
 			aCount++;
 		}
@@ -5679,7 +5683,8 @@ void Board::MouseDown(int x, int y, int theClickCount)
 void Board::CauseBloodMoon()
 {
 	mApp->PlayFoley(FoleyType::FOLEY_BLOOD_MOON);
-	DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_ALMOST_THERE);
+	if (mCurrentWave == 4)
+		DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_BLOOD_MOON, AdviceType::ADVICE_ALMOST_THERE);
 	BloodMoonIsOn = true;
 	LoadBackgroundImages();
 
@@ -12435,10 +12440,10 @@ void Board::DamageAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 
 			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
 			{
-				aZombie->TakeDamage(theDamage, 0U);
 				aZombie->RemoveColdEffects();
+				aZombie->TakeDamage(theDamage, 66U);
 
-				aZombie->mRageCounter = 600;
+				//aZombie->mRageCounter = 600;
 				aZombie->UpdateAnimSpeed();
 			}
 		}
@@ -13107,15 +13112,3 @@ void Board::SpawnHypnotizedPlants()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
