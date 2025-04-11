@@ -8118,32 +8118,32 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     }
     else switch (mSeedType)
     {
-    case SeedType::SEED_LEFTPEATER:         aRect = Rect(0,             mY,             mX,                 mHeight);               break;
-    case SeedType::SEED_REVERSE_PEASHOOTER: aRect = Rect(0,             mY,             mX,                 mHeight);               break;
+    case SeedType::SEED_LEFTPEATER:         //aRect = Rect(0,             mY,             mX,                 mHeight);               break;
+    case SeedType::SEED_REVERSE_PEASHOOTER: //aRect = Rect(0,             mY,             mX,                 mHeight);               break;
     case SeedType::SEED_REVERSE_SNOWPEA:    aRect = Rect(0,             mY,             mX,                 mHeight);               break;
     case SeedType::SEED_SQUASH:             aRect = Rect(mX + 20,       mY,             mWidth - 35,        mHeight);               break;
     case SeedType::SEED_CHOMPER:            aRect = Rect(mX + 80,       mY,             40,                 mHeight);               break;
     case SeedType::SEED_REVERSE_CHOMPER:    aRect = Rect(mX - 80,       mY,             40,                 mHeight);               break;
     case SeedType::SEED_CHARD_GUARD:        aRect = Rect(mX + 40,       mY,             120,                mHeight);               break;
-    case SeedType::SEED_SHRINK:             aRect = Rect(mX - 80,       mY - 80,        240,                mHeight);               break;
+    case SeedType::SEED_SHRINK:             //aRect = Rect(mX - 80,       mY - 80,        240,                mHeight);               break;
     case SeedType::SEED_BONKCHOY:           aRect = Rect(mX - 80,       mY - 80,        240,                mHeight);               break;
     case SeedType::SEED_SUPERCHOMP:         aRect = Rect(mX + 80,       mY,             40,                 mHeight);               break;
     case SeedType::SEED_THORNMOSS:
     case SeedType::SEED_SPIKEWEED:
     case SeedType::SEED_SPIKEROCK:          aRect = Rect(mX + 20,       mY,             mWidth - 50,        mHeight);               break;
     case SeedType::SEED_POTATOMINE:         aRect = Rect(mX,            mY,             mWidth - 25,        mHeight);               break;
-    case SeedType::SEED_TORCHWOOD:          aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
+    case SeedType::SEED_TORCHWOOD:          //aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
     case SeedType::SEED_FLAMEWOOD:          aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
     case SeedType::SEED_PULTSHROOM:         aRect = Rect(mX + 60,       mY,             500,                mHeight);               break;
     case SeedType::SEED_MORTARSHROOM:       aRect = Rect(mX + 240,      mY,             500,                mHeight);               break;
     case SeedType::SEED_REVERSE_PUFFSHROOM: aRect = Rect(mX - 200,      mY,             230,                mHeight);               break;
     case SeedType::SEED_PUFFSHROOM:  
     case SeedType::SEED_SEASHROOM:          aRect = Rect(mX + 60,       mY,             230,                mHeight);               break;
-    case SeedType::SEED_FUMESHROOM:         aRect = Rect(mX + 60,       mY,             340,                mHeight);               break;
+    case SeedType::SEED_FUMESHROOM:         //aRect = Rect(mX + 60,       mY,             340,                mHeight);               break;
     case SeedType::SEED_ICYFUME:            aRect = Rect(mX + 60,       mY,             340,                mHeight);               break;
     case SeedType::SEED_GLOOMSHROOM:        aRect = Rect(mX - 80,       mY - 80,        240,                240);                   break;
     case SeedType::SEED_TANGLEKELP:         aRect = Rect(mX,            mY,             mWidth,             mHeight);               break;
-    case SeedType::SEED_CATTAIL:            aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
+    case SeedType::SEED_CATTAIL:            //aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     case SeedType::SEED_BEE_SHOOTER:        aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     case SeedType::SEED_REED:               aRect = Rect(mX + 60,       -BOARD_HEIGHT,  BOARD_WIDTH,        BOARD_HEIGHT * 2);      break;
     default:                                aRect = Rect(mX + 60,       mY,             BOARD_WIDTH,        mHeight);               break;
