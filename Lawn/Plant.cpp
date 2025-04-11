@@ -4833,13 +4833,19 @@ void Plant::Update()
     {
         mMushroomAge--;
 
-        if (mMushroomAge == 100)
-        {
-            PlayBodyReanim("anim_end", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 24.0f);
+        if (mMushroomAge == 150)
+        {            
+            PlayBodyReanim("anim_end", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 12.0f);
         }
         else if (mMushroomAge == 0)
         {
             Die();
+        }
+
+        if (mMushroomAge <= 255)
+        {
+            TodParticleSystem* aParticle = mApp->ParticleTryToGet(mParticleID);
+            aParticle->OverrideColor(nullptr, Color(255, 255, 102, mMushroomAge));
         }
     }
 
