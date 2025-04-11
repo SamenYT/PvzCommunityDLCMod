@@ -84,7 +84,8 @@ enum PlantState
     STATE_EMPTY_IDLE,
     STATE_AMPLI_DANCING,
     STATE_SHRINKINGVIOLET_EXPLODING,
-    STATE_SHRINKINGVIOLET_EXPLODED
+    STATE_SHRINKINGVIOLET_EXPLODED,
+    STATE_HAUNTING
 };
 
 enum PLANT_LAYER
@@ -238,6 +239,9 @@ public:
     int					    mGridItemCounter;
     bool					mHypnotized;
     int					    mSoundCounter;
+    bool					mTriggered;
+    int					    mGhostAge;
+    float					mGhostFlash;
 
 public:
     Plant();
@@ -307,6 +311,7 @@ public:
     void                    UpdateSuperChomper();
     void                    UpdateViolet();
     void                    UpdateAloe();
+    void                    UpdateGhostpepper();
     void                    DoBlink();
     void                    UpdateBlink();
     void                    PlayBodyReanim(const char* theTrackName, ReanimLoopType theLoopType, int theBlendTime, float theAnimRate);

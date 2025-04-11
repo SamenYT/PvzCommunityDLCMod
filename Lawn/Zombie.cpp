@@ -247,9 +247,9 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         //altered numbers cuz i removed corpse health
         //also made the corpse state more prevelant
         LoadPlainZombieReanim();
-        mBodyHealth = 190;
+        mBodyHealth = 200;
         //mBodyHealth = 190
-        mBoneHealth = 480;
+        mBoneHealth = 500;
         //mBoneHealth = 480;
         //mZombiePhase = PHASE_ZOMBIE_NORMAL;
         break;
@@ -4606,7 +4606,7 @@ bool Zombie::CanLoseBodyParts()
         mZombieType != ZombieType::ZOMBIE_TARGET &&
         mZombieType != ZombieType::ZOMBIE_RAVEN &&
         mZombieType != ZombieType::ZOMBIE_BOSS && 
-        //mZombieType != ZombieType::ZOMBIE_SKELETON && 
+        mZombieType != ZombieType::ZOMBIE_SKELETON && 
         mZombieHeight != ZombieHeight::HEIGHT_ZOMBIQUARIUM && 
         !IsFlying() && 
         !IsBobsledTeamWithSled();
@@ -5523,7 +5523,7 @@ void Zombie::UpdateZombieSkeleton()
         {
             mApp->PlayFoley(FOLEY_SKELETON_REVIVE);
             mBoneHealth = mBodyHealth;
-            mBodyHealth = mBodyMaxHealth / 2;
+            mBodyHealth = mBodyMaxHealth;
             //mBodyHealth = 270;
             if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
             else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 14.4f);
