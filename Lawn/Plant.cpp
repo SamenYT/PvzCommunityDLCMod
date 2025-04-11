@@ -245,7 +245,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     XOrig = 0;
     YOrig = 0;
     BounceLimit = 0;
-    mDeathCounter = 0;
+    mMushroomAge = 0;
     mShrinkCounter = 0;
     mStopAnimation = false;
     mIsBackwards = false;
@@ -724,7 +724,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     }
     case SeedType::SEED_LUMESHROOM:
     {
-        mDeathCounter = 1000;
+        mMushroomAge = 1000;
 
         if ((!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN) && !mIsAsleep)
         {
@@ -4829,11 +4829,15 @@ void Plant::Update()
         if (mSoundCounter == 0) mApp->PlayFoley(FOLEY_THUMP);
     }
 
-    if (mDeathCounter > 0 && !mIsAsleep)
+    if (mMushroomAge > 0 && !mIsAsleep)
     {
-        mDeathCounter--;
+        mMushroomAge--;
 
-        if (mDeathCounter == 0)
+        if (mMushroomAge == 100)
+        {
+            PlayBodyReanim("anim_end", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 24.0f);
+        }
+        else if (mMushroomAge == 0)
         {
             Die();
         }

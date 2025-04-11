@@ -226,7 +226,7 @@ public:
     int                     XOrig;
     int                     YOrig;
     int                     BounceLimit;
-    int                     mDeathCounter;
+    int                     mMushroomAge;
     int                     mShrinkCounter;
     bool                    mStopAnimation;
     bool                    mIsBackwards;
