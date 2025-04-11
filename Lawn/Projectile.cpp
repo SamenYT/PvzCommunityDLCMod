@@ -1530,6 +1530,14 @@ void Projectile::Update()
 		return;
 	if (mProjectileType == ProjectileType::PROJECTILE_REED_ZAP)
 	{
+		if (Rand(50) == 0)
+		{
+			mleft = !mleft;
+		}
+		if (Rand(50) == 0)
+		{
+			mRadius *= -1;
+		}
 		if (mProjectileAge > 50)
 			Die();
 		return;

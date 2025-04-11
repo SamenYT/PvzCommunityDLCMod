@@ -5684,7 +5684,7 @@ void Board::CauseBloodMoon()
 {
 	mApp->PlayFoley(FoleyType::FOLEY_BLOOD_MOON);
 	if (mCurrentWave == 4)
-		DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_ALMOST_THERE);
+		DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_BLOOD_MOON, AdviceType::ADVICE_ALMOST_THERE);
 	BloodMoonIsOn = true;
 	LoadBackgroundImages();
 
@@ -13112,15 +13112,3 @@ void Board::SpawnHypnotizedPlants()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
