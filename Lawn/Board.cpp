@@ -347,7 +347,8 @@ int Board::CountZombiesOnScreen()
 	Zombie* aZombie = nullptr;
 	while (IterateZombies(aZombie))
 	{
-		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled && aZombie->IsOnBoard())
+		if (aZombie->mHasHead && !aZombie->IsDeadOrDying() && !aZombie->mMindControlled &&
+			aZombie->mZombiePhase != ZombiePhase::PHASE_BONE_PILE && aZombie->IsOnBoard())
 		{
 			aCount++;
 		}
@@ -12439,10 +12440,10 @@ void Board::DamageAllZombiesInRadius(int theRow, int theX, int theY, int theRadi
 
 			if (aRowDist <= theRowRange && aRowDist >= -theRowRange && GetCircleRectOverlap(theX, theY, theRadius, aZombieRect))
 			{
-				aZombie->TakeDamage(theDamage, 0U);
 				aZombie->RemoveColdEffects();
+				aZombie->TakeDamage(theDamage, 66U);
 
-				aZombie->mRageCounter = 600;
+				//aZombie->mRageCounter = 600;
 				aZombie->UpdateAnimSpeed();
 			}
 		}

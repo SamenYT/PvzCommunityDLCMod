@@ -247,9 +247,9 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         //altered numbers cuz i removed corpse health
         //also made the corpse state more prevelant
         LoadPlainZombieReanim();
-        mBodyHealth = 140;
+        mBodyHealth = 190;
         //mBodyHealth = 190
-        mBoneHealth = 780;
+        mBoneHealth = 480;
         //mBoneHealth = 480;
         //mZombiePhase = PHASE_ZOMBIE_NORMAL;
         break;
@@ -1762,11 +1762,11 @@ void Zombie::PickRandomSpeed()
     {
         mVelX = RandRangeFloat(0.36f, 0.38f);
     }
-    if (mZombiePhase == ZombiePhase::PHASE_DOLPHIN_WALKING_IN_POOL)
+    else if (mZombiePhase == ZombiePhase::PHASE_DOLPHIN_WALKING_IN_POOL)
     {
         mVelX = 0.3f;
     }
-    if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL)
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL)
     {
         mVelX = 0.2f;
     }
@@ -4622,7 +4622,7 @@ void Zombie::SetupReanimForLostHead()
 //0x529A30
 void Zombie::DropHead(unsigned int theDamageFlags)
 {
-    if (mZombiePhase == PHASE_BONE_PILE)
+    if (mZombieType == ZOMBIE_SKELETON)
         return;
 
     if (!CanLoseBodyParts() || !mHasHead)
@@ -5533,7 +5533,7 @@ void Zombie::UpdateZombieSkeleton()
         {
             //mVelX = RandRangeFloat(0.23f, 0.32f);
             mZombiePhase = PHASE_ZOMBIE_NORMAL;
-            mVelX = RandRangeFloat(0.36f, 0.38f);
+            //mVelX = RandRangeFloat(0.36f, 0.38f);
             //UpdateAnimSpeed();
             //playzombiereanim already calls that
             StartWalkAnim(0);
@@ -10305,7 +10305,10 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
     {
         ApplyChill(false);
     }
-
+    if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_TERRIFY))
+    {
+        mRageCounter = 600;
+    }
     int aBodyHealthOrigin = mBodyHealth;
     int aDamageIndexBeforeDamage = GetBodyDamageIndex();
     mBodyHealth -= theDamage;
@@ -11409,7 +11412,7 @@ void Zombie::ApplyBurn(int damage)
     if (mDead || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED)
         return;
 
-    else if ((mBodyHealth + mHelmHealth) >= 1800  || mZombieType == ZombieType::ZOMBIE_BOSS || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
+    else if ((mBodyHealth + mHelmHealth) >= damage || mZombieType == ZombieType::ZOMBIE_BOSS || mZombieType == ZombieType::ZOMBIE_GLADIANTUAR_GIGA)
     {
         TakeDamage(damage, 18U);
         return;
@@ -13489,15 +13492,15 @@ void Zombie::BossDie()
 
 void Zombie::SkeletonDie()
 {
-    TrySpawnLevelAward();
     RemoveButter();
     RemoveColdEffects();
     mApp->PlayFoley(FOLEY_SKELETON_DIE);
     mZombiePhase = PHASE_BONE_PILE;
+    TrySpawnLevelAward();
     mBodyHealth = mBoneHealth;
-    mRespawnCounter = 1500;
+    mRespawnCounter = 1200;
     //mRespawnCounter = 1000;
-    mVelX = 0.0f;
+    //mVelX = 0.0f;
     UpdateAnimSpeed();
     if (mInPool) PlayZombieReanim("anim_watercrumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
     else PlayZombieReanim("anim_crumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 18.0f);
