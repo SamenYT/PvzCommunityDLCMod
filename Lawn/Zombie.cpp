@@ -244,9 +244,14 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         break;
 
     case ZombieType::ZOMBIE_SKELETON: 
+        //altered numbers cuz i removed corpse health
+        //also made the corpse state more prevelant
         LoadPlainZombieReanim();
-        mBoneHealth = 480;
-        mZombiePhase = PHASE_ZOMBIE_NORMAL;
+        mBodyHealth = 140;
+        //mBodyHealth = 190
+        mBoneHealth = 780;
+        //mBoneHealth = 480;
+        //mZombiePhase = PHASE_ZOMBIE_NORMAL;
         break;
 
     case ZombieType::ZOMBIE_VAMPIRE:
@@ -1752,6 +1757,11 @@ void Zombie::BungeeDropZombie(Zombie* theDroppedZombie, int theGridX, int theGri
 //0x524A70
 void Zombie::PickRandomSpeed()
 {
+    //yea
+    if (mZombieType == ZombieType::ZOMBIE_SKELETON)
+    {
+        mVelX = RandRangeFloat(0.36f, 0.38f);
+    }
     if (mZombiePhase == ZombiePhase::PHASE_DOLPHIN_WALKING_IN_POOL)
     {
         mVelX = 0.3f;
@@ -5140,10 +5150,10 @@ void Zombie::DropArm(unsigned int theDamageFlags)
     {
         return;
     }
-    if (mZombieType == ZOMBIE_SKELETON)
+    /*if (mZombieType == ZOMBIE_SKELETON)
     {
         return;
-    }
+    }*/
     if (mShieldType == ShieldType::SHIELDTYPE_DOOR || mShieldType == ShieldType::SHIELDTYPE_NEWSPAPER || mShieldType == ShieldType::SHIELDTYPE_TRASHCAN)
     {
         return; 
@@ -5177,28 +5187,18 @@ void Zombie::UpdateDamageStates(unsigned int theDamageFlags)
 
     if (mHasHead && mBodyHealth < mBodyMaxHealth / 3)
     {
-        if (mZombieType == ZOMBIE_SKELETON)
+        DropHead(theDamageFlags);
+        DropLoot();
+        StopZombieSound();
+
+        if (mBoard->HasLevelAwardDropped())
         {
-            if (mZombiePhase == PHASE_BONE_PILE)
-                DieWithLoot();
-            else
-                SkeletonDie();
+            PlayDeathAnim(theDamageFlags);
         }
-        else
+
+        if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL)
         {
-            DropHead(theDamageFlags);
-            DropLoot();
-            StopZombieSound();
-
-            if (mBoard->HasLevelAwardDropped())
-            {
-                PlayDeathAnim(theDamageFlags);
-            }
-
-            if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL)
-            {
-                DieNoLoot();
-            }
+            DieNoLoot();
         }
     }
 }
@@ -5511,10 +5511,32 @@ void Zombie::UpdateVampireZombie()
     }
         
 }
-
+//hi riginal stats are all commented incase you want
+//also i added his own speedstat in PickRandomSpeed
 void Zombie::UpdateZombieSkeleton()
 {
-
+    if (mRespawnCounter > 0)
+    {
+        mRespawnCounter--;
+        if (mRespawnCounter == 300)
+        {
+            mApp->PlayFoley(FOLEY_SKELETON_REVIVE);
+            mBoneHealth = mBodyHealth;
+            mBodyHealth = mBodyMaxHealth / 2;
+            //mBodyHealth = 270;
+            if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
+            else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
+        }
+        else if (mRespawnCounter == 0)
+        {
+            //mVelX = RandRangeFloat(0.23f, 0.32f);
+            mZombiePhase = PHASE_ZOMBIE_NORMAL;
+            mVelX = RandRangeFloat(0.36f, 0.38f);
+            //UpdateAnimSpeed();
+            //playzombiereanim already calls that
+            StartWalkAnim(0);
+        }
+    }
 }
 
 void Zombie::UpdateLeafBlowerZombie()
@@ -6143,25 +6165,7 @@ void Zombie::Update()
             }        
             if (mCounterToDeath == 0) DieWithLoot();
         }
-        if (mRespawnCounter > 0)
-        {
-            mRespawnCounter--;
-            if (mRespawnCounter == 300)
-            {
-                mApp->PlayFoley(FOLEY_SKELETON_REVIVE);
-                mZombiePhase = PHASE_ZOMBIE_NORMAL;
-                mBoneHealth = mBodyHealth;
-                mBodyHealth = 270;
-                if (mInPool) PlayZombieReanim("anim_waterrevive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
-                else PlayZombieReanim("anim_revive", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);
-            }
-            else if (mRespawnCounter == 0)
-            {
-                mVelX = RandRangeFloat(0.23f, 0.32f);
-                UpdateAnimSpeed();
-                StartWalkAnim(0);
-            }
-        }
+
     }
     if (mX == 340 && mApp->mGameMode == GAMEMODE_CHALLENGE_BORDER && mZombiePhase != PHASE_IMP_GETTING_THROWN && mZombiePhase != PHASE_DIGGER_TUNNELING && mZombiePhase != PHASE_BALLOON_FLYING && mZombiePhase != PHASE_POGO_BOUNCING && mZombiePhase != PHASE_POLEVAULTER_IN_VAULT)
     {
@@ -9762,8 +9766,6 @@ void Zombie::DieNoLoot()
         mApp->PlayFoley(FOLEY_SUN);
         mBoard->AddCoin(aCenterX - 20, aCenterY, CoinType::COIN_SMALLSUN, CoinMotion::COIN_MOTION_COIN);
     }
-    if (mZombiePhase == PHASE_BONE_PILE && mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED) 
-        mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP ,ParticleEffect::PARTICLE_SKELETON_DEATH);
 
     StopZombieSound();
     AttachmentDie(mAttachmentID);
@@ -10447,6 +10449,28 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
         {
             mBodyHealth = 1;
         }
+    }
+    else if (mZombieType == ZombieType::ZOMBIE_SKELETON)
+    {
+        if (mBodyHealth < mBodyMaxHealth / 2 && mHasArm)
+        {
+            DropArm(theDamageFlags);
+        }
+        if (mBodyHealth <= 0)
+        {
+
+            if (mZombiePhase == PHASE_BONE_PILE)
+            {
+
+                if (mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED)
+                    mApp->AddTodParticle(mX + 40, mY + 80, RENDER_LAYER_TOP, ParticleEffect::PARTICLE_SKELETON_DEATH);
+                DieWithLoot();
+                mBodyHealth = 0;
+            }
+            else
+                SkeletonDie();
+        }
+        return;
     }
     else
     {
@@ -12518,6 +12542,10 @@ bool Zombie::IsBobsledTeamWithSled()
 //0x534700
 bool Zombie::IsDeadOrDying()
 {
+    if (mZombiePhase == ZombiePhase::PHASE_BONE_PILE)
+    {
+        return mApp->ReanimationGet(mBodyReanimID)->mLoopCount == 0;
+    }
     return 
         mDead || 
         mZombiePhase == ZombiePhase::PHASE_ZOMBIE_DYING || 
@@ -13458,10 +13486,13 @@ void Zombie::BossDie()
 
 void Zombie::SkeletonDie()
 {
+    RemoveButter();
+    RemoveColdEffects();
     mApp->PlayFoley(FOLEY_SKELETON_DIE);
     mZombiePhase = PHASE_BONE_PILE;
     mBodyHealth = mBoneHealth;
-    mRespawnCounter = 1000;
+    mRespawnCounter = 1500;
+    //mRespawnCounter = 1000;
     mVelX = 0.0f;
     UpdateAnimSpeed();
     if (mInPool) PlayZombieReanim("anim_watercrumble", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 12.0f);

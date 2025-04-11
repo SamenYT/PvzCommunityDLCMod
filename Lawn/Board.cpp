@@ -5679,7 +5679,8 @@ void Board::MouseDown(int x, int y, int theClickCount)
 void Board::CauseBloodMoon()
 {
 	mApp->PlayFoley(FoleyType::FOLEY_BLOOD_MOON);
-	DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_ALMOST_THERE);
+	if (mLevel == 51 && mCurrentWave == 4)
+		DisplayAdviceAgain(("[BLOOD_MOON_ADVICE]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_ALMOST_THERE);
 	BloodMoonIsOn = true;
 	LoadBackgroundImages();
 
