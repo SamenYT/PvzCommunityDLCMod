@@ -68,8 +68,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_MORTARSHROOM,      nullptr, ReanimationType::REANIM_MORTARSHROOM,    5,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    600,    _S("MORTAR_SHROOM"),1 },
     { SeedType::SEED_BLOODORANGE,       nullptr, ReanimationType::REANIM_BLOODORANGE,     30, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("BLOOD_ORANGE"), 1 },
     { SeedType::SEED_REED,              nullptr, ReanimationType::REANIM_REED,            5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("LIGHTNING_REED"),1 },
-    { SeedType::SEED_HURRIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,        5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
-    { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  225,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("VOLT_SHROOM"),1},
+    { SeedType::SEED_HURRIKALE,          nullptr, ReanimationType::REANIM_HURIKALE,       5,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     150,    _S("HURRIKALE"),1 },  
+    { SeedType::SEED_VOLTSHROOM,        nullptr, ReanimationType::REANIM_SUNFLOWER,       5,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("VOLT_SHROOM"),1},
     { SeedType::SEED_GHOSTPEPPER ,      nullptr, ReanimationType::REANIM_GHOSTPEPPER,     5,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     450,    _S("GHOST_PEPPER"),1},
 
     { SeedType::SEED_BEE_SHOOTER,       nullptr, ReanimationType::REANIM_BEESHOOTER,      5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("BEESHOOTER"),1},
@@ -3276,11 +3276,8 @@ void Plant::UpdateGhostpepper()
     if (mState == PlantState::STATE_READY) {
         if (aZombie)
         {
-            PlayBodyReanim("anim_bite", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 24.0f);
-            //aBodyReanim->SetFramesForLayer("anim_blow");
-            //aBodyReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
+            PlayBodyReanim("anim_scared", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 24.0f);
             aBodyReanim->mLoopCount = 0;
-            //aBodyReanim->mAnimRate = 20.0f;
             mState = PlantState::STATE_HAUNTING;
         }
     }
@@ -3289,10 +3286,10 @@ void Plant::UpdateGhostpepper()
         if (aBodyReanim->mLoopCount > 0)
         {
             if (aBodyReanim->mLoopType != ReanimLoopType::REANIM_LOOP) {
-                aBodyReanim->SetFramesForLayer("anim_bite");
+                aBodyReanim->SetFramesForLayer("anim_scaredidle");
                 aBodyReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
             }
-            if (mTriggered) {
+            if (!mTriggered) {
                 mTriggered = true;
                 mGhostAge = 1000;
             }
@@ -3314,31 +3311,32 @@ void Plant::UpdateGhostpepper()
             mGhostFlash += 0.05f * int(1000 / max(300, mGhostAge));
         }
         else {
-            /*GhostFlash += ((PI / 2) - GhostFlash) / 6;
-            if (abs(GhostFlash - (PI / 2)) < 0.001f) {
-                Die();
-            }*/
-            int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
-            Rect aAttackRect = GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
+            if (mState != PlantState::STATE_GHOST_BLOWING) {
+                PlayBodyReanim("anim_grow", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 24.0f);
+                mState = PlantState::STATE_GHOST_BLOWING;
+            }
+            else if (mState == PlantState::STATE_GHOST_BLOWING && aBodyReanim->mLoopCount > 0) {
+                int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+                Rect aAttackRect = GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
 
-            Zombie* aZombie = nullptr;
-            while (mBoard->IterateZombies(aZombie))
-            {
-                int aRowDeviation = aZombie->mRow - mRow;
-                if ((!(aRowDeviation < -1 || aRowDeviation > 1) || aZombie->mZombieType == ZombieType::ZOMBIE_BOSS) && aZombie->EffectedByDamage(aDamageRangeFlags))
+                Zombie* aZombie = nullptr;
+                while (mBoard->IterateZombies(aZombie))
                 {
-                    Rect aZombieRect = aZombie->GetZombieRect();
-                    if (GetRectOverlap(aAttackRect, aZombieRect) > (aZombie->mZombieType == ZombieType::ZOMBIE_FOOTBALL ? -20 : 0))
+                    int aRowDeviation = aZombie->mRow - mRow;
+                    if ((!(aRowDeviation < -1 || aRowDeviation > 1) || aZombie->mZombieType == ZombieType::ZOMBIE_BOSS) && aZombie->EffectedByDamage(aDamageRangeFlags))
                     {
-                        aZombie->TakeDamage(20, 2U);
-                        aZombie->ApplyChill(false);
+                        Rect aZombieRect = aZombie->GetZombieRect();
+                        if (GetRectOverlap(aAttackRect, aZombieRect) > (aZombie->mZombieType == ZombieType::ZOMBIE_FOOTBALL ? -20 : 0))
+                        {
+                            aZombie->TakeDamage(450, 2U);
+                        }
                     }
                 }
+                int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
+                mApp->AddTodParticle(mX + 40, mY + 40, aRenderPosition, ParticleEffect::PARTICLE_GLOOMCLOUD);
+                mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
+                Die();
             }
-            int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
-            mApp->AddTodParticle(mX + 40, mY + 40, aRenderPosition, ParticleEffect::PARTICLE_GLOOMCLOUD);
-            mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
-            Die();
         }
     }
 }
@@ -4845,7 +4843,7 @@ void Plant::Update()
     {
         mGridItemCounter--;
     }
-
+    
     if (mMoveOffset > 0)
     {     
         mMoveOffset--;
