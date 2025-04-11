@@ -5532,6 +5532,7 @@ void Zombie::UpdateZombieSkeleton()
         else if (mRespawnCounter == 0)
         {
             //mVelX = RandRangeFloat(0.23f, 0.32f);
+            mZombieRect = Rect(36, 0, 42, 115);
             mZombiePhase = PHASE_ZOMBIE_NORMAL;
             //mVelX = RandRangeFloat(0.36f, 0.38f);
             //UpdateAnimSpeed();
@@ -13504,6 +13505,7 @@ void Zombie::SkeletonDie()
     TrySpawnLevelAward();
     mBodyHealth = mBoneHealth;
     mRespawnCounter = 1200;
+    mZombieRect = Rect(36, 50, 42, 65);
     //mRespawnCounter = 1000;
     //mVelX = 0.0f;
     //UpdateAnimSpeed();
